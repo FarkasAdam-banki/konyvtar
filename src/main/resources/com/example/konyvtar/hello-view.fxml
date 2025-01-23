@@ -2,7 +2,8 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.konyvtar.HelloController">
+
+<BorderPane fx:id="bp" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.konyvtar.HelloController">
     <top>
         <MenuBar BorderPane.alignment="CENTER">
             <menus>
@@ -11,6 +12,11 @@
                         <MenuItem mnemonicParsing="false" text="Kilépés" />
                     </items>
                 </Menu>
+            <Menu mnemonicParsing="false" text="Kölcsönzések">
+               <items>
+                  <MenuItem mnemonicParsing="false" onAction="#showKolcsonzesFelvetele" text="Kölcsönzés felvétele" />
+               </items>
+            </Menu>
             </menus>
         </MenuBar>
     </top>
