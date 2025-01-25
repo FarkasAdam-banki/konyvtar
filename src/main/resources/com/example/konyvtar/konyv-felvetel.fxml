@@ -5,96 +5,151 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.konyvtar.HelloController">
+<AnchorPane prefHeight="800.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.konyvtar.HelloController">
    <children>
-      <VBox prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="300.0" AnchorPane.topAnchor="0.0">
+      <HBox prefHeight="800.0" prefWidth="1000.0">
          <children>
-            <Pane prefHeight="200.0" prefWidth="200.0" />
-            <Pane prefHeight="200.0" prefWidth="200.0" />
-         </children>
-      </VBox>
-      <VBox alignment="TOP_RIGHT" prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="300.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-         <children>
-            <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0">
+            <VBox fx:id="container" prefHeight="800.0" prefWidth="400.0" styleClass="container">
                <children>
-                  <HBox alignment="TOP_CENTER" prefHeight="36.0" prefWidth="200.0">
-                     <VBox.margin>
-                        <Insets />
-                     </VBox.margin>
+                  <Pane fx:id="topPane" prefHeight="400.0" prefWidth="500.0" styleClass="top-pane">
                      <children>
-                        <Label alignment="CENTER" text="Új könyv felvétele" textAlignment="CENTER">
-                           <font>
-                              <Font name="System Bold" size="18.0" />
-                           </font>
-                        </Label>
-                     </children>
-                  </HBox>
-                  <HBox prefHeight="100.0" prefWidth="200.0">
+                        <HBox layoutY="290.0" prefHeight="110.0" prefWidth="400.0">
+                           <children>
+                              <Pane nodeOrientation="RIGHT_TO_LEFT" prefHeight="110.0" prefWidth="400.0">
+                                 <children>
+                                    <VBox prefHeight="200.0" prefWidth="100.0">
+                                       <children>
+                                          <Pane prefHeight="33.0" prefWidth="100.0" />
+                                          <ImageView fitHeight="77.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@whiteTri.png" />
+                                             </image>
+                                          </ImageView>
+                                       </children>
+                                    </VBox>
+                                 </children>
+                              </Pane>
+                           </children>
+                        </HBox>
+                     </children></Pane>
+                  <Pane fx:id="bottomPane" prefHeight="400.0" prefWidth="500.0" styleClass="bottom-pane">
                      <children>
-                        <VBox prefHeight="200.0" prefWidth="100.0">
+                        <HBox prefHeight="100.0" prefWidth="400.0">
                            <children>
-                              <Label text="Könyv címe" />
-                              <TextField />
+                              <Pane nodeOrientation="RIGHT_TO_LEFT" prefHeight="100.0" prefWidth="400.0">
+                                 <children>
+                                    <ImageView fitHeight="77.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@blackTri.png" />
+                                       </image>
+                                    </ImageView>
+                                 </children>
+                              </Pane>
                            </children>
-                        </VBox>
-                        <VBox prefHeight="200.0" prefWidth="100.0">
-                           <children>
-                              <Label text="Könyv szerzője" />
-                              <TextField />
-                           </children>
-                        </VBox>
-                     </children>
-                  </HBox>
-                  <HBox prefHeight="100.0" prefWidth="200.0">
-                     <children>
-                        <VBox prefHeight="200.0" prefWidth="100.0">
-                           <children>
-                              <Label text="Kiadás éve" />
-                              <TextField />
-                           </children>
-                        </VBox>
-                        <VBox prefHeight="200.0" prefWidth="100.0">
-                           <children>
-                              <Label text="Könyv műfaja" />
-                              <TextField />
-                           </children>
-                        </VBox>
-                     </children>
-                  </HBox>
-                  <HBox prefHeight="100.0" prefWidth="200.0">
-                     <children>
-                        <VBox prefHeight="200.0" prefWidth="100.0">
-                           <children>
-                              <Label text="Kölcsönözhető" />
-                              <ComboBox prefWidth="150.0" />
-                           </children>
-                        </VBox>
-                        <VBox prefHeight="200.0" prefWidth="100.0">
-                           <children>
-                              <Label text="ISBN-kód" />
-                              <TextField />
-                           </children>
-                        </VBox>
-                     </children>
-                  </HBox>
-                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
-                     <children>
-                        <Button mnemonicParsing="false" text="Felvétel" />
-                     </children>
-                  </HBox>
+                        </HBox>
+                     </children></Pane>
                </children>
-               <VBox.margin>
-                  <Insets top="90.0" />
-               </VBox.margin>
+            </VBox>
+            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="600.0">
+               <children>
+                  <VBox alignment="TOP_CENTER" style="-fx-border-color: black; -fx-border-radius: 20; -fx-border-width: 2;">
+                     <children>
+                        <HBox alignment="TOP_CENTER" prefHeight="36.0" prefWidth="200.0">
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                           <children>
+                              <Label alignment="CENTER" styleClass="title" text="Új könyv felvétele" textAlignment="CENTER">
+                                 <font>
+                                    <Font name="System Bold" size="18.0" />
+                                 </font>
+                                 <HBox.margin>
+                                    <Insets bottom="20.0" />
+                                 </HBox.margin>
+                              </Label>
+                           </children>
+                        </HBox>
+                        <HBox prefHeight="100.0" prefWidth="496.0">
+                           <children>
+                              <VBox prefHeight="100.0" prefWidth="218.0">
+                                 <children>
+                                    <Label text="Könyv címe" />
+                                    <TextField />
+                                 </children>
+                              </VBox>
+                              <VBox prefHeight="42.0" prefWidth="248.0">
+                                 <children>
+                                    <Label text="Könyv szerzője" />
+                                    <TextField />
+                                 </children>
+                              </VBox>
+                           </children>
+                           <padding>
+                              <Insets left="30.0" right="30.0" />
+                           </padding>
+                        </HBox>
+                        <HBox prefHeight="100.0" prefWidth="200.0">
+                           <children>
+                              <VBox prefHeight="100.0" prefWidth="248.0">
+                                 <children>
+                                    <Label text="Kiadás éve" />
+                                    <TextField />
+                                 </children>
+                              </VBox>
+                              <VBox prefHeight="200.0" prefWidth="248.0">
+                                 <children>
+                                    <Label text="Könyv műfaja" />
+                                    <TextField />
+                                 </children>
+                              </VBox>
+                           </children>
+                           <padding>
+                              <Insets left="30.0" right="30.0" />
+                           </padding>
+                        </HBox>
+                        <HBox prefHeight="100.0">
+                           <children>
+                              <VBox prefHeight="200.0" prefWidth="248.0">
+                                 <children>
+                                    <Label text="ISBN-kód" />
+                                    <TextField />
+                                 </children>
+                              </VBox>
+                              <VBox prefHeight="200.0" prefWidth="248.0">
+                                 <children>
+                                    <Label text="Kölcsönözhető" />
+                                    <ComboBox prefWidth="150.0" />
+                                 </children>
+                              </VBox>
+                           </children>
+                           <padding>
+                              <Insets left="30.0" right="30.0" />
+                           </padding>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="0.0" prefWidth="200.0">
+                           <children>
+                              <Button mnemonicParsing="false" text="Felvétel" />
+                           </children>
+                        </HBox>
+                     </children>
+                     <VBox.margin>
+                        <Insets left="20.0" right="20.0" />
+                     </VBox.margin>
+                     <padding>
+                        <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
+                     </padding>
+                  </VBox>
+               </children>
             </VBox>
          </children>
-      </VBox>
+      </HBox>
    </children>
 </AnchorPane>

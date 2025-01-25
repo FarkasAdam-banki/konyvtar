@@ -12,6 +12,12 @@
         -fx-margin: 0;
 }
 
+.formContainer{
+-fx-background-color: rgb(255,255,255);
+-fx-padding: 50px;
+
+}
+
 .menu .label
 {
 	-fx-text-fill: white;
@@ -27,7 +33,7 @@
 }
 
 .menu-bar {
--fx-background-color: rgba(0, 0, 0, 0.5);
+-fx-background-color: rgba(0, 0, 0, 0.8);
     -fx-padding: 0;
     -fx-border-width: 0;
     -fx-margin: 0;
@@ -46,10 +52,9 @@ TextField, ComboBox {
     -fx-alignment: bottom-center;
 }
 
-
 .label{
     -fx-font-weight: 700;
-    -fx-padding: 0 0 5 0;
+    -fx-padding: 0 0 10 0;
 }
 
 .label2{
@@ -93,4 +98,17 @@ TextField, ComboBox {
 }
 .py{
     -fx-padding: 20 0 20 0;
+}
+.leftTitle{
+ -fx-font-size: 32px;
+ -fx-text-fill: #fff;
+}
+
+
+.top-pane {
+    -fx-background-color: rgba(0, 0, 0, 0.8);
+}
+
+.bottom-pane {
+    -fx-background-color: rgba(255, 255, 255, 0.8);
 }
