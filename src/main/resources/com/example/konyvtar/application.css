@@ -46,9 +46,10 @@ TextField, ComboBox {
     -fx-alignment: bottom-center;
 }
 
+
 .label{
     -fx-font-weight: 700;
-    -fx-padding: 0 0 15 0;
+    -fx-padding: 0 0 5 0;
 }
 
 .label2{
@@ -57,4 +58,39 @@ TextField, ComboBox {
 }
 .title{
     -fx-font-size: 48px;
+}
+.center{
+    -fx-alignment: center;
+}
+.text-center{
+    -fx-text-alignment:center;
+}
+.bg-white{
+    -fx-background-color:#fff;
+}
+.kolcsonzes-felvetele  {
+    -fx-padding: 20px;
+}
+.kolcsonzes-felvetele HBox {
+    -fx-spacing: 25px;
+}
+.border-radius{
+    -fx-border-radius: 10px;
+    -fx-border-width: 2px;
+    -fx-border-color: #000;
+}
+.w-320{
+    -fx-min-width: 320;
+}
+.w-100{
+    -fx-min-width: 1000;
+}
+.h-100{
+    -fx-min-width: 800;
+}
+.w-combobox{
+    -fx-min-width: 150;
+}
+.py{
+    -fx-padding: 20 0 20 0;
 }
