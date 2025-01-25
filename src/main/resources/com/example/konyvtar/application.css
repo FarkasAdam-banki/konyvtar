@@ -1,3 +1,21 @@
-.root{
-    -fx-background-color:#111111;
+
+.menu-bar {
+    -fx-background-color: rgba(0, 0, 0, 0.5);
+}
+
+.container{
+-fx-background-image: url("bg.png");
+    -fx-background-repeat: stretch;
+    -fx-background-size: 1000 800;
+    -fx-background-position: center center;
+}
+
+.menu {
+    -fx-text-fill: white;
+    -fx-underline: true;
+}
+
+.menu-item {
+    -fx-text-fill: white;
+    -fx-underline: true;
 }

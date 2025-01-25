@@ -2,17 +2,59 @@
 
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 
-
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.konyvtar.HelloController">
+<AnchorPane  prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.konyvtar.HelloController">
    <children>
-      <VBox prefHeight="400.0" prefWidth="600.0">
-         <children>
+       <VBox fx:id="container" prefHeight="400.0" prefWidth="600.0" styleClass="container">
+
+       <children>
+            <MenuBar fx:id="menuBar" styleClass="menu-bar">
+              <menus>
+                <Menu mnemonicParsing="false" text="Fájl">
+                  <items>
+                    <MenuItem mnemonicParsing="false" text="Close" />
+                        <MenuItem mnemonicParsing="false" text="Close" />
+                  </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Tagok">
+                  <items>
+                    <MenuItem mnemonicParsing="false" text="Tag regisztálása" />
+                        <MenuItem mnemonicParsing="false" text="Tagok listája" />
+                  </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Könyvek">
+                  <items>
+                    <MenuItem mnemonicParsing="false" text="Könyv felvétele" />
+                        <MenuItem mnemonicParsing="false" text="Könyvek listája" />
+                  </items>
+                </Menu>
+                  <Menu mnemonicParsing="false" text="Kölcsönzések">
+                     <items>
+                        <MenuItem mnemonicParsing="false" text="Kölcsönzések" />
+                        <MenuItem mnemonicParsing="false" text="Kölcsönzések listája" />
+                     </items>
+                  </Menu>
+                  <Menu mnemonicParsing="false" />
+                  <Menu mnemonicParsing="false" text="Hibaelháritás">
+                     <items>
+                        <MenuItem mnemonicParsing="false" text="Close" />
+                     </items>
+                  </Menu>
+                  <Menu mnemonicParsing="false" text="Súgó">
+                     <items>
+                        <MenuItem mnemonicParsing="false" text="Close" />
+                     </items>
+                  </Menu>
+              </menus>
+            </MenuBar>
             <Pane prefHeight="200.0" prefWidth="200.0">
                <children>
                   <VBox>
