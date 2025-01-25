@@ -33,6 +33,19 @@
     -fx-margin: 0;
 }
 
+TextField, ComboBox {
+    -fx-border-color: #000;
+}
+
+.tag-regisztracio HBox {
+    -fx-spacing: 25px;
+    -fx-alignment: center;
+}
+
+.tag-regisztracio VBox {
+    -fx-alignment: bottom-center;
+}
+
 .label{
     -fx-font-weight: 700;
     -fx-padding: 0 0 15 0;

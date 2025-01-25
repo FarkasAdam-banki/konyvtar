@@ -31,7 +31,6 @@
                         <MenuItem mnemonicParsing="false" onAction="#showKolcsonzesekListaja" text="Kölcsönzések listája" />
                     </items>
                 </Menu>
-                <Menu mnemonicParsing="false" />
                 <Menu mnemonicParsing="false" text="Hibaelháritás">
                     <items>
                         <MenuItem mnemonicParsing="false" text="Close" />
