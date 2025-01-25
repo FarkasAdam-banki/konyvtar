@@ -3,21 +3,34 @@
     -fx-background-color: rgba(0, 0, 0, 0.5);
 }
 
-.container{
--fx-background-image: url("bg.png");
-    -fx-background-repeat: stretch;
-    -fx-background-size: 1000 800;
+.container {
+    -fx-background-image: url("bg.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: cover;
     -fx-background-position: center center;
+      -fx-padding: 0;
+        -fx-margin: 0;
 }
 
-.menu {
-    -fx-text-fill: white;
-    -fx-underline: true;
+.menu .label
+{
+	-fx-text-fill: white;
+	  -fx-border-color: transparent transparent #a3a3a3 transparent;
+         -fx-border-width: 0 0 1px 0;
+    -fx-font-size:14px;
+	  -fx-padding: 5px 5px 2px 5px;
+	  -fx-margin:5px;
+	    -fx-font-weight: 500;
+}
+.menu-item .label{
+-fx-text-fill: black;
 }
 
-.menu-item {
-    -fx-text-fill: white;
-    -fx-underline: true;
+.menu-bar {
+-fx-background-color: rgba(0, 0, 0, 0.5);
+    -fx-padding: 0;
+    -fx-border-width: 0;
+    -fx-margin: 0;
 }
 
 .label{
