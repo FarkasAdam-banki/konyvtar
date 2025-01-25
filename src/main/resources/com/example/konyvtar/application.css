@@ -1,8 +1,4 @@
 
-.menu-bar {
-    -fx-background-color: rgba(0, 0, 0, 0.5);
-}
-
 .container {
     -fx-background-image: url("bg.png");
     -fx-background-repeat: no-repeat;
@@ -10,6 +6,12 @@
     -fx-background-position: center center;
       -fx-padding: 0;
         -fx-margin: 0;
+}
+
+.formContainer{
+-fx-background-color: rgb(255,255,255);
+-fx-padding: 50px;
+
 }
 
 .menu .label
@@ -27,7 +29,7 @@
 }
 
 .menu-bar {
--fx-background-color: rgba(0, 0, 0, 0.5);
+-fx-background-color: rgba(0, 0, 0, 0.8);
     -fx-padding: 0;
     -fx-border-width: 0;
     -fx-margin: 0;
@@ -48,7 +50,7 @@ TextField, ComboBox {
 
 .label{
     -fx-font-weight: 700;
-    -fx-padding: 0 0 15 0;
+    -fx-padding: 0 0 10 0;
 }
 
 .label2{
@@ -57,4 +59,17 @@ TextField, ComboBox {
 }
 .title{
     -fx-font-size: 48px;
+}
+.leftTitle{
+ -fx-font-size: 32px;
+ -fx-text-fill: #fff;
+}
+
+
+.top-pane {
+    -fx-background-color: rgba(0, 0, 0, 0.8);
+}
+
+.bottom-pane {
+    -fx-background-color: rgba(255, 255, 255, 0.8);
 }
