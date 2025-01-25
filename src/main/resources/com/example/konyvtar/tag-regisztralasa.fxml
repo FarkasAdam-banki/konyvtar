@@ -13,8 +13,8 @@
                <children>
                   <VBox>
                      <children>
-                        <Label fx:id="title" text="Új tag regisztrálása" textAlignment="CENTER" />
-                        <Label fx:id="label2" prefHeight="17.0" prefWidth="563.0" text="figyelmesen töltse ki a mezőket a helyes regisztációhoz" textAlignment="CENTER" />
+                        <Label styleClass="title" text="Új tag regisztrálása" textAlignment="CENTER" />
+                        <Label prefHeight="17.0" prefWidth="563.0" text="figyelmesen töltse ki a mezőket a helyes regisztációhoz" textAlignment="CENTER" />
                      </children>
                   </VBox>
                </children>
@@ -25,19 +25,19 @@
                      <children>
                         <Label text="Név" />
                         <TextField />
-                        <Label text="Vezetéknév" />
+                        <Label styleClass="label2" text="Vezetéknév" />
                      </children>
                   </VBox>
                   <VBox prefHeight="200.0" prefWidth="100.0">
                      <children>
                         <TextField />
-                        <Label text="Keresztnév" />
+                        <Label styleClass="label2" text="Keresztnév" />
                      </children>
                   </VBox>
                   <VBox prefHeight="200.0" prefWidth="100.0">
                      <children>
                         <TextField />
-                        <Label text="Keresztnév (opcionális)" />
+                        <Label styleClass="label2" text="Keresztnév (opcionális)" />
                      </children>
                   </VBox>
                </children>
@@ -68,13 +68,13 @@
                      <children>
                         <Label text="Cím" />
                         <TextField />
-                        <Label fx:id="label2" text="Város" />
+                        <Label styleClass="label2" text="Város" />
                      </children>
                   </VBox>
                   <VBox prefHeight="200.0" prefWidth="100.0">
                      <children>
                         <ComboBox prefWidth="150.0" />
-                        <Label fx:id="label2" text="Megye" />
+                        <Label styleClass="label2" text="Megye" />
                      </children>
                   </VBox>
                </children>
@@ -84,13 +84,13 @@
                   <VBox prefHeight="200.0" prefWidth="100.0">
                      <children>
                         <TextField />
-                        <Label fx:id="label2" text="Utca" />
+                        <Label styleClass="label2" text="Utca" />
                      </children>
                   </VBox>
                   <VBox prefHeight="200.0" prefWidth="100.0">
                      <children>
                         <TextField />
-                        <Label fx:id="label2" text="Házszám" />
+                        <Label styleClass="label2" text="Házszám" />
                      </children>
                   </VBox>
                </children>

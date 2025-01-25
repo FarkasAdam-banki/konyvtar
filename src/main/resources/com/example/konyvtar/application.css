@@ -25,11 +25,10 @@
     -fx-padding: 0 0 15 0;
 }
 
-#label2{
+.label2{
     -fx-text-fill: #555;
     -fx-font-weight: normal;
 }
-#title{
+.title{
     -fx-font-size: 48px;
-
 }
