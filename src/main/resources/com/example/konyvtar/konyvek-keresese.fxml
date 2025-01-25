@@ -1,32 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.konyvtar.HelloController">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.konyvtar.HelloController">
     <children>
-        <VBox layoutX="62.0" layoutY="56.0" prefHeight="200.0" style="-fx-background-color: #fff;">
+        <VBox layoutX="62.0" layoutY="56.0" prefHeight="200.0" style="-fx-background-color: #fff;" styleClass="search">
             <children>
                 <HBox alignment="CENTER" prefHeight="81.0" prefWidth="0.0">
                     <children>
-                        <Label text="Könyvek keresése" textAlignment="CENTER" />
+                        <Label styleClass="title-search" text="Könyvek keresése" textAlignment="CENTER" />
                     </children>
                 </HBox>
-                <HBox alignment="CENTER" prefHeight="81.0">
+                <HBox alignment="CENTER" prefHeight="81.0" prefWidth="476.0" styleClass="book-results">
                     <children>
-                        <TextField promptText="Keresés..." />
-                        <ComboBox prefWidth="150.0" promptText="Kölcsönözhető" />
-                        <Button mnemonicParsing="false" text="Keresés" />
-                    </children>
-                </HBox>
-                <HBox alignment="CENTER" prefHeight="81.0" prefWidth="476.0">
-                    <children>
-                        <ListView prefHeight="88.0" />
-                  <VBox alignment="CENTER_LEFT" prefHeight="88.0">
+                  <VBox prefHeight="200.0" prefWidth="100.0">
                      <children>
-                        <Label text="Leggyakoribb műfajok" />
-                        <Separator prefWidth="200.0" />
+                            <HBox alignment="CENTER" prefHeight="81.0" styleClass="search-bar">
+                                <children>
+                                    <TextField promptText="Keresés..." />
+                                    <ComboBox prefWidth="150.0" promptText="Kölcsönözhető" />
+                                    <Button mnemonicParsing="false" text="Keresés" />
+                                </children>
+                            </HBox>
+                              <ListView prefHeight="88.0" styleClass="results" />
+                     </children>
+                  </VBox>
+                  <VBox alignment="CENTER_LEFT" styleClass="most-common">
+                     <children>
+                        <Label styleClass="title-common" text="Leggyakoribb műfajok" />
                         <Label text="Filozófia - 451 példány" />
                         <Label layoutX="50.0" layoutY="30.0" text="regény - 16 példány" />
                         <Label layoutX="50.0" layoutY="47.0" text="Tudományos -14 példány" />
@@ -38,7 +47,7 @@
                   </VBox>
                     </children>
                 </HBox>
-                <HBox alignment="CENTER" layoutX="10.0" layoutY="144.0" prefHeight="81.0" prefWidth="476.0">
+                <HBox alignment="CENTER" layoutX="10.0" layoutY="144.0" prefHeight="81.0" prefWidth="476.0" styleClass="result-num">
                     <children>
                         <Label alignment="CENTER" text="Találatok száma: ">
                             <HBox.margin>

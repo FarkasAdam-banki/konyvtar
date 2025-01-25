@@ -39,7 +39,7 @@
     -fx-margin: 0;
 }
 
-TextField, ComboBox {
+.text-field, .combo-box {
     -fx-border-color: #000;
 }
 
@@ -100,6 +100,7 @@ TextField, ComboBox {
 .py{
     -fx-padding: 20 0 20 0;
 }
+
 .leftTitle{
  -fx-font-size: 32px;
  -fx-text-fill: #fff;
@@ -112,4 +113,77 @@ TextField, ComboBox {
 
 .bottom-pane {
     -fx-background-color: rgba(255, 255, 255, 0.8);
+}
+
+.title-search {
+    -fx-font-size: 24px;
+}
+
+.search-bar .button {
+    -fx-background-color: #9B6142;
+    -fx-border-color: #000;
+    -fx-text-fill: #FFF;
+    -fx-background-radius: 5px;
+    -fx-border-radius: 5px;
+    -fx-padding: 3px 20px;
+}
+
+.search-bar .text-field, .search-bar .combo-box {
+    -fx-border-color: #9B6142;
+    -fx-prompt-text-fill: #9B6142;
+    -fx-background-color: #FFF;
+}
+
+.search-bar .combo-box .list-cell, .title-search, .search-bar .text-field {
+    -fx-text-fill: #9B6142;
+}
+
+.search-bar {
+    -fx-spacing: 20px;
+}
+
+.book-results, .search {
+    -fx-spacing: 10px;
+}
+
+.results {
+    -fx-min-height: 300px;
+    -fx-min-width: 500px;
+    -fx-padding: 15px;
+    -fx-border-insets: 15px 15px;
+    -fx-background-insets: 15px 15px;
+}
+
+.result-num {
+    -fx-alignment: center-right;
+}
+
+.result-borrow {
+    -fx-spacing: 300px;
+}
+
+.result-borrow .button {
+    -fx-background-color: #8B0000;
+    -fx-border-color: #000;
+    -fx-text-fill: #FFF;
+    -fx-background-radius: 5px;
+    -fx-border-radius: 5px;
+}
+
+.title-common {
+    -fx-border-color: transparent transparent #000 transparent;
+    -fx-border-width: 0 0 1px 0;
+    -fx-font-size: 18px;
+    -fx-wrap-text: true;
+}
+
+.most-common, .results {
+    -fx-border-radius: 15px;
+    -fx-border-color: #000;
+    -fx-background-radius: 15px;
+}
+
+.most-common {
+    -fx-max-height: 150px;
+    -fx-min-width: 160px;
 }
