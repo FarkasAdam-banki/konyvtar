@@ -5,18 +5,43 @@
 
 <BorderPane fx:id="bp" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.konyvtar.HelloController">
     <top>
-        <MenuBar BorderPane.alignment="CENTER">
+        <MenuBar fx:id="menuBar" styleClass="menu-bar">
             <menus>
                 <Menu mnemonicParsing="false" text="Fájl">
                     <items>
-                        <MenuItem mnemonicParsing="false" text="Kilépés" />
+                        <MenuItem mnemonicParsing="false" text="Close" />
+                        <MenuItem mnemonicParsing="false" text="Close" />
                     </items>
                 </Menu>
-            <Menu mnemonicParsing="false" text="Kölcsönzések">
-               <items>
-                  <MenuItem mnemonicParsing="false" onAction="#showKolcsonzesFelvetele" text="Kölcsönzés felvétele" />
-               </items>
-            </Menu>
+                <Menu mnemonicParsing="false" text="Tagok">
+                    <items>
+                        <MenuItem mnemonicParsing="false" onAction="#showTagRegisztralasa" text="Tag regisztálása" />
+                        <MenuItem mnemonicParsing="false" onAction="#showTagokListaja" text="Tagok listája" />
+                    </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Könyvek">
+                    <items>
+                        <MenuItem mnemonicParsing="false" onAction="#showKonyvFelvetel" text="Könyv felvétele" />
+                        <MenuItem mnemonicParsing="false" onAction="#showKonyvekKeresese" text="Könyvek listája" />
+                    </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Kölcsönzések">
+                    <items>
+                        <MenuItem mnemonicParsing="false" onAction="#showKolcsonzesFelvetele" text="Kölcsönzés felvétele" />
+                        <MenuItem mnemonicParsing="false" onAction="#showKolcsonzesekListaja" text="Kölcsönzések listája" />
+                    </items>
+                </Menu>
+                <Menu mnemonicParsing="false" />
+                <Menu mnemonicParsing="false" text="Hibaelháritás">
+                    <items>
+                        <MenuItem mnemonicParsing="false" text="Close" />
+                    </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Súgó">
+                    <items>
+                        <MenuItem mnemonicParsing="false" text="Close" />
+                    </items>
+                </Menu>
             </menus>
         </MenuBar>
     </top>

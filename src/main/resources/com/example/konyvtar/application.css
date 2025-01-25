@@ -19,3 +19,17 @@
     -fx-text-fill: white;
     -fx-underline: true;
 }
+
+.label{
+    -fx-font-weight: 700;
+    -fx-padding: 0 0 15 0;
+}
+
+#label2{
+    -fx-text-fill: #555;
+    -fx-font-weight: normal;
+}
+#title{
+    -fx-font-size: 48px;
+
+}

@@ -20,4 +20,49 @@ public class HelloController {
         }
         bp.setCenter(root);
     }
+    public void showKolcsonzesekListaja() {
+        Parent root;
+        try {
+            root = FXMLLoader.load(getClass().getResource("kolcsonzesek-listaja.fxml"));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        bp.setCenter(root);
+    }
+    public void showKonyvFelvetel() {
+        Parent root;
+        try {
+            root = FXMLLoader.load(getClass().getResource("konyv-felvetel.fxml"));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        bp.setCenter(root);
+    }
+    public void showKonyvekKeresese() {
+        Parent root;
+        try {
+            root = FXMLLoader.load(getClass().getResource("konyvek-keresese.fxml"));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        bp.setCenter(root);
+    }
+    public void showTagRegisztralasa() {
+        Parent root;
+        try {
+            root = FXMLLoader.load(getClass().getResource("tag-regisztralasa.fxml"));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        bp.setCenter(root);
+    }
+    public void showTagokListaja() {
+        Parent root;
+        try {
+            root = FXMLLoader.load(getClass().getResource("tagok-listaja.fxml"));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        bp.setCenter(root);
+    }
 }
