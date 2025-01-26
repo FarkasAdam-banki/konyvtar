@@ -58,7 +58,7 @@
                      </children></Pane>
                </children>
             </VBox>
-            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="600.0">
+            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="600.0" style="-fx-background-color: white;">
                <children>
                   <VBox alignment="TOP_CENTER" style="-fx-border-color: black; -fx-border-radius: 20; -fx-border-width: 2;">
                      <children>
@@ -84,12 +84,18 @@
                                     <Label text="Könyv címe" />
                                     <TextField />
                                  </children>
+                                 <HBox.margin>
+                                    <Insets right="30.0" />
+                                 </HBox.margin>
                               </VBox>
                               <VBox prefHeight="42.0" prefWidth="248.0">
                                  <children>
                                     <Label text="Könyv szerzője" />
                                     <TextField />
                                  </children>
+                                 <padding>
+                                    <Insets left="30.0" />
+                                 </padding>
                               </VBox>
                            </children>
                            <padding>
@@ -103,12 +109,18 @@
                                     <Label text="Kiadás éve" />
                                     <TextField />
                                  </children>
+                                 <HBox.margin>
+                                    <Insets right="30.0" />
+                                 </HBox.margin>
                               </VBox>
                               <VBox prefHeight="200.0" prefWidth="248.0">
                                  <children>
                                     <Label text="Könyv műfaja" />
                                     <TextField />
                                  </children>
+                                 <HBox.margin>
+                                    <Insets left="30.0" />
+                                 </HBox.margin>
                               </VBox>
                            </children>
                            <padding>
@@ -122,19 +134,25 @@
                                     <Label text="ISBN-kód" />
                                     <TextField />
                                  </children>
+                                 <padding>
+                                    <Insets right="30.0" />
+                                 </padding>
                               </VBox>
                               <VBox prefHeight="200.0" prefWidth="248.0">
                                  <children>
                                     <Label text="Kölcsönözhető" />
                                     <ComboBox prefWidth="150.0" />
                                  </children>
+                                 <padding>
+                                    <Insets left="30.0" />
+                                 </padding>
                               </VBox>
                            </children>
                            <padding>
                               <Insets left="30.0" right="30.0" />
                            </padding>
                         </HBox>
-                        <HBox alignment="CENTER" prefHeight="0.0" prefWidth="200.0">
+                        <HBox alignment="CENTER" prefHeight="0.0" prefWidth="200.0" styleClass="accept-input">
                            <children>
                               <Button mnemonicParsing="false" text="Felvétel" />
                            </children>

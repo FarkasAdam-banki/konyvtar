@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import java.lang.String?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
@@ -9,18 +10,18 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.konyvtar.kolcsonzesFelveteleController">
+<AnchorPane prefHeight="800.0" prefWidth="1000.0" styleClass="container" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <HBox>
+      <HBox AnchorPane.bottomAnchor="160.0" AnchorPane.leftAnchor="160.0" AnchorPane.rightAnchor="160.0" AnchorPane.topAnchor="160.0">
          <children>
             <VBox>
                <children>
                   <HBox styleClass="center">
                      <children>
-                        <VBox>
+                        <VBox alignment="TOP_CENTER">
                            <children>
                               <Label text="Kölcsönézés" />
-                              <Label text="felvétele" />
+                              <Label prefHeight="17.0" text="felvétele" textAlignment="CENTER" />
                            </children>
                            <styleClass>
                               <String fx:value="text-center" />
@@ -59,12 +60,16 @@
                   </HBox>
                   <HBox>
                      <children>
+                        <Button mnemonicParsing="false" onAction="#loan" text="Felvétel">
+                           <HBox.margin>
+                              <Insets top="40.0" />
+                           </HBox.margin></Button>
                         <Label fx:id="errorMessage" text="error" />
-                        <Button mnemonicParsing="false" onAction="#loan" text="Felvétel" />
                      </children>
                      <styleClass>
                         <String fx:value="center" />
                         <String fx:value="py" />
+                        <String fx:value="accept-input" />
                      </styleClass>
                   </HBox>
                </children>
@@ -83,8 +88,4 @@
          </styleClass>
       </HBox>
          </children>
-   <styleClass>
-      <String fx:value="center" />
-      <String fx:value="container" />
-   </styleClass>
 </AnchorPane>

@@ -31,6 +31,21 @@
 .menu-item .label{
 -fx-text-fill: black;
 }
+.preCont{
+-fx-background-color: rgba(0, 0, 0, 0.8);
+
+}
+.Prelabel{
+-fx-font-weight: 700;
+-fx-text-fill: #fff;
+ -fx-font-size:30px;
+
+}
+.brown-color{
+-fx-text-fill: #944606;
+-fx-font-size:30px;
+-fx-font-weight: 700;
+}
 
 .menu-bar {
 -fx-background-color: rgba(0, 0, 0, 0.8);
@@ -129,6 +144,19 @@
     -fx-background-radius: 5px;
     -fx-border-radius: 5px;
     -fx-padding: 3px 20px;
+}
+
+.accept-input .button {
+    -fx-background-color: #353535;
+    -fx-border-color: #000;
+    -fx-text-fill: #FFF;
+    -fx-background-radius: 5px;
+    -fx-border-radius: 5px;
+    -fx-padding: 10px 30px;
+    -fx-font-weight:700;
+}
+.search{
+    -fx-background-radius:20px;
 }
 
 .search-bar .text-field, .search-bar .combo-box {
