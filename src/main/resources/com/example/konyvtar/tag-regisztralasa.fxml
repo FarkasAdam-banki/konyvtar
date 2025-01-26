@@ -179,7 +179,7 @@
                         <Insets left="100.0" right="100.0" />
                      </VBox.margin>
                   </HBox>
-                  <HBox prefHeight="100.0" prefWidth="200.0">
+                  <HBox prefHeight="100.0" prefWidth="200.0" styleClass="accept-input">
                      <children>
                         <Button mnemonicParsing="false" onAction="#memberRegisztration" text="Regisztrálás" />
                      </children>
