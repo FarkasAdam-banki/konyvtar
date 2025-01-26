@@ -28,7 +28,7 @@ public class TagRegController implements Initializable {
         int telepules_id = -1;
         String mStreet = memberStreet.getText();
         String mHouseNumber = memberHouseNumber.getText();
-        boolean ok;
+        boolean ok = true;
 
         if (!isCorrectData(memberName, 35)) {
             ok = false;
