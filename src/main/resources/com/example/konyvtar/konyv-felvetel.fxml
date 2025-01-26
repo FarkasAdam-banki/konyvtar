@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="800.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.konyvtar.HelloController">
+<AnchorPane prefHeight="800.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.konyvtar.KonyvFelvetelController">
    <children>
       <HBox prefHeight="800.0" prefWidth="1000.0">
          <children>
@@ -82,7 +82,7 @@
                               <VBox prefHeight="100.0" prefWidth="218.0">
                                  <children>
                                     <Label text="Könyv címe" />
-                                    <TextField />
+                                    <TextField fx:id="cim" />
                                  </children>
                                  <HBox.margin>
                                     <Insets right="30.0" />
@@ -91,7 +91,7 @@
                               <VBox prefHeight="42.0" prefWidth="248.0">
                                  <children>
                                     <Label text="Könyv szerzője" />
-                                    <TextField />
+                                    <TextField fx:id="szerzo" />
                                  </children>
                                  <padding>
                                     <Insets left="30.0" />
@@ -107,7 +107,7 @@
                               <VBox prefHeight="100.0" prefWidth="248.0">
                                  <children>
                                     <Label text="Kiadás éve" />
-                                    <TextField />
+                                    <TextField fx:id="kiadas" />
                                  </children>
                                  <HBox.margin>
                                     <Insets right="30.0" />
@@ -116,7 +116,7 @@
                               <VBox prefHeight="200.0" prefWidth="248.0">
                                  <children>
                                     <Label text="Könyv műfaja" />
-                                    <TextField />
+                                    <TextField fx:id="mufaj" />
                                  </children>
                                  <HBox.margin>
                                     <Insets left="30.0" />
@@ -132,7 +132,7 @@
                               <VBox prefHeight="200.0" prefWidth="248.0">
                                  <children>
                                     <Label text="ISBN-kód" />
-                                    <TextField />
+                                    <TextField fx:id="isbn" />
                                  </children>
                                  <padding>
                                     <Insets right="30.0" />
@@ -141,7 +141,7 @@
                               <VBox prefHeight="200.0" prefWidth="248.0">
                                  <children>
                                     <Label text="Kölcsönözhető" />
-                                    <ComboBox prefWidth="150.0" />
+                                    <ComboBox fx:id="kolcsonozheto" prefWidth="150.0" />
                                  </children>
                                  <padding>
                                     <Insets left="30.0" />
@@ -152,9 +152,14 @@
                               <Insets left="30.0" right="30.0" />
                            </padding>
                         </HBox>
+                        <HBox alignment="CENTER" layoutX="42.0" layoutY="389.0" prefHeight="0.0" prefWidth="200.0">
+                           <children>
+                              <Label fx:id="errorMessage" />
+                           </children>
+                        </HBox>
                         <HBox alignment="CENTER" prefHeight="0.0" prefWidth="200.0" styleClass="accept-input">
                            <children>
-                              <Button mnemonicParsing="false" text="Felvétel" />
+                              <Button mnemonicParsing="false" onAction="#onSubmit" text="Felvétel" />
                            </children>
                         </HBox>
                      </children>
