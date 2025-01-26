@@ -114,6 +114,9 @@
 .bottom-pane {
     -fx-background-color: rgba(255, 255, 255, 0.8);
 }
+.root{
+
+}
 
 .title-search {
     -fx-font-size: 24px;

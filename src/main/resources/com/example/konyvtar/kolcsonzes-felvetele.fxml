@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.konyvtar.kolcsonzesFelveteleController">
    <children>
       <HBox>
          <children>
@@ -34,13 +34,13 @@
                         <VBox>
                            <children>
                               <Label text="ISBN-kód" />
-                              <TextField styleClass="w-320" />
+                              <TextField fx:id="isbn" styleClass="w-320" />
                            </children>
                         </VBox>
                         <VBox>
                            <children>
                               <Label text="Tagsagi azonosito" />
-                              <TextField />
+                              <TextField fx:id="membershipId" />
                            </children>
                         </VBox>
                      </children>
@@ -52,14 +52,15 @@
                   </HBox>
                   <HBox>
                      <children>
-                        <ComboBox promptText="Év" styleClass="w-combobox" />
-                        <ComboBox promptText="Hónap" styleClass="w-combobox" />
-                        <ComboBox promptText="Nap" styleClass="w-combobox" />
+                        <ComboBox fx:id="kolcsonzesFelveteleEv" promptText="Év" styleClass="w-combobox" />
+                        <ComboBox fx:id="kolcsonzesFelveteleHonap" promptText="Hónap" styleClass="w-combobox" />
+                        <ComboBox fx:id="kolcsonzesFelveteleNap" promptText="Nap" styleClass="w-combobox" />
                      </children>
                   </HBox>
                   <HBox>
                      <children>
-                        <Button mnemonicParsing="false" text="Felvétel" />
+                        <Label fx:id="errorMessage" text="error" />
+                        <Button mnemonicParsing="false" onAction="#loan" text="Felvétel" />
                      </children>
                      <styleClass>
                         <String fx:value="center" />
