@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane prefHeight="800.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.konyvtar.HelloController">
+   <children>
+      <HBox prefHeight="800.0" prefWidth="1000.0">
+         <children>
+            <VBox fx:id="container" prefHeight="800.0" prefWidth="400.0" styleClass="container">
+               <children>
+                  <Pane fx:id="topPane" prefHeight="400.0" prefWidth="500.0" styleClass="top-pane">
+                     <children>
+                        <HBox layoutY="290.0" prefHeight="110.0" prefWidth="400.0">
+                           <children>
+                              <VBox alignment="TOP_CENTER" prefHeight="77.0" prefWidth="427.0">
+                                 <children>
+                                    <Label prefHeight="17.0" styleClass="leftTitle" text="Új tag" textAlignment="CENTER" />
+                                    <Label prefHeight="17.0" styleClass="leftTitle" text="regisztrálása" textAlignment="CENTER" />
+                                 </children>
+                              </VBox>
+                              <Pane nodeOrientation="RIGHT_TO_LEFT" prefHeight="77.0" prefWidth="301.0">
+                                 <children>
+                                    <VBox prefHeight="200.0" prefWidth="100.0">
+                                       <children>
+                                          <Pane prefHeight="33.0" prefWidth="100.0" />
+                                          <ImageView fitHeight="77.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@whiteTri.png" />
+                                             </image>
+                                          </ImageView>
+                                       </children>
+                                    </VBox>
+                                 </children>
+                              </Pane>
+                           </children>
+                        </HBox>
+                     </children></Pane>
+                  <Pane fx:id="bottomPane" prefHeight="400.0" prefWidth="500.0" styleClass="bottom-pane">
+                     <children>
+                        <HBox prefHeight="100.0" prefWidth="400.0">
+                           <children>
+                              <VBox prefHeight="100.0" prefWidth="315.0">
+                                 <children>
+                                    <Label prefHeight="17.0" prefWidth="231.0" text="Fedezd fel a tudás kincsesládáját," />
+                                    <Label prefHeight="17.0" prefWidth="231.0" text="merülj el az élményekben, " textAlignment="CENTER" />
+                                    <Label prefHeight="17.0" prefWidth="296.0" text="és légy részese egy inspiráló közösségnek " textAlignment="CENTER" />
+                                    <Label prefHeight="17.0" prefWidth="231.0" text="csatlakozz a könyvtár tagjaihoz még ma!" textAlignment="CENTER" />
+                                 </children>
+                              </VBox>
+                              <Pane nodeOrientation="RIGHT_TO_LEFT" prefHeight="100.0">
+                                 <children>
+                                    <ImageView fitHeight="77.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@blackTri.png" />
+                                       </image>
+                                    </ImageView>
+                                 </children>
+                              </Pane>
+                           </children>
+                           <padding>
+                              <Insets left="10.0" />
+                           </padding>
+                        </HBox>
+                     </children></Pane>
+               </children>
+            </VBox>
+             <VBox prefHeight="800.0" prefWidth="600.0" styleClass="formContainer">
+      
+             <children>
+      
+                  <Pane prefHeight="200.0" prefWidth="200.0">
+                     <children>
+                        <VBox prefHeight="34.0" prefWidth="500.0">
+                           <children>
+                              <Label styleClass="title" text="Új tag regisztrálása" textAlignment="CENTER" />
+                              <Label prefHeight="17.0" styleClass="label2" text="figyelmesen töltse ki a mezőket a helyes regisztációhoz" textAlignment="CENTER" />
+                           </children>
+                        </VBox>
+                     </children>
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                     <padding>
+                        <Insets top="20.0" />
+                     </padding>
+                  </Pane>
+                  <HBox prefHeight="100.0" prefWidth="600.0">
+                     <children>
+                        <VBox prefHeight="200.0" prefWidth="200.0">
+                           <children>
+                              <Label prefHeight="17.0" prefWidth="186.0" text="Név" />
+                              <TextField />
+                              <Label prefHeight="17.0" prefWidth="186.0" styleClass="label2" text="Vezetéknév" />
+                           </children>
+                        </VBox>
+                        <VBox prefHeight="200.0" prefWidth="200.0">
+                           <children>
+                              <TextField />
+                              <Label prefHeight="17.0" prefWidth="186.0" styleClass="label2" text="Keresztnév" />
+                           </children>
+                        </VBox>
+                        <VBox prefHeight="200.0" prefWidth="200.0">
+                           <children>
+                              <TextField />
+                              <Label prefHeight="17.0" prefWidth="186.0" styleClass="label2" text="Keresztnév (opcionális)" />
+                           </children>
+                        </VBox>
+                     </children>
+                     <VBox.margin>
+                        <Insets left="20.0" right="20.0" />
+                     </VBox.margin>
+                  </HBox>
+                  <HBox prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <VBox prefHeight="200.0" prefWidth="300.0">
+                           <children>
+                              <Label prefHeight="17.0" prefWidth="200.0" text="Tagsági azonositó" />
+                              <TextField />
+                           </children>
+                        </VBox>
+                        <VBox prefHeight="200.0" prefWidth="300.0">
+                           <children>
+                              <Label prefHeight="17.0" prefWidth="200.0" text="Telefonszám" />
+                              <TextField />
+                           </children>
+                        </VBox>
+                     </children>
+                     <VBox.margin>
+                        <Insets left="100.0" right="100.0" />
+                     </VBox.margin>
+                  </HBox>
+                  <HBox prefHeight="100.0" prefWidth="600.0">
+                     <children>
+                        <VBox prefHeight="200.0" prefWidth="300.0">
+                           <children>
+                              <Label prefHeight="17.0" prefWidth="200.0" text="Cím" />
+                              <TextField />
+                              <Label prefHeight="17.0" prefWidth="200.0" styleClass="label2" text="Város" />
+                           </children>
+                        </VBox>
+                        <VBox prefHeight="200.0" prefWidth="300.0">
+                           <children>
+                              <ComboBox prefWidth="150.0" />
+                              <Label prefHeight="17.0" prefWidth="200.0" styleClass="label2" text="Megye" />
+                           </children>
+                        </VBox>
+                     </children>
+                     <VBox.margin>
+                        <Insets left="100.0" right="100.0" />
+                     </VBox.margin>
+                  </HBox>
+                  <HBox prefHeight="100.0" prefWidth="600.0">
+                     <children>
+                        <VBox prefHeight="200.0" prefWidth="300.0">
+                           <children>
+                              <TextField />
+                              <Label prefHeight="17.0" prefWidth="200.0" styleClass="label2" text="Utca" />
+                           </children>
+                        </VBox>
+                        <VBox prefHeight="200.0" prefWidth="300.0">
+                           <children>
+                              <TextField />
+                              <Label prefHeight="17.0" prefWidth="200.0" styleClass="label2" text="Házszám" />
+                           </children>
+                        </VBox>
+                     </children>
+                     <VBox.margin>
+                        <Insets left="100.0" right="100.0" />
+                     </VBox.margin>
+                  </HBox>
+               </children>
+               <styleClass>
+
+                  <String fx:value="tag-regisztracio" />
+               </styleClass>
+            </VBox>
+         </children>
+      </HBox>
+   </children>
+</AnchorPane>
