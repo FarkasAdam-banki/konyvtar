@@ -5,6 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 public class MainApplication extends Application {
@@ -12,7 +13,12 @@ public class MainApplication extends Application {
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("main-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 1000, 835);
-        scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+        try {
+            scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+        }
+        catch (NullPointerException npe){
+            System.err.println("A fájl nem található: "+npe);
+        }
         stage.setScene(scene);
         stage.show();
         stage.setResizable(false);
