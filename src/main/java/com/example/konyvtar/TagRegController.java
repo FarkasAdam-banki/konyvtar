@@ -1,5 +1,6 @@
 package com.example.konyvtar;
 
+import com.example.konyvtar.input.TextInput;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -17,71 +18,57 @@ public class TagRegController implements Initializable {
     private TextField memberLastName, memberFirstName, memberOptionalName, memberPhoneNumber, memberCity, memberStreet, memberHouseNumber;
     @FXML
     private ComboBox<Megye> memberCounty;
+    
+    private TextInput tagKeresztnev, tagVezeteknev, tagOpcionalisNev, tagTelSzam, tagVaros, tagUtca, tagHazszam;
+    private ConnectedTextInput tagNev;
 
     private Connection conn;
     private ObservableList<Megye> megyek;
 
 
     public void memberRegisztration() {
-        String memberName = memberFirstName.getText() + memberLastName.getText() + memberOptionalName.getText();
-        String mPhoneNumber = memberPhoneNumber.getText();
+        String memberName = getMemberName();
         int telepules_id = -1;
-        String mStreet = memberStreet.getText();
-        String mHouseNumber = memberHouseNumber.getText();
         boolean ok = true;
 
-        if (!isCorrectData(memberName, 35)) {
+        if (ok) {
             ok = false;
-        } else if (mPhoneNumber.matches("^(\\+36|06)?\\s?(20|30|70)\\s?[0-9]{3}\\s?[0-9]{4}$")) {
+        } else if (tagTelSzam.isValid()) {
             ok = false;
-        } else if (isCorrectData(mStreet, 30)) {
+        } else if (tagUtca.isValid()) {
             ok = false;
-        } else if (mStreet.matches("^[0-9]+[a-zA-Z]?(/[a-zA-Z]|\\\\.[a-zA-Z])?$")) {
-            
-        } else {
-            if (!isCorrectData(memberCity.getText(), 25)) {
+        } else if (tagVaros.isValid()) {
+            ok = false;
+            telepules_id = getTelepulesId(memberCity.getText());
+            if (telepules_id == -1) {
                 ok = false;
-            } else {
-                telepules_id = getTelepulesId(memberCity.getText());
-                if (telepules_id == -1) {
-                    ok = false;
-                }
             }
+
+
         }
     }
 
-
-    public boolean isString(String data) {
-        if (!Character.isUpperCase(data.charAt(0))) {
-            return false;
-        }
-        for (int i = 1; i < data.length(); i++) {
-            if (!Character.isLowerCase(data.charAt(i))) {
-                return false;
-            }
-        }
-        return true;
+    private String getMemberName() {
+        return tagVezeteknev.getValue() + tagKeresztnev.getValue() + tagOpcionalisNev.getValue();
     }
 
-    public boolean isCorrectData(String data, int size) {
-        data = data.trim();
-        if (data.isEmpty() || data.length() > size) {
-            return false;
-        }
-        String reszek[] = data.split(" ");
-        for (int i = 0; i < reszek.length; i++) {
-            if (!isString(reszek[i])) {
-                return false;
-            }
-        }
-        return true;
-    }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         megyek = FXCollections.observableArrayList();
         conn = DatabaseConnection.getConnection();
         megyeFeltoltes();
+        tagKeresztnev = new TextInput(memberLastName);
+        tagVezeteknev = new TextInput(memberFirstName);
+        tagOpcionalisNev = new TextInput(memberOptionalName, true);
+        tagTelSzam = new TextInput(memberPhoneNumber,12);
+        tagVaros = new TextInput(memberCity,25);
+        tagUtca = new TextInput(memberStreet, 30);
+        tagHazszam = new TextInput(memberHouseNumber, 20);
+        tagTelSzam.setRegex("^(\\+36|06)?\\s?(20|30|70)\\s?[0-9]{3}\\s?[0-9]{4}$");
+        tagUtca.setRegex("^[0-9]+[a-zA-Z]?(/[a-zA-Z]|\\\\.[a-zA-Z])?$");
+
+        
 
         memberCounty.setItems(megyek);
     }
@@ -101,6 +88,7 @@ public class TagRegController implements Initializable {
             throw new RuntimeException(e);
         }
     }
+
 
     public int getTelepulesId(String telepules) {
         PreparedStatement stmt = null;

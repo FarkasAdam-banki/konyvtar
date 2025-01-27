@@ -55,14 +55,11 @@ public class HogyanHasznald {
         // mindenhez van setter
         textInput2.setOptional(false);
         textInput3.setMaxLength(10);
-        
-        // szöveg lekérdezése
+
         textInput.getValue();
-        
-        // szöveg beállítása
+
         textInput.setValue("asd");
-        
-        // szöveg hossza
+
         textInput.getValueLength();
         
         // szöveg kitörlése

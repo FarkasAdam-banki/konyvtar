@@ -2,7 +2,7 @@ package com.example.konyvtar.input;
 
 import javafx.scene.control.TextField;
 
-public class TextInput extends Input{
+public class TextInput extends Input {
     private TextField textField;
     private boolean optional;
     private String regex;
@@ -28,12 +28,12 @@ public class TextInput extends Input{
     }
 
     public TextInput(TextField textField) {
-        this(textField,false, null, -1);
+        this(textField, false, null, -1);
     }
 
     @Override
     protected ValidationResult validate() {
-        if(maxLength > 0 && getValueLength() > maxLength)
+        if (maxLength > 0 && getValueLength() > maxLength)
             return ValidationResult.TOO_LONG;
 
         if (!optional && getValue().trim().isEmpty())
@@ -41,8 +41,22 @@ public class TextInput extends Input{
 
         if (regex != null && !getValue().matches(regex))
             return ValidationResult.REGEX_FAIL;
-
+        if (!isString(getValue())) {
+            return ValidationResult.NOT_STRING;
+        }
         return ValidationResult.VALID;
+    }
+
+    public boolean isString(String data) {
+        if (!Character.isUpperCase(data.charAt(0))) {
+            return false;
+        }
+        for (int i = 1; i < data.length(); i++) {
+            if (!Character.isLowerCase(data.charAt(i))) {
+                return false;
+            }
+        }
+        return true;
     }
 
     public void clearText() {
@@ -81,7 +95,7 @@ public class TextInput extends Input{
         return regex;
     }
 
-    private void setRegex(String regex) {
+    public void setRegex(String regex) {
         this.regex = regex;
     }
 
