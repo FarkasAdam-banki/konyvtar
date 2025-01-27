@@ -130,15 +130,13 @@ public class kolcsonzesFelveteleController implements Initializable, basicDatas 
 
                 int rowsAffected = pstmt.executeUpdate();
                 if (rowsAffected > 0) {
-<<<<<<< Updated upstream
+
                     Alert alert = new Alert(Alert.AlertType.INFORMATION);
                     alert.setTitle("Sikeres hozzáadás!");
                     alert.setHeaderText(null);
                     alert.setContentText("Az "+ membershipId+" azonosítójú taghoz az "+isbn+" azonosítójú könyv sikeresen hozzáadva.");
                     alert.showAndWait();
-=======
-                    //System.out.println("Loan inserted successfully.");
->>>>>>> Stashed changes
+
                 }
 
             } catch (SQLException e) {
