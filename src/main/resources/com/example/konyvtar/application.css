@@ -218,3 +218,6 @@
     -fx-max-height: 150px;
     -fx-min-width: 160px;
 }
+.error{
+        -fx-text-fill: #F00;
+}

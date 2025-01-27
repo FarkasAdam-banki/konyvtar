@@ -4,6 +4,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -12,6 +13,7 @@ import java.net.URL;
 import java.sql.*;
 import java.time.Instant;
 import java.util.Calendar;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 
@@ -63,41 +65,76 @@ public class kolcsonzesFelveteleController implements Initializable, basicDatas 
         return number.matches(regex);
     }
 
+    public boolean checkExistanceInDB(String table,String attribute, String element){
+        String sql="SELECT * FROM "+table+" where "+attribute+"=?";
+        boolean found =false;
+        try {
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.setLong(1,Long.parseLong(element));
+            ResultSet rs=pstmt.executeQuery();
+            if (rs.next()){
+                found = true;
+            }
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+        return found;
+    }
+
     public void loan() {
         String isbn = this.isbn.getText();
         String membershipId = this.membershipId.getText();
 
-        //isbn létezés ellenőrzése
         boolean okIsbn=checkNumberInput(isbn,ISBNLENGTH);
         boolean okMembershipId=checkNumberInput(membershipId,MEMERSHIPIDLENGTH);
-        boolean okDate=kolcsonzesFelveteleEv.getValue()!=null||kolcsonzesFelveteleHonap.getValue()!=null||kolcsonzesFelveteleHonap.getValue()!=null;
+
+
+        boolean okDate=(kolcsonzesFelveteleEv.getValue()!=null)&&(kolcsonzesFelveteleHonap.getValue()!=null)&&(kolcsonzesFelveteleNap.getValue()!=null);
         if(!okIsbn){
             this.errorMessage.setText("Nem megfelelő ISBN!");
         }
-        else if(!okMembershipId){
-            this.errorMessage.setText("Nem megfelelő tagsági azonosító!");
-        } else if (!okDate) {
-            this.errorMessage.setText("Nincs kiválasztva dátum!");
+        else{
+            okIsbn=checkExistanceInDB("konyv","konyv_ISBN",isbn);
+            if(!okIsbn){
+                this.errorMessage.setText("A megadott ISBN-el nem található könyv!");
+            }
+            if(!okMembershipId){
+                this.errorMessage.setText("Nem megfelelő tagsági azonosító!");
+            }
+            else{
+                okMembershipId=checkExistanceInDB("tag","tag_id",membershipId);
+
+                if (!okMembershipId){
+                    this.errorMessage.setText("A megadott tagsági azonosítóhoz nem tartozik felhasználó!");
+                }
+                else if (!okDate) {
+                    this.errorMessage.setText("Nincs kiválasztva dátum!");
+                }
+            }
         }
 
 
+
         if (okIsbn && okMembershipId && okDate) {
+            errorMessage.setText("");
             String date=kolcsonzesFelveteleEv.getValue().toString()+"-" + (kolcsonzesFelveteleHonap.getSelectionModel().getSelectedIndex()+1) +"-"+ kolcsonzesFelveteleNap.getValue();
-            PreparedStatement stmt = null;
+            PreparedStatement pstmt = null;
             try {
-                stmt = conn.prepareStatement("INSERT INTO kolcsonzes (konyv_ISBN, tag_id, kolcsonzes_datum, kolcsonzes_hatar) VALUES (?,?,?,?)");
-                stmt.setString(1,isbn);
-                stmt.setString(2,membershipId);
+                pstmt = conn.prepareStatement("INSERT INTO kolcsonzes (konyv_ISBN, tag_id, kolcsonzes_datum, kolcsonzes_hatar) VALUES (?,?,?,?)");
+                pstmt.setString(1,isbn);
+                pstmt.setString(2,membershipId);
                 Instant now = Instant.now();
                 Timestamp timestamp = Timestamp.from(now);
-                System.out.println(timestamp);
-                System.out.println(date);
-                stmt.setTimestamp(3, timestamp);
-                stmt.setString(4,date);
+                pstmt.setTimestamp(3, timestamp);
+                pstmt.setString(4,date);
 
-                int rowsAffected = stmt.executeUpdate();
+                int rowsAffected = pstmt.executeUpdate();
                 if (rowsAffected > 0) {
-                    System.out.println("Loan inserted successfully.");
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Sikeres hozzáadás!");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Az "+ membershipId+" azonosítójú taghoz az "+isbn+" azonosítójú könyv sikeresen hozzáadva.");
+                    alert.showAndWait();
                 }
 
             } catch (SQLException e) {
