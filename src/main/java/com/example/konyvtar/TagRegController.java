@@ -36,16 +36,43 @@ public class TagRegController implements Initializable {
             ok = false;
         } else if (tagTelSzam.isValid()) {
             ok = false;
+            System.out.println("Hibás Telefon szám");
         } else if (tagUtca.isValid()) {
             ok = false;
-        } else if (tagVaros.isValid()) {
+            System.out.println("Hibás utca!");
+        } else if (tagVaros.isValidOrFail()) {
             ok = false;
+            System.out.println("Hibás település!");
             telepules_id = getTelepulesId(memberCity.getText());
             if (telepules_id == -1) {
+                System.out.println("Nem létező település!");
                 ok = false;
             }
 
-
+        }
+        if(ok){
+            PreparedStatement pstmt;
+            Alert alert;
+            String cimsql = "INSERT INTO cim (telepules_id, cim_utca, cim_hsz) VALUES (?, ?, ?)";
+            String tagsql = "INSERT INTO tag (tag_nev, cim_id, tag_tel) VALUES (?, ?, ?)";
+            try{
+                pstmt = conn.prepareStatement(cimsql);
+                pstmt.setString(1, String.valueOf(telepules_id));
+                pstmt.setString(2,tagUtca.getValue());
+                pstmt.setString(3,tagHazszam.getValue());
+                pstmt.executeUpdate();
+                pstmt = conn.prepareStatement(tagsql);
+                pstmt.setString(1, tagNev.getValue());
+                pstmt.setString(2, "SELECT cim_id FROM cim ORDER BY cim_id DESC LIMIT 1");
+                pstmt.setString(3, tagTelSzam.getValue());
+                alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setHeaderText("Tag Regisztrálása");
+                alert.setContentText("Tag neve: " + tagNev.getValue() + "\nCíme: " + tagCim.getValue() + "\nTelefon száma: " + tagTelSzam.getValue());
+                alert.show();
+                pstmt.executeUpdate();
+            }catch (SQLException sqle){
+                sqle.getMessage();
+            }
         }
     }
 
@@ -68,7 +95,16 @@ public class TagRegController implements Initializable {
         tagHazszam = new TextInput(memberHouseNumber, 20);
         tagTelSzam.setRegex("^(\\+36|06)?\\s?(20|30|70)\\s?[0-9]{3}\\s?[0-9]{4}$");
         tagUtca.setRegex("^[0-9]+[a-zA-Z]?(/[a-zA-Z]|\\\\.[a-zA-Z])?$");
+        tagNev = new ConnectedTextInput();
+        tagNev.addInput(tagVezeteknev);
+        tagNev.addInput(tagKeresztnev);
+        tagNev.addInput(tagOpcionalisNev);
+        tagCim = new ConnectedTextInput();
+        tagCim.addInput(tagVaros);
+        tagCim.addInput(tagUtca);
+        tagCim.addInput(tagHazszam);
 
+        tagVaros.setOnValidationFail(System.out::println);
         
 
         memberCounty.setItems(megyek);
