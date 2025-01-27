@@ -1,5 +1,6 @@
 package com.example.konyvtar;
 
+import com.example.konyvtar.input.ConnectedTextInput;
 import com.example.konyvtar.input.TextInput;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;

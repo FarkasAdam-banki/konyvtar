@@ -8,5 +8,8 @@ public enum ValidationResult {
     NO_SELECTION,
     NUMBER_TOO_SMALL,
     NUMBER_TOO_LARGE,
-    NOT_STRING
+    NOT_STRING,
+    GROUP_EMPTY,
+    GROUP_TOO_LONG,
+    GROUP_REGEX_FAIL
 }
