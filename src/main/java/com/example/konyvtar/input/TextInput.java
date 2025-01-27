@@ -33,17 +33,17 @@ public class TextInput extends Input {
 
     @Override
     protected ValidationResult validate() {
+        if (optional) return ValidationResult.VALID;
+
         if (maxLength > 0 && getValueLength() > maxLength)
             return ValidationResult.TOO_LONG;
-
-        if (!optional && getValue().trim().isEmpty())
+        if (getValue().isEmpty())
             return ValidationResult.EMPTY;
-
+        if (!isString(getValue()))
+            return ValidationResult.NOT_STRING;
         if (regex != null && !getValue().matches(regex))
             return ValidationResult.REGEX_FAIL;
-        if (!isString(getValue())) {
-            return ValidationResult.NOT_STRING;
-        }
+
         return ValidationResult.VALID;
     }
 
@@ -64,7 +64,7 @@ public class TextInput extends Input {
     }
 
     public String getValue() {
-        return textField.getText();
+        return textField.getText().trim();
     }
 
     public void setValue(String text) {
