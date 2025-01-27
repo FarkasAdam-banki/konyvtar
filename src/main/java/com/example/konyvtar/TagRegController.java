@@ -6,6 +6,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 
@@ -21,7 +22,7 @@ public class TagRegController implements Initializable {
     private ComboBox<Megye> memberCounty;
     
     private TextInput tagKeresztnev, tagVezeteknev, tagOpcionalisNev, tagTelSzam, tagVaros, tagUtca, tagHazszam;
-    private ConnectedTextInput tagNev;
+    private ConnectedTextInput tagNev, tagCim;
 
     private Connection conn;
     private ObservableList<Megye> megyek;
@@ -32,8 +33,9 @@ public class TagRegController implements Initializable {
         int telepules_id = -1;
         boolean ok = true;
 
-        if (ok) {
+        if (tagNev.isValid()) {
             ok = false;
+            System.out.println("Hibás név!");
         } else if (tagTelSzam.isValid()) {
             ok = false;
             System.out.println("Hibás Telefon szám");
