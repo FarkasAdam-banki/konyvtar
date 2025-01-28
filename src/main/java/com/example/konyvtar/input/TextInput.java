@@ -7,6 +7,7 @@ public class TextInput extends Input {
     private boolean optional;
     private String regex;
     private int maxLength;
+    private int minLength;
 
     public TextInput(TextField textField, boolean optional, String regex, int maxLength) {
         setTextField(textField);
@@ -37,6 +38,8 @@ public class TextInput extends Input {
             return ValidationResult.EMPTY;
         if (maxLength > 0 && getValueLength() > maxLength)
             return ValidationResult.TOO_LONG;
+        if (minLength > 0 && getValueLength() < minLength)
+            return ValidationResult.TOO_SHORT;
         if (regex != null && !getValue().matches(regex))
             return ValidationResult.REGEX_FAIL;
 
@@ -101,5 +104,13 @@ public class TextInput extends Input {
 
     public void setMaxLength(int maxLength) {
         this.maxLength = maxLength;
+    }
+
+    public int getMinLength() {
+        return minLength;
+    }
+
+    public void setMinLength(int minLength) {
+        this.minLength = minLength;
     }
 }

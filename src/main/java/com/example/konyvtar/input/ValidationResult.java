@@ -5,6 +5,7 @@ public enum ValidationResult {
     EMPTY,
     REGEX_FAIL,
     TOO_LONG,
+    TOO_SHORT,
     NO_SELECTION,
     NUMBER_TOO_SMALL,
     NUMBER_TOO_LARGE,
