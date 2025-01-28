@@ -33,14 +33,10 @@ public class TextInput extends Input {
 
     @Override
     protected ValidationResult validate() {
-        if (optional) return ValidationResult.VALID;
-
+        if (!optional && getValue().isEmpty())
+            return ValidationResult.EMPTY;
         if (maxLength > 0 && getValueLength() > maxLength)
             return ValidationResult.TOO_LONG;
-        if (getValue().isEmpty())
-            return ValidationResult.EMPTY;
-        if (!isString(getValue()))
-            return ValidationResult.NOT_STRING;
         if (regex != null && !getValue().matches(regex))
             return ValidationResult.REGEX_FAIL;
 
