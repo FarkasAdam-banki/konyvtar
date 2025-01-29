@@ -68,7 +68,7 @@ public class TagokListajaController {
             ResultSet resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
-                String member = String.format("ID: %s | Név: %s | Cím: %s | Telefonszám: %s | Könyvek: %d | Késedelem: %d",
+                String member = String.format("Tagsági azonositó: %s | Név: %s | Cím: %s | Telefonszám: %s | Kölcsönzött könyvek: %d | Késedelem: %d",
                         resultSet.getString("tagsagi_azonosito"),
                         resultSet.getString("nev"),
                         resultSet.getString("cim"),
@@ -89,7 +89,7 @@ public class TagokListajaController {
     private void searchMembers() {
         String searchQuery = searchField.getText().trim();
         String selectedDelay = delayFilter.getValue();
-        
+
         if (searchQuery.length() > 50) {
             searchQuery = searchQuery.substring(0, 50);
         }
