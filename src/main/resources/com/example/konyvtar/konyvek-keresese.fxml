@@ -5,13 +5,15 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="800.0" prefWidth="1000.0" styleClass="container" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.konyvtar.MainController">
+<AnchorPane prefHeight="800.0" prefWidth="1000.0" styleClass="container" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.konyvtar.KonyvekKereseseController">
     <children>
         <VBox layoutX="62.0" layoutY="56.0" prefHeight="200.0" style="-fx-background-color: #fff;" styleClass="search" AnchorPane.bottomAnchor="150.0" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="100.0" AnchorPane.topAnchor="150.0">
             <children>
@@ -26,11 +28,21 @@
                      <children>
                             <HBox alignment="CENTER" prefHeight="81.0" styleClass="search-bar">
                                 <children>
-                                    <TextField promptText="Keresés..." />
-                                    <ComboBox prefWidth="150.0" promptText="Kölcsönözhető" />
-                                    <Button mnemonicParsing="false" text="Keresés" />
+                                    <TextField fx:id="searchField" promptText="Keresés..." />
+                                    <ComboBox fx:id="available" prefWidth="150.0" promptText="Kölcsönözhető" />
+                                    <Button fx:id="searchButton" mnemonicParsing="false" text="Keresés" />
                                 </children>
                             </HBox>
+                        <TableView fx:id="booksTableView" prefHeight="200.0" prefWidth="200.0" styleClass="results">
+                          <columns>
+                              <TableColumn fx:id="titleColumn" text="Cím" />
+                              <TableColumn fx:id="authorColumn" text="Szerző" />
+                              <TableColumn fx:id="isbnColumn" text="ISBN" />
+                              <TableColumn fx:id="yearColumn" text="Kiadás éve" />
+                              <TableColumn fx:id="genreColumn" text="Műfaj" />
+                              <TableColumn fx:id="availabilityColumn" text="Kölcsönözhető" />
+                          </columns>
+                        </TableView>
                               <ListView prefHeight="88.0" styleClass="results" />
                      </children>
                   </VBox>

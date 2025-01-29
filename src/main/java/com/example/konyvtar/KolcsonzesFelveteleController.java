@@ -2,7 +2,6 @@ package com.example.konyvtar;
 
 import com.example.konyvtar.input.Input;
 import com.example.konyvtar.input.NumberInput;
-import com.example.konyvtar.input.TextInput;
 import com.example.konyvtar.input.ValidationResult;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -19,7 +18,7 @@ import java.time.Instant;
 import java.util.*;
 
 
-public class kolcsonzesFelveteleController implements Initializable, basicDatas {
+public class KolcsonzesFelveteleController implements Initializable, basicDatas {
     @FXML
     ComboBox kolcsonzesFelveteleEv,kolcsonzesFelveteleHonap,kolcsonzesFelveteleNap;
     @FXML
@@ -33,7 +32,7 @@ public class kolcsonzesFelveteleController implements Initializable, basicDatas 
     private List<Input> inputs;
     private Connection conn;
 
-    public kolcsonzesFelveteleController() {
+    public KolcsonzesFelveteleController() {
     }
 
     public void initialize(URL url, ResourceBundle resourceBundle) {
