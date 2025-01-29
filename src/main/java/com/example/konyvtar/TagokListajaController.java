@@ -86,10 +86,18 @@ public class TagokListajaController {
         }
     }
 
-
     private void searchMembers() {
-        String searchQuery = searchField.getText();
+        String searchQuery = searchField.getText().trim();
         String selectedDelay = delayFilter.getValue();
-        loadMembers(searchQuery, selectedDelay);
+        
+        if (searchQuery.length() > 50) {
+            searchQuery = searchQuery.substring(0, 50);
+        }
+        if (!selectedDelay.equals("Összes") && !selectedDelay.equals("Igen") && !selectedDelay.equals("Nem")) {
+            selectedDelay = "Összes";
+        }
+
+        loadMembers(searchQuery.isEmpty() ? null : searchQuery, selectedDelay);
     }
+
 }
