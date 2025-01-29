@@ -56,10 +56,10 @@ public class ConnectedTextInput extends Input{
         if (i != inputs.size()) {
             return inputs.get(i).validate();
         }
-        if (getValue().length() > maxLength){
+        if (maxLength > 0 && getValue().length() > maxLength){
             return ValidationResult.GROUP_TOO_LONG;
         }
-        if (!getValue().matches(regex)) {
+        if (regex != null && !getValue().matches(regex)) {
             return ValidationResult.GROUP_REGEX_FAIL;
         }
         return ValidationResult.VALID;

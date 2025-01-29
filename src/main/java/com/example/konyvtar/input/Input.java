@@ -16,7 +16,8 @@ public abstract class Input {
     }
 
     public final boolean isValidOrFail() {
-        if (isValid()) return true;
+        if (isValid())
+            return true;
         if(onValidationFail != null)
             onValidationFail.accept(validate());
         return false;
