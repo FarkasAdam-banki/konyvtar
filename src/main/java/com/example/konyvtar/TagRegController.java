@@ -3,8 +3,6 @@ package com.example.konyvtar;
 import com.example.konyvtar.input.ConnectedTextInput;
 import com.example.konyvtar.input.Select;
 import com.example.konyvtar.input.TextInput;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
@@ -101,6 +99,34 @@ public class TagRegController implements Initializable {
         tagCim.addInput(tagUtca);
         tagCim.addInput(tagHazszam);
 
+    }
+
+    public boolean isSameId(String randomId){
+        Statement stmt = null;
+        try {
+            stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT tag_id FROM tag");
+            while (rs.next()) {
+                int id = rs.getInt("tag_id");
+                return randomId.equalsIgnoreCase(String.valueOf(id));
+            }
+
+        }catch (SQLException sqle){
+            sqle.getMessage();
+        }
+        return false;
+    }
+
+    public void generateRandomId(){
+        String randomId = randomMemberId(tagId.getMaxLength());
+        if(!isSameId(randomId)) tagId.setValue(randomId);
+    }
+    public String randomMemberId(int max){
+        String tagId =String.valueOf((int)(Math.random()*10)+1);
+        for(int i = 0; i < max-1; i++) {
+            tagId += (int)(Math.random() * 10);
+        }
+        return tagId;
     }
 
     public void megyeFeltoltes() {

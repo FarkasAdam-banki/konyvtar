@@ -126,7 +126,16 @@
                         <VBox prefHeight="200.0" prefWidth="300.0">
                            <children>
                               <Label prefHeight="17.0" prefWidth="200.0" text="Tagsági azonositó" />
-                              <TextField fx:id="memeberId" />
+                              <HBox prefHeight="100.0" prefWidth="200.0">
+                                 <children>
+                                    <TextField fx:id="memeberId" editable="false">
+                                       <HBox.margin>
+                                          <Insets right="10.0" />
+                                       </HBox.margin>
+                                    </TextField>
+                                    <Button mnemonicParsing="false" onAction="#generateRandomId" text="⭮" />
+                                 </children>
+                              </HBox>
                            </children>
                         </VBox>
                         <VBox prefHeight="200.0" prefWidth="300.0">
