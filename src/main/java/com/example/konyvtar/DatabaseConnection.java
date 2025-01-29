@@ -7,6 +7,8 @@ public class DatabaseConnection {
     private final static String USER = "root";
     private final static String PASSWORD = "";
 
+    private DatabaseConnection() {}
+
     public static Connection getConnection() {
         if (conn == null) {
             try {
@@ -16,5 +18,49 @@ public class DatabaseConnection {
             }
         }
         return conn;
+    }
+
+    public static PreparedStatement getPreparedStatement(String sql) {
+        try {
+            return conn.prepareStatement(sql);
+        }catch (SQLException sqle) {
+            throw new RuntimeException(sqle);
+        }
+    }
+
+    public static ResultSet executeQuery(PreparedStatement statement) {
+        try {
+            return statement.executeQuery();
+        }catch (SQLException sqle) {
+            throw new RuntimeException(sqle);
+        }
+    }
+
+    public static int executeUpdate(PreparedStatement statement) {
+        try {
+            return statement.executeUpdate();
+        }catch (SQLException sqle) {
+            throw new RuntimeException(sqle);
+        }
+    }
+
+    public static ResultSet executeQuery(String sql) {
+        try {
+            Statement statement = conn.createStatement();
+            return statement.executeQuery(sql);
+        }catch (SQLException sqle) {
+            throw new RuntimeException(sqle);
+        }
+    }
+
+    public static int executeUpdate(String sql) {
+        try {
+            Statement statement = conn.createStatement();
+            int i = statement.executeUpdate(sql);
+            statement.close();
+            return i;
+        }catch (SQLException sqle) {
+            throw new RuntimeException(sqle);
+        }
     }
 }
