@@ -21,6 +21,7 @@ public class DatabaseConnection {
     }
 
     public static PreparedStatement getPreparedStatement(String sql) {
+        getConnection();
         try {
             return conn.prepareStatement(sql);
         }catch (SQLException sqle) {
@@ -29,6 +30,7 @@ public class DatabaseConnection {
     }
 
     public static ResultSet executeQuery(PreparedStatement statement) {
+        getConnection();
         try {
             return statement.executeQuery();
         }catch (SQLException sqle) {
@@ -37,6 +39,7 @@ public class DatabaseConnection {
     }
 
     public static int executeUpdate(PreparedStatement statement) {
+        getConnection();
         try {
             return statement.executeUpdate();
         }catch (SQLException sqle) {
@@ -45,6 +48,7 @@ public class DatabaseConnection {
     }
 
     public static ResultSet executeQuery(String sql) {
+        getConnection();
         try {
             Statement statement = conn.createStatement();
             return statement.executeQuery(sql);
@@ -54,6 +58,7 @@ public class DatabaseConnection {
     }
 
     public static int executeUpdate(String sql) {
+        getConnection();
         try {
             Statement statement = conn.createStatement();
             int i = statement.executeUpdate(sql);
