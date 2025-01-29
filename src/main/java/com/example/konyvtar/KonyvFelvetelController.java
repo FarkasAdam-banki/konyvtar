@@ -3,11 +3,14 @@ package com.example.konyvtar;
 import com.example.konyvtar.input.*;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
 import java.net.URL;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -65,7 +68,24 @@ public class KonyvFelvetelController implements Initializable {
         }
         if (i == inputs.size()) {
             errorMessage.setText("");
-            System.out.println("Valid!");
+            PreparedStatement pstmnt = DatabaseConnection.getPreparedStatement(
+        "INSERT INTO `konyv` (`konyv_ISBN`, `konyv_cim`, `konyv_szerzo`, `konyv_kiadas`, `konyv_mufaj`, `konyv_statusz`) VALUES (?, ?, ?, ?, ?, ?)"
+            );
+            try {
+                pstmnt.setLong(1, isbnInput.getNumber());
+                pstmnt.setString(2, cimInput.getValue());
+                pstmnt.setString(3, szerzoInput.getValue());
+                pstmnt.setInt(4, (int)kiadasInput.getNumber());
+                pstmnt.setString(5, mufajInput.getValue());
+                pstmnt.setInt(6, 1 - kolcsonozhetoSelect.getSelectedIndex());
+                DatabaseConnection.executeUpdate(pstmnt);
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setHeaderText("Sikeres felvétel");
+                alert.setContentText("A \""+ cimInput.getValue() +"\" című könyv sikeresen felvéve!");
+                alert.show();
+            }catch (SQLException sqle) {
+                System.err.println(sqle.getMessage());
+            }
         }
 
     }
