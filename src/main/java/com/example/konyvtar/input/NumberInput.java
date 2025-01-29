@@ -73,6 +73,7 @@ public class NumberInput extends TextInput{
 
     @Override
     public void setRegex(String regex) {
-        throw new UnsupportedOperationException("Cannot set regex for numbers!");
+        if (!regex.equals("^\\d+$"))
+            throw new UnsupportedOperationException("Cannot set regex for numbers!");
     }
 }
