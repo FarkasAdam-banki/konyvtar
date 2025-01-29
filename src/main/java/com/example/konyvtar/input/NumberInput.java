@@ -70,4 +70,9 @@ public class NumberInput extends TextInput{
     public void setMaxValue(long maxValue) {
         this.maxValue = maxValue;
     }
+
+    @Override
+    public void setRegex(String regex) {
+        throw new UnsupportedOperationException("Cannot set regex for numbers!");
+    }
 }

@@ -73,6 +73,7 @@ public class KonyvFelvetelController implements Initializable {
     private String getErrorMessageTextInput(ValidationResult result) {
         return switch (result) {
             case EMPTY -> "Nincs megadva ";
+            case TOO_SHORT -> "Túl rövid ";
             case TOO_LONG -> "Túl hosszú ";
             case REGEX_FAIL -> "Helytelen formátumú ";
             default -> throw new IllegalStateException("Unexpected value: " + result);
@@ -82,6 +83,7 @@ public class KonyvFelvetelController implements Initializable {
     private String getErrorMessageNumberInput(ValidationResult result) {
         return switch (result) {
             case EMPTY -> "Nincs megadva ";
+            case TOO_SHORT -> "Túl kevés számjegyből áll ";
             case TOO_LONG -> "Túl sok számjegyből áll ";
             case REGEX_FAIL -> "Nem egy szám ";
             case NUMBER_TOO_SMALL -> "Túl kicsi értékű ";

@@ -1,6 +1,7 @@
 package com.example.konyvtar;
 
 import com.example.konyvtar.input.ConnectedTextInput;
+import com.example.konyvtar.input.Select;
 import com.example.konyvtar.input.TextInput;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -20,37 +21,35 @@ public class TagRegController implements Initializable {
     private TextField memberLastName, memberFirstName, memberOptionalName, memberPhoneNumber, memberCity, memberStreet, memberHouseNumber;
     @FXML
     private ComboBox<Megye> memberCounty;
-    
+
+    private Select<Megye> megyeSelect;
     private TextInput tagKeresztnev, tagVezeteknev, tagOpcionalisNev, tagTelSzam, tagVaros, tagUtca, tagHazszam;
     private ConnectedTextInput tagNev, tagCim;
 
     private Connection conn;
-    private ObservableList<Megye> megyek;
 
 
     public void memberRegisztration() {
-        String memberName = getMemberName();
         int telepules_id = -1;
         boolean ok = true;
 
-        if (tagNev.isValid()) {
+        if (!tagNev.isValid()) {
             ok = false;
             System.out.println("Hibás név!");
-        } else if (tagTelSzam.isValid()) {
+        } else if (!tagTelSzam.isValid()) {
             ok = false;
             System.out.println("Hibás Telefon szám");
-        } else if (tagUtca.isValid()) {
+        } else if (!tagUtca.isValid()) {
             ok = false;
             System.out.println("Hibás utca!");
-        } else if (tagVaros.isValidOrFail()) {
+        } else if (!tagVaros.isValidOrFail()) {
             ok = false;
             System.out.println("Hibás település!");
-            telepules_id = getTelepulesId(memberCity.getText());
-            if (telepules_id == -1) {
-                System.out.println("Nem létező település!");
-                ok = false;
-            }
-
+        }
+        telepules_id = getTelepulesId(memberCity.getText());
+        if (telepules_id == -1) {
+            System.out.println("Nem létező település!");
+            ok = false;
         }
         if(ok){
             PreparedStatement pstmt;
@@ -73,30 +72,25 @@ public class TagRegController implements Initializable {
                 alert.show();
                 pstmt.executeUpdate();
             }catch (SQLException sqle){
-                sqle.getMessage();
+                System.err.println(sqle.getMessage());
             }
         }
     }
 
-    private String getMemberName() {
-        return tagVezeteknev.getValue() + tagKeresztnev.getValue() + tagOpcionalisNev.getValue();
-    }
-
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        megyek = FXCollections.observableArrayList();
+        megyeSelect = new Select<>(memberCounty, true);
         conn = DatabaseConnection.getConnection();
         megyeFeltoltes();
-        tagKeresztnev = new TextInput(memberLastName);
-        tagVezeteknev = new TextInput(memberFirstName);
+        tagKeresztnev = new TextInput(memberFirstName);
+        tagVezeteknev = new TextInput(memberLastName);
         tagOpcionalisNev = new TextInput(memberOptionalName, true);
         tagTelSzam = new TextInput(memberPhoneNumber,12);
         tagVaros = new TextInput(memberCity,25);
         tagUtca = new TextInput(memberStreet, 30);
         tagHazszam = new TextInput(memberHouseNumber, 20);
         tagTelSzam.setRegex("^(\\+36|06)?\\s?(20|30|70)\\s?[0-9]{3}\\s?[0-9]{4}$");
-        tagUtca.setRegex("^[0-9]+[a-zA-Z]?(/[a-zA-Z]|\\\\.[a-zA-Z])?$");
+        tagHazszam.setRegex("^[0-9]+[a-zA-Z]?(/[a-zA-Z]|\\\\.[a-zA-Z])?$");
         tagNev = new ConnectedTextInput();
         tagNev.addInput(tagVezeteknev);
         tagNev.addInput(tagKeresztnev);
@@ -106,10 +100,6 @@ public class TagRegController implements Initializable {
         tagCim.addInput(tagUtca);
         tagCim.addInput(tagHazszam);
 
-        tagVaros.setOnValidationFail(System.out::println);
-        
-
-        memberCounty.setItems(megyek);
     }
 
     public void megyeFeltoltes() {
@@ -121,7 +111,7 @@ public class TagRegController implements Initializable {
                 int id = rs.getInt("megye_id");
                 String megye = rs.getString("megye_megnevezese");
                 Megye m = new Megye(id, megye);
-                megyek.add(m);
+                megyeSelect.addOption(m);
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
