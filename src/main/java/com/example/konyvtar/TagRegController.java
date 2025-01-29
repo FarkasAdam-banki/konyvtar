@@ -18,12 +18,12 @@ import java.util.ResourceBundle;
 public class TagRegController implements Initializable {
 
     @FXML
-    private TextField memberLastName, memberFirstName, memberOptionalName, memberPhoneNumber, memberCity, memberStreet, memberHouseNumber;
+    private TextField memeberId, memberLastName, memberFirstName, memberOptionalName, memberPhoneNumber, memberCity, memberStreet, memberHouseNumber;
     @FXML
     private ComboBox<Megye> memberCounty;
 
     private Select<Megye> megyeSelect;
-    private TextInput tagKeresztnev, tagVezeteknev, tagOpcionalisNev, tagTelSzam, tagVaros, tagUtca, tagHazszam;
+    private TextInput tagKeresztnev, tagVezeteknev, tagOpcionalisNev, tagTelSzam, tagVaros, tagUtca, tagHazszam, tagId;
     private ConnectedTextInput tagNev, tagCim;
 
     private Connection conn;
@@ -55,7 +55,7 @@ public class TagRegController implements Initializable {
             PreparedStatement pstmt;
             Alert alert;
             String cimsql = "INSERT INTO cim (telepules_id, cim_utca, cim_hsz) VALUES (?, ?, ?)";
-            String tagsql = "INSERT INTO tag (tag_nev, cim_id, tag_tel) VALUES (?, ?, ?)";
+            String tagsql = "INSERT INTO tag (tag_id, tag_nev, cim_id, tag_tel) VALUES (?, ?, (SELECT cim_id FROM cim ORDER BY cim_id DESC LIMIT 1) , ?)";
             try{
                 pstmt = conn.prepareStatement(cimsql);
                 pstmt.setString(1, String.valueOf(telepules_id));
@@ -63,8 +63,8 @@ public class TagRegController implements Initializable {
                 pstmt.setString(3,tagHazszam.getValue());
                 pstmt.executeUpdate();
                 pstmt = conn.prepareStatement(tagsql);
-                pstmt.setString(1, tagNev.getValue());
-                pstmt.setString(2, "SELECT cim_id FROM cim ORDER BY cim_id DESC LIMIT 1");
+                pstmt.setString(1, tagId.getValue());
+                pstmt.setString(2, tagNev.getValue());
                 pstmt.setString(3, tagTelSzam.getValue());
                 alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setHeaderText("Tag Regisztrálása");
@@ -82,6 +82,7 @@ public class TagRegController implements Initializable {
         megyeSelect = new Select<>(memberCounty, true);
         conn = DatabaseConnection.getConnection();
         megyeFeltoltes();
+        tagId = new TextInput(memeberId, 9);
         tagKeresztnev = new TextInput(memberFirstName);
         tagVezeteknev = new TextInput(memberLastName);
         tagOpcionalisNev = new TextInput(memberOptionalName, true);
