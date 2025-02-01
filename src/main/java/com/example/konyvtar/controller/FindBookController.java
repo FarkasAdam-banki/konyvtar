@@ -12,6 +12,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.*;
 
 public class FindBookController {
     @FXML
@@ -68,6 +69,7 @@ public class FindBookController {
         searchButton.setOnMouseClicked(event -> fetchBooks());
         available.setOnAction(event -> fetchBooks());
         fetchBooks();
+        fetchStats();
     }
     private void fetchBooks(){
         String search=searchField.getText();
@@ -82,7 +84,7 @@ public class FindBookController {
                            CASE WHEN l.leltar_leltariszam IN (SELECT leltar_leltariszam FROM kolcsonzes WHERE kolcsonzes_visszaE IS NULL)
                                 THEN FALSE ELSE TRUE END AS available
                     FROM konyv k
-                    JOIN leltar l ON k.konyv_ISBN = l.konyv_ISBN
+                    INNER JOIN leltar l ON k.konyv_ISBN = l.konyv_ISBN
                     WHERE k.konyv_ISBN LIKE ? OR k.konyv_cim LIKE ?;
                     """;
                 pstmt = conn.prepareStatement(sql);
@@ -96,7 +98,7 @@ public class FindBookController {
                                CASE WHEN l.leltar_leltariszam IN (SELECT leltar_leltariszam FROM kolcsonzes WHERE kolcsonzes_visszaE IS NULL)
                                     THEN FALSE ELSE TRUE END AS available
                         FROM konyv k
-                        JOIN leltar l ON k.konyv_ISBN = l.konyv_ISBN
+                        INNER JOIN leltar l ON k.konyv_ISBN = l.konyv_ISBN
                         WHERE (k.konyv_ISBN LIKE ? OR k.konyv_cim LIKE ?)AND (CASE WHEN l.leltar_leltariszam IN (SELECT leltar_leltariszam FROM kolcsonzes WHERE kolcsonzes_visszaE IS NULL)
                                        THEN FALSE ELSE TRUE END) = ?;
                         """;
@@ -128,12 +130,49 @@ public class FindBookController {
         }
     }
 
-    private void fetchStats(){
+    private void fetchStats() {
+        HashMap<String, Integer> genreCount = new HashMap<>();
 
+        String sql = "SELECT konyv_mufaj FROM konyv";
+        try {
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                String genre = rs.getString("konyv_mufaj");
+                genreCount.put(genre, 0);
+            }
+            rs.close();
+            pstmt.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        sql = "SELECT k.konyv_mufaj, COUNT(leltar.konyv_ISBN) AS book_count " +
+                "FROM leltar " +
+                "INNER JOIN konyv k ON leltar.konyv_ISBN = k.konyv_ISBN " +
+                "GROUP BY k.konyv_mufaj";
+
+        try {
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                String genre = rs.getString("konyv_mufaj");
+                int count = rs.getInt("book_count");
+                genreCount.put(genre, count);
+            }
+            rs.close();
+            pstmt.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        Set<String> keys = genreCount.keySet();
+        Iterator<String> it = keys.iterator();
+
+        while (it.hasNext()) {
+            String genre = it.next();
+            System.out.println(genre + ": " + genreCount.get(genre) + " példány");
+        }
     }
-
-
-
 }
 
 
