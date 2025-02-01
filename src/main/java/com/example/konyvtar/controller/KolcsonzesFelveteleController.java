@@ -26,13 +26,14 @@ public class KolcsonzesFelveteleController implements Initializable, BasicData {
     @FXML
     ComboBox kolcsonzesFelveteleEv,kolcsonzesFelveteleHonap,kolcsonzesFelveteleNap;
     @FXML
-    TextField isbn;
+    TextField serial;
     @FXML
     TextField membershipId;
     @FXML
     Label errorMessage;
 
-    NumberInput isbnInput,membershipIdInput;
+    TextInput serialInput;
+    NumberInput membershipIdInput;
     private List<Input> inputs;
     private Connection conn;
 
@@ -41,17 +42,21 @@ public class KolcsonzesFelveteleController implements Initializable, BasicData {
 
     public void initialize(URL url, ResourceBundle resourceBundle) {
         Calendar datum = Calendar.getInstance();
-        int ev = datum.get(1);
+        int ev = datum.get(Calendar.YEAR);
         ObservableList<Integer> evek = FXCollections.observableArrayList();
 
-        isbnInput=new NumberInput(isbn,ISBNLENGTH,ISBNLENGTH);
-        isbnInput.setOnValidationFail(validationResult -> {
-            errorMessage.setText(getErrorMessageNumberInput(validationResult)+"az isbn szám!");
+        serialInput=new TextInput(serial);
+        serialInput.setOnValidationFail(validationResult -> {
+            errorMessage.setText((validationResult)+" a sorozat szám!");
         });
         membershipIdInput=new NumberInput(membershipId,MEMERSHIPIDLENGTH,MEMERSHIPIDLENGTH);
-        isbnInput.setOnValidationFail(validationResult -> {
-            errorMessage.setText(getErrorMessageNumberInput(validationResult)+"a tagId!");
+        membershipIdInput.setOnValidationFail(validationResult -> {
+            errorMessage.setText((validationResult)+" a tagId!");
         });
+
+
+
+
         this.conn = DatabaseConnection.getConnection();
 
         for (int i = ev; i < ev + 2; ++i) {
@@ -86,7 +91,7 @@ public class KolcsonzesFelveteleController implements Initializable, BasicData {
         boolean found = false;
         try {
             PreparedStatement pstmt = conn.prepareStatement(sql);
-            pstmt.setLong(1, Long.parseLong(element));
+            pstmt.setString(1, element);
             ResultSet rs = pstmt.executeQuery();
             if (rs.next()) {
                 found = true;
@@ -98,23 +103,21 @@ public class KolcsonzesFelveteleController implements Initializable, BasicData {
     }
 
     public void loan() {
-        inputs = Arrays.asList( isbnInput, membershipIdInput);
-        onSubmit();
-        String isbn = isbnInput.getValue();
+        String serial = serialInput.getValue();
         String membershipId = membershipIdInput.getValue();
 
-        boolean okIsbn = checkNumberInput(isbnInput.getValue(), ISBNLENGTH);
+        boolean okSerial = serial.matches("^[A-Z]{4}-\\d{5}$");
         boolean okMembershipId = checkNumberInput(membershipIdInput.getValue(), MEMERSHIPIDLENGTH);
         boolean okDate = (kolcsonzesFelveteleEv.getValue() != null) && (kolcsonzesFelveteleHonap.getValue() != null) && (kolcsonzesFelveteleNap.getValue() != null);
-        if (!okIsbn) {
-            this.errorMessage.setText("Nem megfelelő ISBN!");
+        if (!okSerial) {
+            this.errorMessage.setText("Nem megfelelő leltári szám formátum!");
         } else {
-            okIsbn = checkExistanceInDB("konyv", "konyv_ISBN", isbn);
-            if (!okIsbn) {
-                this.errorMessage.setText("A megadott ISBN-el nem található könyv!");
+            okSerial = checkExistanceInDB("leltar", "leltar_leltariszam", serial);
+            if (!okSerial) {
+                this.errorMessage.setText("A megadott sorozat számmal nem található könyv!");
             }
             if (!okMembershipId) {
-                this.errorMessage.setText("Nem megfelelő tagsági azonosító!");
+                this.errorMessage.setText("Nem megfelelő tagsági azonosító formátum!");
             } else {
                 okMembershipId = checkExistanceInDB("tag", "tag_id", membershipId);
 
@@ -127,13 +130,13 @@ public class KolcsonzesFelveteleController implements Initializable, BasicData {
         }
 
 
-        if (okIsbn && okMembershipId && okDate) {
+        if (okSerial && okMembershipId && okDate) {
             errorMessage.setText("");
             String date = kolcsonzesFelveteleEv.getValue().toString() + "-" + (kolcsonzesFelveteleHonap.getSelectionModel().getSelectedIndex() + 1) + "-" + kolcsonzesFelveteleNap.getValue();
             PreparedStatement pstmt = null;
             try {
-                pstmt = conn.prepareStatement("INSERT INTO kolcsonzes (konyv_ISBN, tag_id, kolcsonzes_datum, kolcsonzes_hatar) VALUES (?,?,?,?)");
-                pstmt.setString(1, isbn);
+                pstmt = conn.prepareStatement("INSERT INTO kolcsonzes (leltar_leltariszam, tag_id, kolcsonzes_datum, kolcsonzes_hatar) VALUES (?,?,?,?)");
+                pstmt.setString(1, serial);
                 pstmt.setString(2, membershipId);
                 Instant now = Instant.now();
                 Timestamp timestamp = Timestamp.from(now);
@@ -146,7 +149,7 @@ public class KolcsonzesFelveteleController implements Initializable, BasicData {
                     Alert alert = new Alert(Alert.AlertType.INFORMATION);
                     alert.setTitle("Sikeres hozzáadás!");
                     alert.setHeaderText(null);
-                    alert.setContentText("Az " + membershipId + " azonosítójú taghoz az " + isbn + " azonosítójú könyv sikeresen hozzáadva.");
+                    alert.setContentText("Az " + membershipId + " azonosítójú taghoz az " + serial + " azonosítójú könyv sikeresen hozzáadva.");
                     alert.showAndWait();
 
                 }
@@ -154,28 +157,6 @@ public class KolcsonzesFelveteleController implements Initializable, BasicData {
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
-        }
-
-    }
-    private String getErrorMessageNumberInput(ValidationResult result) {
-        return switch (result) {
-            case EMPTY -> "Nincs megadva ";
-            case TOO_LONG -> "Túl sok számjegyből áll ";
-            case REGEX_FAIL -> "Nem egy szám ";
-            case NUMBER_TOO_SMALL -> "Túl kicsi értékű ";
-            case NUMBER_TOO_LARGE -> "Túl nagy értékű ";
-            default -> throw new IllegalStateException("Unexpected value: " + result);
-        };
-    }
-
-    public void onSubmit() {
-        int i = 0;
-        while (i < inputs.size() && inputs.get(i).isValidOrFail()){
-            i++;
-        }
-        if (i == inputs.size()) {
-            errorMessage.setText("");
-            System.out.println("Valid!");
         }
 
     }
