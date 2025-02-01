@@ -18,9 +18,9 @@ public class TagRegController implements Initializable {
     @FXML
     private TextField memeberId, memberLastName, memberFirstName, memberOptionalName, memberPhoneNumber, memberCity, memberStreet, memberHouseNumber;
     @FXML
-    private ComboBox<Megye> memberCounty;
+    private ComboBox<County> memberCounty;
 
-    private Select<Megye> megyeSelect;
+    private Select<County> megyeSelect;
     private TextInput tagKeresztnev, tagVezeteknev, tagOpcionalisNev, tagTelSzam, tagVaros, tagUtca, tagHazszam, tagId;
     private ConnectedTextInput tagNev, tagCim;
 
@@ -119,7 +119,7 @@ public class TagRegController implements Initializable {
 
     public void generateRandomId(){
         String randomId = randomMemberId(tagId.getMaxLength());
-        if(!isSameId(randomId)) tagId.setValue(randomId);
+        if(!isSameId(randomId)) tagId.setValue(randomId);Ra
     }
     public String randomMemberId(int max){
         String tagId =String.valueOf((int)(Math.random()*10)+1);
@@ -137,7 +137,7 @@ public class TagRegController implements Initializable {
             while (rs.next()) {
                 int id = rs.getInt("megye_id");
                 String megye = rs.getString("megye_megnevezese");
-                Megye m = new Megye(id, megye);
+                County m = new County(id, megye);
                 megyeSelect.addOption(m);
             }
         } catch (SQLException e) {

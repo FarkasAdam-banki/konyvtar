@@ -1,11 +1,11 @@
 package com.example.konyvtar;
 
-public class Megye {
+public class County {
 
     private int megye_id;
     private String megye_megnevezes;
 
-    public Megye(int megye_id, String megye_megnevezes) {
+    public County(int megye_id, String megye_megnevezes) {
        setMegye_id(megye_id);
        setMegye_megnevezes(megye_megnevezes);
     }
