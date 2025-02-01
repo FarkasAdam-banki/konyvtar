@@ -20,6 +20,10 @@ public class DatabaseConnection {
         return conn;
     }
 
+    public static boolean isAvailable() {
+        return getConnection() != null;
+    }
+
     public static PreparedStatement getPreparedStatement(String sql) {
         getConnection();
         try {
@@ -29,43 +33,4 @@ public class DatabaseConnection {
         }
     }
 
-    public static ResultSet executeQuery(PreparedStatement statement) {
-        getConnection();
-        try {
-            return statement.executeQuery();
-        }catch (SQLException sqle) {
-            throw new RuntimeException(sqle);
-        }
-    }
-
-    public static int executeUpdate(PreparedStatement statement) {
-        getConnection();
-        try {
-            return statement.executeUpdate();
-        }catch (SQLException sqle) {
-            throw new RuntimeException(sqle);
-        }
-    }
-
-    public static ResultSet executeQuery(String sql) {
-        getConnection();
-        try {
-            Statement statement = conn.createStatement();
-            return statement.executeQuery(sql);
-        }catch (SQLException sqle) {
-            throw new RuntimeException(sqle);
-        }
-    }
-
-    public static int executeUpdate(String sql) {
-        getConnection();
-        try {
-            Statement statement = conn.createStatement();
-            int i = statement.executeUpdate(sql);
-            statement.close();
-            return i;
-        }catch (SQLException sqle) {
-            throw new RuntimeException(sqle);
-        }
-    }
 }

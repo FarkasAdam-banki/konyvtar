@@ -75,7 +75,7 @@
                               <VBox prefHeight="100.0" prefWidth="218.0">
                                  <children>
                                     <Label text="Könyv címe" />
-                                    <TextField fx:id="cim" />
+                                    <TextField fx:id="title" />
                                  </children>
                                  <HBox.margin>
                                     <Insets right="30.0" />
@@ -84,7 +84,7 @@
                               <VBox prefHeight="42.0" prefWidth="248.0">
                                  <children>
                                     <Label text="Könyv szerzője" />
-                                    <TextField fx:id="szerzo" />
+                                    <TextField fx:id="author" />
                                  </children>
                                  <padding>
                                     <Insets left="30.0" />
@@ -100,7 +100,7 @@
                               <VBox prefHeight="100.0" prefWidth="248.0">
                                  <children>
                                     <Label text="Kiadás éve" />
-                                    <TextField fx:id="kiadas" />
+                                    <TextField fx:id="release" />
                                  </children>
                                  <HBox.margin>
                                     <Insets right="30.0" />
@@ -109,7 +109,7 @@
                               <VBox prefHeight="200.0" prefWidth="248.0">
                                  <children>
                                     <Label text="Könyv műfaja" />
-                                    <TextField fx:id="mufaj" />
+                                    <TextField fx:id="genre" />
                                  </children>
                                  <HBox.margin>
                                     <Insets left="30.0" />
@@ -134,7 +134,7 @@
                               <VBox prefHeight="200.0" prefWidth="248.0">
                                  <children>
                                     <Label text="Könyv darabszám" />
-                                    <TextField fx:id="darab" />
+                                    <TextField fx:id="count" />
                                  </children>
                                  <padding>
                                     <Insets left="30.0" />
