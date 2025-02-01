@@ -1,12 +1,15 @@
 package com.example.konyvtar.model;
 
 public class Book {
+
     private String title;
     private String author;
     private String isbn;
     private int year;
     private String genre;
     private boolean available;
+
+
 
     public Book(String title, String author, String isbn, int year, String genre, boolean available) {
         setTitle(title);
@@ -17,7 +20,6 @@ public class Book {
         setAvailable(available);
     }
 
-    // Getters and Setters
     public String getTitle() {
         return title;
     }

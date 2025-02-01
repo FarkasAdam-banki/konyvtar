@@ -4,6 +4,7 @@ import com.example.konyvtar.DatabaseConnection;
 import com.example.konyvtar.BasicData;
 import com.example.konyvtar.input.Input;
 import com.example.konyvtar.input.NumberInput;
+import com.example.konyvtar.input.TextInput;
 import com.example.konyvtar.input.ValidationResult;
 import com.example.konyvtar.model.Month;
 import javafx.collections.FXCollections;

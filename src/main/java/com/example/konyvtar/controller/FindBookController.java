@@ -64,24 +64,48 @@ public class FindBookController {
         genreColumn.setCellValueFactory(new PropertyValueFactory<>("genre"));
         availabilityColumn.setCellValueFactory(new PropertyValueFactory<>("available"));
 
-        /*
         searchField.setOnAction(event -> fetchBooks());
-        available.setOnAction(event -> fetchBooks());*/
         searchButton.setOnMouseClicked(event -> fetchBooks());
+        available.setOnAction(event -> fetchBooks());
+        fetchBooks();
     }
     private void fetchBooks(){
-        int isAvailable=(available.getValue()=="Igen")?1:0;
         String search=searchField.getText();
-
         ObservableList<Book> books = FXCollections.observableArrayList();
-        String sql="SELECT * FROM konyv WHERE konyv_statusz=? AND (konyv_ISBN LIKE ? OR konyv_cim LIKE ?);";
+        String sql;
+        boolean selected=available.getSelectionModel().getSelectedIndex() != 0;
         try {
-            PreparedStatement pstmt=conn.prepareStatement(sql);
-            pstmt.setInt(1,isAvailable);
-            pstmt.setString(2, "%" + search + "%");
-            pstmt.setString(3, "%" + search + "%");
-            System.out.println(isAvailable);
-            System.out.println(search);
+            PreparedStatement pstmt;
+            if (!selected) {
+                sql = """
+                    SELECT k.konyv_ISBN, k.konyv_cim, k.konyv_szerzo, k.konyv_kiadas, k.konyv_mufaj,
+                           CASE WHEN l.leltar_leltariszam IN (SELECT leltar_leltariszam FROM kolcsonzes WHERE kolcsonzes_visszaE IS NULL)
+                                THEN FALSE ELSE TRUE END AS available
+                    FROM konyv k
+                    JOIN leltar l ON k.konyv_ISBN = l.konyv_ISBN
+                    WHERE k.konyv_ISBN LIKE ? OR k.konyv_cim LIKE ?;
+                    """;
+                pstmt = conn.prepareStatement(sql);
+                pstmt.setString(1, "%" + search.strip() + "%");
+                pstmt.setString(2, "%" + search.strip() + "%");
+            } else {
+
+                int availability = (available.getValue().equals("Igen")) ? 1 : 0;
+                sql = """
+                        SELECT k.konyv_ISBN, k.konyv_cim, k.konyv_szerzo, k.konyv_kiadas, k.konyv_mufaj,
+                               CASE WHEN l.leltar_leltariszam IN (SELECT leltar_leltariszam FROM kolcsonzes WHERE kolcsonzes_visszaE IS NULL)
+                                    THEN FALSE ELSE TRUE END AS available
+                        FROM konyv k
+                        JOIN leltar l ON k.konyv_ISBN = l.konyv_ISBN
+                        WHERE (k.konyv_ISBN LIKE ? OR k.konyv_cim LIKE ?)AND (CASE WHEN l.leltar_leltariszam IN (SELECT leltar_leltariszam FROM kolcsonzes WHERE kolcsonzes_visszaE IS NULL)
+                                       THEN FALSE ELSE TRUE END) = ?;
+                        """;
+                pstmt = conn.prepareStatement(sql);
+                pstmt.setInt(1, availability);
+                pstmt.setString(2, "%" + search.strip() + "%");
+                pstmt.setString(3, "%" + search.strip() + "%");
+            }
+
             ResultSet rs=pstmt.executeQuery();
             while (rs.next()){
                 String isbn = rs.getString("konyv_ISBN");
@@ -102,6 +126,10 @@ public class FindBookController {
         catch (SQLException e){
             e.printStackTrace();
         }
+    }
+
+    private void fetchStats(){
+
     }
 
 
