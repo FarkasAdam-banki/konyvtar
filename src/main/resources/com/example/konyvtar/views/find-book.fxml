@@ -4,6 +4,7 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
@@ -46,16 +47,12 @@
                      </children>
                   </VBox>
                   <VBox alignment="CENTER_LEFT" styleClass="most-common">
-                     <children>
-                        <Label styleClass="title-common" text="Leggyakoribb műfajok" />
-                        <Label text="Filozófia - 451 példány" />
-                        <Label layoutX="50.0" layoutY="30.0" text="regény - 16 példány" />
-                        <Label layoutX="50.0" layoutY="47.0" text="Tudományos -14 példány" />
-                        <Label layoutX="43.0" layoutY="64.0" text="mese -13 példány" />
-                     </children>
                      <padding>
                         <Insets left="10.0" />
                      </padding>
+                     <children>
+                        <ListView fx:id="popularGendres" prefHeight="200.0" prefWidth="200.0" />
+                     </children>
                   </VBox>
                     </children>
                 </HBox>

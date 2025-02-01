@@ -43,7 +43,7 @@ public class FindBookController {
     private TableColumn<Book, Boolean> availabilityColumn;
 
     @FXML
-    private ListView<String> booksListView;
+    private ListView<String> popularGendres;
 
     @FXML
     private Button searchButton;
@@ -71,61 +71,54 @@ public class FindBookController {
         fetchBooks();
         fetchStats();
     }
-    private void fetchBooks(){
-        String search=searchField.getText();
+
+    private void fetchBooks() {
+        String search = searchField.getText();
         ObservableList<Book> books = FXCollections.observableArrayList();
+        ObservableList<Book> resultBooks = FXCollections.observableArrayList();
         String sql;
-        boolean selected=available.getSelectionModel().getSelectedIndex() != 0;
         try {
             PreparedStatement pstmt;
-            if (!selected) {
-                sql = """
-                    SELECT k.konyv_ISBN, k.konyv_cim, k.konyv_szerzo, k.konyv_kiadas, k.konyv_mufaj,
-                           CASE WHEN l.leltar_leltariszam IN (SELECT leltar_leltariszam FROM kolcsonzes WHERE kolcsonzes_visszaE IS NULL)
-                                THEN FALSE ELSE TRUE END AS available
-                    FROM konyv k
-                    INNER JOIN leltar l ON k.konyv_ISBN = l.konyv_ISBN
-                    WHERE k.konyv_ISBN LIKE ? OR k.konyv_cim LIKE ?;
-                    """;
-                pstmt = conn.prepareStatement(sql);
-                pstmt.setString(1, "%" + search.strip() + "%");
-                pstmt.setString(2, "%" + search.strip() + "%");
-            } else {
-
-                int availability = (available.getValue().equals("Igen")) ? 1 : 0;
-                sql = """
+            sql = """
                         SELECT k.konyv_ISBN, k.konyv_cim, k.konyv_szerzo, k.konyv_kiadas, k.konyv_mufaj,
-                               CASE WHEN l.leltar_leltariszam IN (SELECT leltar_leltariszam FROM kolcsonzes WHERE kolcsonzes_visszaE IS NULL)
-                                    THEN FALSE ELSE TRUE END AS available
-                        FROM konyv k
-                        INNER JOIN leltar l ON k.konyv_ISBN = l.konyv_ISBN
-                        WHERE (k.konyv_ISBN LIKE ? OR k.konyv_cim LIKE ?)AND (CASE WHEN l.leltar_leltariszam IN (SELECT leltar_leltariszam FROM kolcsonzes WHERE kolcsonzes_visszaE IS NULL)
-                                       THEN FALSE ELSE TRUE END) = ?;
-                        """;
-                pstmt = conn.prepareStatement(sql);
-                pstmt.setInt(1, availability);
-                pstmt.setString(2, "%" + search.strip() + "%");
-                pstmt.setString(3, "%" + search.strip() + "%");
-            }
+                        IF(ko.kolcsonzes_visszaE = 0, FALSE, TRUE) AS available
+                       FROM konyv k
+                       JOIN leltar l ON k.konyv_ISBN = l.konyv_ISBN
+                       LEFT JOIN kolcsonzes ko ON l.leltar_leltariszam = ko.leltar_leltariszam AND ko.kolcsonzes_visszaE = 0
+                       WHERE k.konyv_ISBN LIKE ? OR k.konyv_cim LIKE ?;
+                    """;
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, "%" + search.strip() + "%");
+            pstmt.setString(2, "%" + search.strip() + "%");
+            ResultSet rs = pstmt.executeQuery();
 
-            ResultSet rs=pstmt.executeQuery();
-            while (rs.next()){
+            while (rs.next()) {
                 String isbn = rs.getString("konyv_ISBN");
                 String title = rs.getString("konyv_cim");
                 String author = rs.getString("konyv_szerzo");
                 int year = rs.getInt("konyv_kiadas");
                 String genre = rs.getString("konyv_mufaj");
-                boolean available = rs.getBoolean("konyv_statusz");
+                boolean available = rs.getBoolean("available");
 
                 books.add(new Book(title, author, isbn, year, genre, available));
             }
+            boolean selected = available.getSelectionModel().getSelectedIndex() != 0;
+            if (selected) {
+                boolean isAvailable = available.getValue()=="Igen";
+                for (int i = 0; i < books.size(); i++) {
+                    if(books.get(i).isAvailable()==isAvailable){
+                        resultBooks.add(books.get(i));
+                    }
+                }
+            }
+            else{
+                resultBooks=books;
+            }
+            booksTableView.setItems(resultBooks);
+            resultCountLabel.setText("Találatok száma: " + resultBooks.size());
 
-            booksTableView.setItems(books);
-            resultCountLabel.setText("Találatok száma: " + books.size());
 
-
-        }
-        catch (SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }
@@ -170,7 +163,7 @@ public class FindBookController {
 
         while (it.hasNext()) {
             String genre = it.next();
-            System.out.println(genre + ": " + genreCount.get(genre) + " példány");
+            popularGendres.getItems().addAll(genre + ": " + genreCount.get(genre) + " példány");
         }
     }
 }
