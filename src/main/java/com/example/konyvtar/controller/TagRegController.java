@@ -4,7 +4,7 @@ import com.example.konyvtar.DatabaseConnection;
 import com.example.konyvtar.input.ConnectedTextInput;
 import com.example.konyvtar.input.Select;
 import com.example.konyvtar.input.TextInput;
-import com.example.konyvtar.model.Megye;
+import com.example.konyvtar.model.County;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
