@@ -4,7 +4,6 @@ import com.example.konyvtar.DatabaseConnection;
 import com.example.konyvtar.BasicData;
 import com.example.konyvtar.input.Input;
 import com.example.konyvtar.input.NumberInput;
-import com.example.konyvtar.input.TextInput;
 import com.example.konyvtar.input.ValidationResult;
 import com.example.konyvtar.model.Month;
 import javafx.collections.FXCollections;
@@ -22,7 +21,7 @@ import java.time.Instant;
 import java.util.*;
 
 
-public class KolcsonzesFelveteleController implements Initializable, BasicData {
+public class AddRentController implements Initializable, BasicData {
     @FXML
     ComboBox kolcsonzesFelveteleEv,kolcsonzesFelveteleHonap,kolcsonzesFelveteleNap;
     @FXML
@@ -36,7 +35,7 @@ public class KolcsonzesFelveteleController implements Initializable, BasicData {
     private List<Input> inputs;
     private Connection conn;
 
-    public KolcsonzesFelveteleController() {
+    public AddRentController() {
     }
 
     public void initialize(URL url, ResourceBundle resourceBundle) {

@@ -1,12 +1,12 @@
 package com.example.konyvtar.model;
 
-public class Cim {
+public class Address {
 
     private int telepules_id;
     private String cim_utca;
     private String cim_hsz;
 
-    public Cim(int telepules_id, String cim_utca, String cim_hsz) {
+    public Address(int telepules_id, String cim_utca, String cim_hsz) {
         setTelepules_id(telepules_id);
         setCim_utca(cim_utca);
         setCim_hsz(cim_hsz);

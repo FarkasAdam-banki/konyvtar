@@ -16,7 +16,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class KonyvFelvetelController implements Initializable {
+public class AddBookController implements Initializable {
     @FXML
     private Label errorMessage;
     @FXML

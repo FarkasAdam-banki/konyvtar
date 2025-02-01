@@ -13,7 +13,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class KonyvekKereseseController {
+public class FindBookController {
     @FXML
     private TextField searchField;
 
