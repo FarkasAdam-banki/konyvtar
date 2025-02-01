@@ -119,7 +119,7 @@ public class TagRegController implements Initializable {
 
     public void generateRandomId(){
         String randomId = randomMemberId(tagId.getMaxLength());
-        if(!isSameId(randomId)) tagId.setValue(randomId);Ra
+        if(!isSameId(randomId)) tagId.setValue(randomId);
     }
     public String randomMemberId(int max){
         String tagId =String.valueOf((int)(Math.random()*10)+1);
