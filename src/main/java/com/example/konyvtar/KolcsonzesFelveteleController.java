@@ -2,6 +2,7 @@ package com.example.konyvtar;
 
 import com.example.konyvtar.input.Input;
 import com.example.konyvtar.input.NumberInput;
+import com.example.konyvtar.input.TextInput;
 import com.example.konyvtar.input.ValidationResult;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
