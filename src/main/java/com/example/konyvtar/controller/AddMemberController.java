@@ -124,7 +124,7 @@ public class AddMemberController implements Initializable {
         if(!isSameId(randomId)) tagId.setValue(randomId);
     }
     public String randomMemberId(int max){
-        String tagId =String.valueOf((int)(Math.random()*10)+1);
+        String tagId =String.valueOf((int)(Math.random()*9)+1);
         for(int i = 0; i < max-1; i++) {
             tagId += (int)(Math.random() * 10);
         }

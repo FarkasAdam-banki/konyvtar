@@ -1,6 +1,7 @@
 package com.example.konyvtar.controller;
 
 import com.example.konyvtar.MainApplication;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -11,6 +12,11 @@ import java.io.IOException;
 public class MainController {
     @FXML
     private BorderPane bp;
+    @FXML
+    public void closeApplication() {
+        Platform.exit();
+    }
+
     public void showKolcsonzesFelvetele() {
         setFXMLContents("add-rent.fxml");
     }
@@ -39,4 +45,5 @@ public class MainController {
         }
         bp.setCenter(root);
     }
+
 }

@@ -11,5 +11,6 @@ public enum ValidationResult {
     NUMBER_TOO_LARGE,
     GROUP_EMPTY,
     GROUP_TOO_LONG,
-    GROUP_REGEX_FAIL
+    GROUP_REGEX_FAIL,
+    CUSTOM_VALIDATION_FAIL
 }
