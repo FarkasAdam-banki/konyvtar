@@ -1,9 +1,12 @@
-package com.example.konyvtar;
+package com.example.konyvtar.controller;
 
+import com.example.konyvtar.DatabaseConnection;
+import com.example.konyvtar.BasicData;
 import com.example.konyvtar.input.Input;
 import com.example.konyvtar.input.NumberInput;
 import com.example.konyvtar.input.TextInput;
 import com.example.konyvtar.input.ValidationResult;
+import com.example.konyvtar.model.Month;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -19,7 +22,7 @@ import java.time.Instant;
 import java.util.*;
 
 
-public class KolcsonzesFelveteleController implements Initializable, basicDatas {
+public class KolcsonzesFelveteleController implements Initializable, BasicData {
     @FXML
     ComboBox kolcsonzesFelveteleEv,kolcsonzesFelveteleHonap,kolcsonzesFelveteleNap;
     @FXML

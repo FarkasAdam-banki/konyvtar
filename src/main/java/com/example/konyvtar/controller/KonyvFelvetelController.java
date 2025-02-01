@@ -1,5 +1,6 @@
-package com.example.konyvtar;
+package com.example.konyvtar.controller;
 
+import com.example.konyvtar.DatabaseConnection;
 import com.example.konyvtar.input.*;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;

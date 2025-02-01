@@ -4,7 +4,11 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
+<<<<<<< Updated upstream:src/main/resources/com/example/konyvtar/konyvek-keresese.fxml
 <AnchorPane prefHeight="800.0" prefWidth="1000.0" styleClass="container" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.konyvtar.KonyvekKereseseController">
+=======
+<AnchorPane prefHeight="800.0" prefWidth="1000.0" styleClass="container" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.konyvtar.controller.KonyvekKereseseController">
+>>>>>>> Stashed changes:src/main/resources/com/example/konyvtar/views/konyvek-keresese.fxml
     <children>
         <VBox layoutX="62.0" layoutY="56.0" prefHeight="200.0" style="-fx-background-color: #fff;" styleClass="search" AnchorPane.bottomAnchor="150.0" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="100.0" AnchorPane.topAnchor="150.0">
             <children>

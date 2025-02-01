@@ -1,4 +1,4 @@
-package com.example.konyvtar;
+package com.example.konyvtar.model;
 
 public class Month{
     private int monthId;

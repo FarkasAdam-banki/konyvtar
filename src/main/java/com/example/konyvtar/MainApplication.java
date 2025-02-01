@@ -9,10 +9,10 @@ import java.io.IOException;
 public class MainApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("main-view.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("views/main-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 1000, 835);
         try {
-            scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+            scene.getStylesheets().add(getClass().getResource("style/application.css").toExternalForm());
         }
         catch (NullPointerException npe){
             System.err.println("A fájl nem található: "+npe);

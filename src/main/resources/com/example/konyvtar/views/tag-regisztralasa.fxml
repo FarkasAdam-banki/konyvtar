@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="800.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.konyvtar.TagRegController">
+<AnchorPane prefHeight="800.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.konyvtar.controller.TagRegController">
    <children>
       <HBox prefHeight="800.0" prefWidth="1000.0">
          <children>
@@ -36,7 +36,7 @@
                                           <Pane prefHeight="33.0" prefWidth="100.0" />
                                           <ImageView fitHeight="77.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
                                              <image>
-                                                <Image url="@whiteTri.png" />
+                                                <Image url="@../images/whiteTri.png" />
                                              </image>
                                           </ImageView>
                                        </children>
@@ -62,7 +62,7 @@
                                  <children>
                                     <ImageView fitHeight="77.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
-                                          <Image url="@blackTri.png" />
+                                          <Image url="@../images/blackTri.png" />
                                        </image>
                                     </ImageView>
                                  </children>
@@ -130,7 +130,7 @@
                                  <children>
                                     <TextField fx:id="memeberId" editable="false">
                                        <HBox.margin>
-                                          <Insets right="10.0" />
+                                          <Insets />
                                        </HBox.margin>
                                     </TextField>
                                     <Button mnemonicParsing="false" onAction="#generateRandomId" text="⭮" />

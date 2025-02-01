@@ -1,4 +1,4 @@
-package com.example.konyvtar;
+package com.example.konyvtar.controller;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -32,7 +32,7 @@ public class MainController {
     public void setFXMLContents(String fileName) {
         Parent root;
         try {
-            root = FXMLLoader.load(getClass().getResource(fileName));
+            root = FXMLLoader.load(getClass().getResource("views/"+fileName));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Gép: 127.0.0.1
--- Létrehozás ideje: 2025. Jan 13. 09:18
+-- Létrehozás ideje: 2025. Feb 01. 15:57
 -- Kiszolgáló verziója: 10.4.32-MariaDB
 -- PHP verzió: 8.2.12
 
@@ -34,6 +34,15 @@ CREATE TABLE `cim` (
   `cim_hsz` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_hungarian_ci;
 
+--
+-- A tábla adatainak kiíratása `cim`
+--
+
+INSERT INTO `cim` (`cim_id`, `telepules_id`, `cim_utca`, `cim_hsz`) VALUES
+(1, 13, 'Fő utca', '12/A'),
+(2, 23, 'Két utca', '5/B'),
+(3, 53, 'Fő utca', '12/A');
+
 -- --------------------------------------------------------
 
 --
@@ -42,10 +51,11 @@ CREATE TABLE `cim` (
 
 CREATE TABLE `kolcsonzes` (
   `kolcsonzes_id` int(10) UNSIGNED NOT NULL,
-  `konyv_ISBN` bigint(13) UNSIGNED NOT NULL,
+  `leltar_leltariszam` varchar(10) NOT NULL,
   `tag_id` int(9) UNSIGNED NOT NULL,
   `kolcsonzes_datum` date NOT NULL,
-  `kolcsonzes_hatar` date NOT NULL
+  `kolcsonzes_hatar` date NOT NULL,
+  `kolcsonzes_visszaE` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_hungarian_ci;
 
 -- --------------------------------------------------------
@@ -61,6 +71,26 @@ CREATE TABLE `konyv` (
   `konyv_kiadas` year(4) NOT NULL,
   `konyv_mufaj` varchar(20) NOT NULL,
   `konyv_statusz` tinyint(1) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_hungarian_ci;
+
+--
+-- A tábla adatainak kiíratása `konyv`
+--
+
+INSERT INTO `konyv` (`konyv_ISBN`, `konyv_cim`, `konyv_szerzo`, `konyv_kiadas`, `konyv_mufaj`, `konyv_statusz`) VALUES
+(9789639522681, 'JavaScript Alapok', 'Kiss Anna', '2018', 'Programozás', 1),
+(9789639785102, 'Programozás Java-ban', 'Kovács János', '2021', 'Programozás', 0),
+(9789639908495, 'Adatbázis kezelők', 'Tóth Béla', '2019', 'Számítástechnika', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Tábla szerkezet ehhez a táblához `leltar`
+--
+
+CREATE TABLE `leltar` (
+  `leltar_leltariszam` varchar(10) NOT NULL,
+  `konyv_ISBN` bigint(13) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_hungarian_ci;
 
 -- --------------------------------------------------------
@@ -111,6 +141,17 @@ CREATE TABLE `tag` (
   `cim_id` int(10) UNSIGNED NOT NULL,
   `tag_tel` varchar(12) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_hungarian_ci;
+
+--
+-- A tábla adatainak kiíratása `tag`
+--
+
+INSERT INTO `tag` (`tag_id`, `tag_nev`, `cim_id`, `tag_tel`) VALUES
+(123456789, 'Kiss Péter', 1, '+361234567'),
+(215636312, 'Szabó Anna', 2, '0620123456'),
+(363543265, 'Kiss Péter', 1, '0612345678'),
+(412345234, 'Kovács Laura', 2, '0643123456'),
+(575455623, 'Tóth Gábor', 1, '0630765432');
 
 -- --------------------------------------------------------
 
@@ -3722,14 +3763,21 @@ ALTER TABLE `cim`
 --
 ALTER TABLE `kolcsonzes`
   ADD PRIMARY KEY (`kolcsonzes_id`),
-  ADD KEY `konyv_ISBN` (`konyv_ISBN`),
-  ADD KEY `tag_id` (`tag_id`);
+  ADD KEY `tag_id` (`tag_id`),
+  ADD KEY `leltar_leltariszam` (`leltar_leltariszam`);
 
 --
 -- A tábla indexei `konyv`
 --
 ALTER TABLE `konyv`
   ADD PRIMARY KEY (`konyv_ISBN`);
+
+--
+-- A tábla indexei `leltar`
+--
+ALTER TABLE `leltar`
+  ADD PRIMARY KEY (`leltar_leltariszam`),
+  ADD KEY `konyv_ISBN` (`konyv_ISBN`);
 
 --
 -- A tábla indexei `megye`
@@ -3759,13 +3807,13 @@ ALTER TABLE `telepules`
 -- AUTO_INCREMENT a táblához `cim`
 --
 ALTER TABLE `cim`
-  MODIFY `cim_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `cim_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT a táblához `kolcsonzes`
 --
 ALTER TABLE `kolcsonzes`
-  MODIFY `kolcsonzes_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `kolcsonzes_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT a táblához `megye`
@@ -3794,7 +3842,13 @@ ALTER TABLE `cim`
 --
 ALTER TABLE `kolcsonzes`
   ADD CONSTRAINT `kolcsonzes_ibfk_1` FOREIGN KEY (`tag_id`) REFERENCES `tag` (`tag_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `kolcsonzes_ibfk_2` FOREIGN KEY (`konyv_ISBN`) REFERENCES `konyv` (`konyv_ISBN`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `kolcsonzes_ibfk_2` FOREIGN KEY (`leltar_leltariszam`) REFERENCES `leltar` (`leltar_leltariszam`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Megkötések a táblához `leltar`
+--
+ALTER TABLE `leltar`
+  ADD CONSTRAINT `leltar_ibfk_1` FOREIGN KEY (`konyv_ISBN`) REFERENCES `konyv` (`konyv_ISBN`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Megkötések a táblához `tag`

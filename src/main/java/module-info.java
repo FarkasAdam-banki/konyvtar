@@ -8,4 +8,8 @@ module com.example.konyvtar {
 
     opens com.example.konyvtar to javafx.fxml;
     exports com.example.konyvtar;
+    exports com.example.konyvtar.model;
+    opens com.example.konyvtar.model to javafx.fxml;
+    exports com.example.konyvtar.controller;
+    opens com.example.konyvtar.controller to javafx.fxml;
 }

@@ -1,5 +1,6 @@
-package com.example.konyvtar;
+package com.example.konyvtar.controller;
 
+import com.example.konyvtar.DatabaseConnection;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;

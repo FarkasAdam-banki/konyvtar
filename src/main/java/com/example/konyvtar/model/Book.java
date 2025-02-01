@@ -1,4 +1,4 @@
-package com.example.konyvtar;
+package com.example.konyvtar.model;
 
 public class Book {
     private String title;
