@@ -15,7 +15,7 @@ import java.net.URL;
 import java.sql.*;
 import java.util.ResourceBundle;
 
-public class TagRegController implements Initializable {
+public class AddMemberController implements Initializable {
 
     @FXML
     private TextField memeberId, memberLastName, memberFirstName, memberOptionalName, memberPhoneNumber, memberCity, memberStreet, memberHouseNumber;

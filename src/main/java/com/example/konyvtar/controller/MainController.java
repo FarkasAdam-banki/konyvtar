@@ -12,22 +12,22 @@ public class MainController {
     @FXML
     private BorderPane bp;
     public void showKolcsonzesFelvetele() {
-        setFXMLContents("kolcsonzes-felvetele.fxml");
+        setFXMLContents("add-rent.fxml");
     }
     public void showKolcsonzesekListaja() {
-        setFXMLContents("kolcsonzesek-listaja.fxml");
+        setFXMLContents("rent-list.fxml");
     }
     public void showKonyvFelvetel() {
-        setFXMLContents("konyv-felvetel.fxml");
+        setFXMLContents("add-book.fxml");
     }
     public void showKonyvekKeresese() {
-        setFXMLContents("konyvek-keresese.fxml");
+        setFXMLContents("find-book.fxml");
     }
     public void showTagRegisztralasa() {
-        setFXMLContents("tag-regisztralasa.fxml");
+        setFXMLContents("add_member.fxml");
     }
     public void showTagokListaja() {
-        setFXMLContents("tagok-listaja.fxml");
+        setFXMLContents("member_list.fxml");
     }
 
     public void setFXMLContents(String fileName) {

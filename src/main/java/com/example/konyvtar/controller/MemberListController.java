@@ -7,7 +7,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import java.sql.*;
 
-public class TagokListajaController {
+public class MemberListController {
 
     @FXML
     private TextField searchField;

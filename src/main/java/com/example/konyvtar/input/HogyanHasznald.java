@@ -141,6 +141,6 @@ public class HogyanHasznald {
             }
         });
 
-        // validáció megvalósítása a KonyvFelvetelController osztályban található
+        // validáció megvalósítása a AddBookController osztályban található
     }
 }
