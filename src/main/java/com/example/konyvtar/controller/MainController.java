@@ -1,15 +1,20 @@
 package com.example.konyvtar.controller;
 
+import com.example.konyvtar.DatabaseConnection;
 import com.example.konyvtar.MainApplication;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Parent;
+import javafx.scene.control.Alert;
 import javafx.scene.layout.BorderPane;
 
 import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 
-public class MainController {
+public class MainController implements Initializable {
     @FXML
     private BorderPane bp;
     @FXML
@@ -46,4 +51,15 @@ public class MainController {
         bp.setCenter(root);
     }
 
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        if (!DatabaseConnection.isAvailable()) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Hiba");
+            alert.setHeaderText("Adatbázishiba");
+            alert.setContentText("Az adatbázis nem elérhető!");
+            alert.showAndWait();
+            closeApplication();
+        }
+    }
 }
