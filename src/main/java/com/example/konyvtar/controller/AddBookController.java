@@ -11,6 +11,7 @@ import javafx.scene.control.TextField;
 
 import java.net.URL;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
@@ -20,22 +21,14 @@ public class AddBookController implements Initializable {
     @FXML
     private Label errorMessage;
     @FXML
-    private ComboBox<String> kolcsonozheto;
-    @FXML
-    private TextField cim, szerzo, kiadas, mufaj, isbn;
-
-    private Select<String> kolcsonozhetoSelect;
-    private TextInput cimInput, szerzoInput, mufajInput;
-    private NumberInput kiadasInput, isbnInput;
+    private TextField cim, szerzo, kiadas, mufaj, isbn, darab, prefix;
+    private TextInput cimInput, szerzoInput, mufajInput, prefixInput;
+    private NumberInput kiadasInput, isbnInput, darabInput;
 
     private List<Input> inputs;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        List<String> options = Arrays.asList("Válasszon!", "Igen", "Nem");
-        kolcsonozhetoSelect = new Select<>(kolcsonozheto, options);
-        kolcsonozhetoSelect.setOnValidationFail(_ -> errorMessage.setText("Nincs kiválasztva, hogy kölcsönözhető-e!"));
-
         cimInput = new TextInput(cim, 50);
         cimInput.setOnValidationFail(validationResult -> {
             errorMessage.setText(getErrorMessageTextInput(validationResult)+"a könyv címe!");
@@ -55,11 +48,46 @@ public class AddBookController implements Initializable {
             errorMessage.setText(getErrorMessageTextInput(validationResult)+"a műfaj!");
         });
         isbnInput = new NumberInput(isbn, 13);
+        isbnInput.setMinLength(13);
         isbnInput.setOnValidationFail(validationResult -> {
             errorMessage.setText(getErrorMessageNumberInput(validationResult)+"az ISBN-kód!");
         });
+        darabInput = new NumberInput(darab, 5);
+        darabInput.setOnValidationFail(validationResult -> {
+            errorMessage.setText(getErrorMessageNumberInput(validationResult)+"a darabszám!");
+        });
+        prefixInput = new TextInput(prefix);
+        prefixInput.setRegex("^[A-Z]{4}$");
+        prefixInput.setOnValidationFail(validationResult -> {
+            if(validationResult == ValidationResult.REGEX_FAIL) {
+                errorMessage.setText("Az előtagnak négy ékezetnélküli nagybetűből kell állnia!");
+            }else if (validationResult == ValidationResult.CUSTOM_VALIDATION_FAIL) {
+                errorMessage.setText("Ilyen előtag már létezik!");
+            }
+            else {
+                errorMessage.setText(getErrorMessageTextInput(validationResult)+"az előtag!");
+            }
+        });
+        prefixInput.setCustomValidator(input -> {
+            TextInput textInput = (TextInput) input;
+            PreparedStatement statement = DatabaseConnection.getPreparedStatement(
+                    "SELECT COUNT(`leltar_leltariszam`) FROM `leltar` WHERE `leltar_leltariszam` LIKE ?;"
+            );
+            boolean result;
+            try {
+                statement.setString(1, textInput.getValue()+"%");
+                ResultSet rs = statement.executeQuery();
+                rs.next();
+                result = rs.getInt(1) == 0;
+                rs.close();
+                statement.close();
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+            return result;
+        });
 
-        inputs = Arrays.asList(cimInput, szerzoInput, kiadasInput, mufajInput, isbnInput, kolcsonozhetoSelect);
+        inputs = Arrays.asList(cimInput, szerzoInput, kiadasInput, mufajInput, isbnInput, darabInput, prefixInput);
     }
 
     public void onSubmit() {
@@ -70,7 +98,7 @@ public class AddBookController implements Initializable {
         if (i == inputs.size()) {
             errorMessage.setText("");
             PreparedStatement pstmnt = DatabaseConnection.getPreparedStatement(
-        "INSERT INTO `konyv` (`konyv_ISBN`, `konyv_cim`, `konyv_szerzo`, `konyv_kiadas`, `konyv_mufaj`, `konyv_statusz`) VALUES (?, ?, ?, ?, ?, ?)"
+                    "INSERT INTO `konyv` (`konyv_ISBN`, `konyv_cim`, `konyv_szerzo`, `konyv_kiadas`, `konyv_mufaj`) VALUES (?, ?, ?, ?, ?);"
             );
             try {
                 pstmnt.setLong(1, isbnInput.getNumber());
@@ -78,18 +106,32 @@ public class AddBookController implements Initializable {
                 pstmnt.setString(3, szerzoInput.getValue());
                 pstmnt.setInt(4, (int)kiadasInput.getNumber());
                 pstmnt.setString(5, mufajInput.getValue());
-                pstmnt.setInt(6, 1 - kolcsonozhetoSelect.getSelectedIndex());
                 DatabaseConnection.executeUpdate(pstmnt);
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setHeaderText("Sikeres felvétel");
-                alert.setContentText("A \""+ cimInput.getValue() +"\" című könyv sikeresen felvéve!");
-                alert.show();
             }catch (SQLException sqle) {
                 System.err.println(sqle.getMessage());
             }
+            pstmnt = DatabaseConnection.getPreparedStatement(
+                    "INSERT INTO `leltar` (`leltar_leltariszam`, `konyv_ISBN`) VALUES (?, ?);"
+            );
+            try {
+                for (int j = 0; j < darabInput.getNumber(); j++) {
+                    String padded = String.format("%05d", j);
+                    pstmnt.setString(1, prefixInput.getValue()+"-"+padded);
+                    pstmnt.setLong(2, isbnInput.getNumber());
+                    pstmnt.addBatch();
+                }
+                pstmnt.executeBatch();
+                pstmnt.close();
+            } catch (SQLException sqle) {
+                System.err.println(sqle.getMessage());
+            }
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setHeaderText("Sikeres felvétel");
+            alert.setContentText("A \""+ cimInput.getValue() +"\" című könyv sikeresen felvéve!");
+            alert.show();
         }
-
     }
+
 
     private String getErrorMessageTextInput(ValidationResult result) {
         return switch (result) {

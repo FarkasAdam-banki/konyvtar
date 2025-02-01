@@ -18,8 +18,14 @@ public abstract class Input {
     public final boolean isValidOrFail() {
         if (isValid())
             return true;
-        if(onValidationFail != null)
-            onValidationFail.accept(validate());
+        if(onValidationFail != null){
+            if (customValidator != null && !customValidator.test(this)) {
+                onValidationFail.accept(ValidationResult.CUSTOM_VALIDATION_FAIL);
+            }
+            else {
+                onValidationFail.accept(validate());
+            }
+        }
         return false;
     }
 
