@@ -135,7 +135,7 @@ public class AddRentController implements Initializable, BasicData {
             String date = kolcsonzesFelveteleEv.getValue().toString() + "-" + (kolcsonzesFelveteleHonap.getSelectionModel().getSelectedIndex() + 1) + "-" + kolcsonzesFelveteleNap.getValue();
             PreparedStatement pstmt = null;
             try {
-                pstmt = conn.prepareStatement("INSERT INTO kolcsonzes (leltar_leltariszam, tag_id, kolcsonzes_datum, kolcsonzes_hatar) VALUES (?,?,?,?)");
+                pstmt = conn.prepareStatement("INSERT INTO kolcsonzes (leltar_leltariszam, tag_id, kolcsonzes_datum, kolcsonzes_hatar, kolcsonzes_visszaE) VALUES (?,?,?,?,0)");
                 pstmt.setString(1, serial);
                 pstmt.setString(2, membershipId);
                 Instant now = Instant.now();
