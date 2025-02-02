@@ -53,6 +53,7 @@ public class AddBookController implements Initializable {
             errorMessage.setText(getErrorMessageNumberInput(validationResult)+"az ISBN-kód!");
         });
         countInput = new NumberInput(count, 5);
+        countInput.setMinValue(1);
         countInput.setOnValidationFail(validationResult -> {
             errorMessage.setText(getErrorMessageNumberInput(validationResult)+"a darabszám!");
         });
@@ -87,7 +88,7 @@ public class AddBookController implements Initializable {
             return result;
         });
 
-        inputs = Arrays.asList(titleInput, authorInput, releaseInput, genreInput, isbnInput, countInput, prefixInput);
+        inputs = List.of(titleInput, authorInput, releaseInput, genreInput, isbnInput, countInput, prefixInput);
     }
 
     public void onSubmit() {

@@ -2,13 +2,8 @@ package com.example.konyvtar.controller;
 
 import com.example.konyvtar.DatabaseConnection;
 import com.example.konyvtar.BasicData;
-import com.example.konyvtar.input.Input;
-import com.example.konyvtar.input.NumberInput;
-import com.example.konyvtar.input.TextInput;
-import com.example.konyvtar.input.ValidationResult;
+import com.example.konyvtar.input.*;
 import com.example.konyvtar.model.Month;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
@@ -20,11 +15,14 @@ import java.net.URL;
 import java.sql.*;
 import java.time.Instant;
 import java.util.*;
+import java.util.function.Consumer;
 
 
 public class AddRentController implements Initializable, BasicData {
     @FXML
-    ComboBox kolcsonzesFelveteleEv,kolcsonzesFelveteleHonap,kolcsonzesFelveteleNap;
+    ComboBox<Integer> rentYear, rentDay;
+    @FXML
+    ComboBox<Month> rentMonth;
     @FXML
     TextField serial;
     @FXML
@@ -32,10 +30,11 @@ public class AddRentController implements Initializable, BasicData {
     @FXML
     Label errorMessage;
 
+    Select<Integer> yearSelect, daySelect;
+    Select<Month> monthSelect;
     TextInput serialInput;
     NumberInput membershipIdInput;
     private List<Input> inputs;
-    private Connection conn;
 
     public AddRentController() {
     }
@@ -43,54 +42,68 @@ public class AddRentController implements Initializable, BasicData {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         Calendar datum = Calendar.getInstance();
         int ev = datum.get(Calendar.YEAR);
-        ObservableList<Integer> evek = FXCollections.observableArrayList();
 
         serialInput=new TextInput(serial);
         serialInput.setOnValidationFail(validationResult -> {
-            errorMessage.setText((validationResult)+" a sorozat szám!");
+            String err = switch (validationResult) {
+                case EMPTY -> "Nincs megadva a leltári szám!";
+                case CUSTOM_VALIDATION_FAIL -> "A megadott sorozat számmal nem található könyv!";
+                default -> "Nem megfelelő leltári szám formátum!";
+            };
+            errorMessage.setText(err);
         });
-        membershipIdInput=new NumberInput(membershipId,MEMERSHIPIDLENGTH,MEMERSHIPIDLENGTH);
+        serialInput.setRegex("^[A-Z]{4}-\\d{5}$");
+        serialInput.setCustomValidator(input -> {
+            TextInput textInput = (TextInput) input;
+            return checkExistanceInDB("leltar", "leltar_leltariszam", textInput.getValue());
+        });
+        membershipIdInput=new NumberInput(membershipId, MEMERSHIPIDLENGTH);
+        membershipIdInput.setMinValue(MEMERSHIPIDLENGTH);
         membershipIdInput.setOnValidationFail(validationResult -> {
-            errorMessage.setText((validationResult)+" a tagId!");
+            String err = switch (validationResult) {
+                case EMPTY -> "Nincs megadva a tagsági azonosító!";
+                case CUSTOM_VALIDATION_FAIL -> "A megadott tagsági azonosítóhoz nem tartozik felhasználó!";
+                default -> "NNem megfelelő tagsági azonosító formátum!";
+            };
+            errorMessage.setText(err);
         });
-
-
-
-
-        this.conn = DatabaseConnection.getConnection();
+        membershipIdInput.setCustomValidator(input -> {
+            TextInput textInput = (TextInput) input;
+            return checkExistanceInDB("tag", "tag_id", textInput.getValue());
+        });
+        Consumer<ValidationResult> errorDate = _ -> errorMessage.setText("Nincs megadva dátum!");
+        yearSelect = new Select<>(rentYear, false);
+        yearSelect.setOnValidationFail(errorDate);
+        monthSelect = new Select<>(rentMonth, false);
+        monthSelect.setOnValidationFail(errorDate);
+        daySelect = new Select<>(rentDay, false);
+        daySelect.setOnValidationFail(result -> {
+            errorMessage.setText(result == ValidationResult.CUSTOM_VALIDATION_FAIL? "Érvénytelen dátum!":"Nincs megadva dátum!");
+        });
+        daySelect.setCustomValidator(_ ->
+            datum.get(Calendar.DAY_OF_MONTH) < daySelect.getSelectedIndex() + 1 && datum.get(Calendar.MONTH) == monthSelect.getSelectedIndex() ||
+                    datum.get(Calendar.MONTH) < monthSelect.getSelectedIndex() && ev == yearSelect.getSelectedItem() ||
+                    yearSelect.getSelectedItem() > ev);
 
         for (int i = ev; i < ev + 2; ++i) {
-            evek.add(i);
+            yearSelect.addOption(i);
         }
-
-        this.kolcsonzesFelveteleEv.setItems(evek);
-        ObservableList<Integer> napok = FXCollections.observableArrayList();
-
         for (int i = 1; i <= 31; ++i) {
-            napok.add(i);
+            daySelect.addOption(i);
         }
-
-        this.kolcsonzesFelveteleNap.setItems(napok);
-        ObservableList<Month> months = FXCollections.observableArrayList();
-
         for (int i = 1; i < MONTHS.length; ++i) {
             Month h = new Month(i, MONTHS[i]);
-            months.add(h);
+            monthSelect.addOption(h);
         }
+        inputs = List.of(serialInput, membershipIdInput, yearSelect, monthSelect, daySelect);
 
-        this.kolcsonzesFelveteleHonap.setItems(months);
-    }
-
-    public boolean checkNumberInput(String number, int length) {
-        String regex = "\\d{" + length + "}";
-        return number.matches(regex);
     }
 
     public boolean checkExistanceInDB(String table, String attribute, String element) {
         String sql = "SELECT * FROM " + table + " where " + attribute + "=?";
         boolean found = false;
         try {
-            PreparedStatement pstmt = conn.prepareStatement(sql);
+            PreparedStatement pstmt = DatabaseConnection.getPreparedStatement(sql);
             pstmt.setString(1, element);
             ResultSet rs = pstmt.executeQuery();
             if (rs.next()) {
@@ -103,41 +116,19 @@ public class AddRentController implements Initializable, BasicData {
     }
 
     public void loan() {
-        String serial = serialInput.getValue();
-        String membershipId = membershipIdInput.getValue();
-
-        boolean okSerial = serial.matches("^[A-Z]{4}-\\d{5}$");
-        boolean okMembershipId = checkNumberInput(membershipIdInput.getValue(), MEMERSHIPIDLENGTH);
-        boolean okDate = (kolcsonzesFelveteleEv.getValue() != null) && (kolcsonzesFelveteleHonap.getValue() != null) && (kolcsonzesFelveteleNap.getValue() != null);
-        if (!okSerial) {
-            this.errorMessage.setText("Nem megfelelő leltári szám formátum!");
-        } else {
-            okSerial = checkExistanceInDB("leltar", "leltar_leltariszam", serial);
-            if (!okSerial) {
-                this.errorMessage.setText("A megadott sorozat számmal nem található könyv!");
-            }
-            if (!okMembershipId) {
-                this.errorMessage.setText("Nem megfelelő tagsági azonosító formátum!");
-            } else {
-                okMembershipId = checkExistanceInDB("tag", "tag_id", membershipId);
-
-                if (!okMembershipId) {
-                    this.errorMessage.setText("A megadott tagsági azonosítóhoz nem tartozik felhasználó!");
-                } else if (!okDate) {
-                    this.errorMessage.setText("Nincs kiválasztva dátum!");
-                }
-            }
+        int i = 0;
+        while (i < inputs.size() && inputs.get(i).isValidOrFail()){
+            i++;
         }
 
-
-        if (okSerial && okMembershipId && okDate) {
+        if (i == inputs.size()) {
             errorMessage.setText("");
-            String date = kolcsonzesFelveteleEv.getValue().toString() + "-" + (kolcsonzesFelveteleHonap.getSelectionModel().getSelectedIndex() + 1) + "-" + kolcsonzesFelveteleNap.getValue();
-            PreparedStatement pstmt = null;
+            String date = yearSelect.getSelectedItem() + "-" + (monthSelect.getSelectedIndex()+1) + "-" + daySelect.getSelectedItem();
+            PreparedStatement pstmt;
             try {
-                pstmt = conn.prepareStatement("INSERT INTO kolcsonzes (leltar_leltariszam, tag_id, kolcsonzes_datum, kolcsonzes_hatar, kolcsonzes_visszaE) VALUES (?,?,?,?,0)");
-                pstmt.setString(1, serial);
-                pstmt.setString(2, membershipId);
+                pstmt = DatabaseConnection.getPreparedStatement("INSERT INTO kolcsonzes (leltar_leltariszam, tag_id, kolcsonzes_datum, kolcsonzes_hatar, kolcsonzes_visszaE) VALUES (?,?,?,?,0)");
+                pstmt.setString(1, serialInput.getValue());
+                pstmt.setString(2, membershipIdInput.getValue());
                 Instant now = Instant.now();
                 Timestamp timestamp = Timestamp.from(now);
                 pstmt.setTimestamp(3, timestamp);
@@ -145,13 +136,11 @@ public class AddRentController implements Initializable, BasicData {
 
                 int rowsAffected = pstmt.executeUpdate();
                 if (rowsAffected > 0) {
-
                     Alert alert = new Alert(Alert.AlertType.INFORMATION);
                     alert.setTitle("Sikeres hozzáadás!");
                     alert.setHeaderText(null);
-                    alert.setContentText("Az " + membershipId + " azonosítójú taghoz az " + serial + " azonosítójú könyv sikeresen hozzáadva.");
+                    alert.setContentText("Az " + membershipIdInput.getValue() + " azonosítójú taghoz az " + serialInput.getValue() + " azonosítójú könyv sikeresen hozzáadva.");
                     alert.showAndWait();
-
                 }
 
             } catch (SQLException e) {

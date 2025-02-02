@@ -52,9 +52,9 @@
                   </HBox>
                   <HBox>
                      <children>
-                        <ComboBox fx:id="kolcsonzesFelveteleEv" promptText="Év" styleClass="w-combobox" />
-                        <ComboBox fx:id="kolcsonzesFelveteleHonap" promptText="Hónap" styleClass="w-combobox" />
-                        <ComboBox fx:id="kolcsonzesFelveteleNap" promptText="Nap" styleClass="w-combobox" />
+                        <ComboBox fx:id="rentYear" promptText="Év" styleClass="w-combobox" />
+                        <ComboBox fx:id="rentMonth" promptText="Hónap" styleClass="w-combobox" />
+                        <ComboBox fx:id="rentDay" promptText="Nap" styleClass="w-combobox" />
                      </children>
                   </HBox>
                   <HBox>
