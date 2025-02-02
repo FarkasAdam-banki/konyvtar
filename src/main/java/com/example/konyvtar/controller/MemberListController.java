@@ -89,7 +89,8 @@ public class MemberListController {
                      AND (k.kolcsonzes_visszaE IS NULL OR k.kolcsonzes_visszaE = 0)) AS aktiv_keses
                 FROM tag t
                 LEFT JOIN cim c ON t.cim_id = c.cim_id
-                LEFT JOIN telepules tp ON c.telepules_id = tp.telepules_id;
+                LEFT JOIN telepules tp ON c.telepules_id = tp.telepules_id
+                WHERE 1 = 1
                 """;
 
         if (searchQuery != null && !searchQuery.trim().isEmpty()) {
