@@ -55,6 +55,7 @@ public class MemberListController {
     public void initialize() {
 
         delayFilter.setItems(FXCollections.observableArrayList("Késlekedők", "Igen", "Nem"));
+        delayFilter.setValue("Késlekedők");
 
         idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
