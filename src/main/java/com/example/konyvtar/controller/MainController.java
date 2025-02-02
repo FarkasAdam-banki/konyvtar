@@ -17,34 +17,40 @@ import java.util.ResourceBundle;
 public class MainController implements Initializable {
     @FXML
     private BorderPane bp;
+
     @FXML
     public void closeApplication() {
         Platform.exit();
     }
 
-    public void showKolcsonzesFelvetele() {
+    public void showAddRent() {
         setFXMLContents("add-rent.fxml");
     }
-    public void showKolcsonzesekListaja() {
+
+    public void showRentList() {
         setFXMLContents("rent-list.fxml");
     }
-    public void showKonyvFelvetel() {
+
+    public void showAddBook() {
         setFXMLContents("add-book.fxml");
     }
-    public void showKonyvekKeresese() {
-        setFXMLContents("find-book.fxml");
+
+    public void showBookList() {
+        setFXMLContents("book-list.fxml");
     }
-    public void showTagRegisztralasa() {
-        setFXMLContents("add_member.fxml");
+
+    public void showAddMember() {
+        setFXMLContents("add-member.fxml");
     }
-    public void showTagokListaja() {
-        setFXMLContents("member_list.fxml");
+
+    public void showMemberList() {
+        setFXMLContents("member-list.fxml");
     }
 
     public void setFXMLContents(String fileName) {
         Parent root;
         try {
-            root = FXMLLoader.load(MainApplication.class.getResource("views/"+fileName));
+            root = FXMLLoader.load(MainApplication.class.getResource("views/" + fileName));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

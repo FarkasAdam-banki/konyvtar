@@ -18,15 +18,15 @@ import java.util.ResourceBundle;
 public class AddMemberController implements Initializable {
 
     @FXML
-    private TextField memeberId, memberLastName, memberFirstName, memberOptionalName, memberPhoneNumber, memberCity, memberStreet, memberHouseNumber;
+    private TextField memberId, memberLastName, memberFirstName, memberOptionalName, memberPhoneNumber, memberCity, memberStreet, memberHouseNumber;
     @FXML
     private ComboBox<County> memberCounty;
     @FXML
     private Label errorMessage, successMessage;
 
-    private Select<County> megyeSelect;
-    private TextInput tagKeresztnev, tagVezeteknev, tagOpcionalisNev, tagTelSzam, tagVaros, tagUtca, tagHazszam, tagId;
-    private ConnectedTextInput tagNev, tagCim;
+    private Select<County> countySelect;
+    private TextInput firstNameInput, lastNameInput, optionalNameInput, phoneNumberInput, cityInput, streetInput, houseNumberInput, idInput;
+    private ConnectedTextInput memberName, memberAddress;
 
     private List<Input> inputs;
 
@@ -48,35 +48,35 @@ public class AddMemberController implements Initializable {
             errorMessage.setText("Nem létező település!");
             ok = false;
         }
-        if(ok){
+        if (ok) {
             PreparedStatement pstmt;
             Alert alert;
-            String cimsql = "INSERT INTO cim (telepules_id, cim_utca, cim_hsz) VALUES (?, ?, ?)";
-            String tagsql = "INSERT INTO tag (tag_id, tag_nev, cim_id, tag_tel) VALUES (?, ?, (SELECT cim_id FROM cim ORDER BY cim_id DESC LIMIT 1) , ?)";
-            try{
-                pstmt = DatabaseConnection.getPreparedStatement(cimsql);
+            String addressSQL = "INSERT INTO cim (telepules_id, cim_utca, cim_hsz) VALUES (?, ?, ?)";
+            String memberSQL = "INSERT INTO tag (tag_id, tag_nev, cim_id, tag_tel) VALUES (?, ?, (SELECT cim_id FROM cim ORDER BY cim_id DESC LIMIT 1) , ?)";
+            try {
+                pstmt = DatabaseConnection.getPreparedStatement(addressSQL);
                 pstmt.setString(1, String.valueOf(telepules_id));
-                pstmt.setString(2,tagUtca.getValue());
-                pstmt.setString(3,tagHazszam.getValue());
+                pstmt.setString(2, streetInput.getValue());
+                pstmt.setString(3, houseNumberInput.getValue());
                 pstmt.executeUpdate();
                 pstmt.close();
-                pstmt = DatabaseConnection.getPreparedStatement(tagsql);
-                pstmt.setString(1, tagId.getValue());
-                pstmt.setString(2, tagNev.getValue());
-                pstmt.setString(3, tagTelSzam.getValue());
+                pstmt = DatabaseConnection.getPreparedStatement(memberSQL);
+                pstmt.setString(1, idInput.getValue());
+                pstmt.setString(2, memberName.getValue());
+                pstmt.setString(3, phoneNumberInput.getValue());
                 alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setHeaderText("Tag Regisztrálása");
-                alert.setContentText("Tag neve: " + tagNev.getValue() + "\nCíme: " + tagCim.getValue() + "\nTelefon száma: " + tagTelSzam.getValue());
+                alert.setContentText("Tag neve: " + memberName.getValue() + "\nCíme: " + memberAddress.getValue() + "\nTelefon száma: " + phoneNumberInput.getValue());
                 alert.show();
                 errorMessage.setText("");
                 successMessage.setText("Tag sikeresen regisztrálva!");
                 for (Input j : inputs) {
                     j.reset();
                 }
-                tagId.reset();
+                idInput.reset();
                 pstmt.executeUpdate();
                 pstmt.close();
-            }catch (SQLException sqle){
+            } catch (SQLException sqle) {
                 System.err.println(sqle.getMessage());
             }
         }
@@ -84,60 +84,58 @@ public class AddMemberController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        megyeSelect = new Select<>(memberCounty, false);
-        megyeSelect.setOnValidationFail(_ -> errorMessage.setText("Válassza ki a megyét!"));
-        megyeFeltoltes();
-        tagId = new TextInput(memeberId, 9);
-        tagId.setOnValidationFail(result -> errorMessage.setText("Generáljon egy tagsági azonosítót!"));
-        tagKeresztnev = new TextInput(memberFirstName);
-        tagVezeteknev = new TextInput(memberLastName);
-        tagOpcionalisNev = new TextInput(memberOptionalName, true);
-        tagTelSzam = new TextInput(memberPhoneNumber,12);
-        tagTelSzam.setRegex("^(\\+36|06)?\\s?(20|30|70)\\s?[0-9]{3}\\s?[0-9]{4}$");
-        tagTelSzam.setOnValidationFail(validationResult -> {
-            if(validationResult == ValidationResult.REGEX_FAIL) {
+        countySelect = new Select<>(memberCounty, false);
+        countySelect.setOnValidationFail(_ -> errorMessage.setText("Válassza ki a megyét!"));
+        loadCounties();
+        idInput = new TextInput(memberId, 9);
+        idInput.setOnValidationFail(_ -> errorMessage.setText("Generáljon egy tagsági azonosítót!"));
+        firstNameInput = new TextInput(memberFirstName);
+        lastNameInput = new TextInput(memberLastName);
+        optionalNameInput = new TextInput(memberOptionalName, true);
+        phoneNumberInput = new TextInput(memberPhoneNumber, 12);
+        phoneNumberInput.setRegex("^(\\+36|06)?\\s?(20|30|70)\\s?[0-9]{3}\\s?[0-9]{4}$");
+        phoneNumberInput.setOnValidationFail(validationResult -> {
+            if (validationResult == ValidationResult.REGEX_FAIL) {
                 errorMessage.setText("Rossz formátum! A telefon szám formátuma: +3620234567 vagy 06201234567.");
-            }
-            else{
+            } else {
                 errorMessage.setText("Hibás telefon szám!");
             }
         });
-        tagVaros = new TextInput(memberCity,25);
-        tagVaros.setOnValidationFail(validationResult -> {
-            errorMessage.setText(getErrorMessageTextInput(validationResult)+"a város név!");
+        cityInput = new TextInput(memberCity, 25);
+        cityInput.setOnValidationFail(validationResult -> {
+            errorMessage.setText(getErrorMessageTextInput(validationResult) + "a város név!");
         });
-        tagUtca = new TextInput(memberStreet, 30);
-        tagUtca.setMinLength(1);
-        tagUtca.setOnValidationFail(validationResult -> {
-            errorMessage.setText(getErrorMessageTextInput(validationResult)+"az utca név!");
+        streetInput = new TextInput(memberStreet, 30);
+        streetInput.setMinLength(1);
+        streetInput.setOnValidationFail(validationResult -> {
+            errorMessage.setText(getErrorMessageTextInput(validationResult) + "az utca név!");
         });
-        tagHazszam = new TextInput(memberHouseNumber, 20);
-        tagHazszam.setMinLength(1);
-        tagHazszam.setRegex("^[0-9]+[a-zA-Z]?(/[a-zA-Z]|\\\\.[a-zA-Z])?$");
-        tagHazszam.setOnValidationFail(validationResult -> {
-            if(validationResult == ValidationResult.REGEX_FAIL) {
+        houseNumberInput = new TextInput(memberHouseNumber, 20);
+        houseNumberInput.setMinLength(1);
+        houseNumberInput.setRegex("^[0-9]+[a-zA-Z]?(/[a-zA-Z]|\\\\.[a-zA-Z])?$");
+        houseNumberInput.setOnValidationFail(validationResult -> {
+            if (validationResult == ValidationResult.REGEX_FAIL) {
                 errorMessage.setText("Hibás formátum!");
-            }
-            else{
+            } else {
                 errorMessage.setText("Hibás ház szám!");
             }
         });
-        tagNev = new ConnectedTextInput();
-        tagNev.addInput(tagVezeteknev);
-        tagNev.addInput(tagKeresztnev);
-        tagNev.addInput(tagOpcionalisNev);
-        tagNev.setOnValidationFail(validationResult -> {
-            errorMessage.setText(getErrorMessageTextInput(validationResult)+"a név!");
+        memberName = new ConnectedTextInput();
+        memberName.addInput(lastNameInput);
+        memberName.addInput(firstNameInput);
+        memberName.addInput(optionalNameInput);
+        memberName.setOnValidationFail(validationResult -> {
+            errorMessage.setText(getErrorMessageTextInput(validationResult) + "a név!");
         });
-        tagCim = new ConnectedTextInput();
-        tagCim.addInput(tagVaros);
-        tagCim.addInput(tagUtca);
-        tagCim.addInput(tagHazszam);
+        memberAddress = new ConnectedTextInput();
+        memberAddress.addInput(cityInput);
+        memberAddress.addInput(streetInput);
+        memberAddress.addInput(houseNumberInput);
 
-        inputs = List.of(tagNev, tagId, tagTelSzam, tagVaros, megyeSelect, tagUtca, tagHazszam);
+        inputs = List.of(memberName, idInput, phoneNumberInput, cityInput, countySelect, streetInput, houseNumberInput);
     }
 
-    public boolean isSameId(String randomId){
+    public boolean isSameId(String randomId) {
         Statement stmt = null;
         Connection conn = DatabaseConnection.getConnection();
         boolean same = false;
@@ -150,23 +148,25 @@ public class AddMemberController implements Initializable {
             }
             rs.close();
             stmt.close();
-        }catch (SQLException sqle){
+        } catch (SQLException sqle) {
             sqle.getMessage();
         }
         return same;
     }
 
-    public void generateRandomId(){
-        String randomId = randomMemberId(tagId.getMaxLength());
-        if(!isSameId(randomId)) tagId.setValue(randomId);
+    public void generateRandomId() {
+        String randomId = randomMemberId(idInput.getMaxLength());
+        if (!isSameId(randomId)) idInput.setValue(randomId);
     }
-    public String randomMemberId(int max){
-        String tagId =String.valueOf((int)(Math.random()*9)+1);
-        for(int i = 0; i < max-1; i++) {
-            tagId += (int)(Math.random() * 10);
+
+    public String randomMemberId(int max) {
+        String tagId = String.valueOf((int) (Math.random() * 9) + 1);
+        for (int i = 0; i < max - 1; i++) {
+            tagId += (int) (Math.random() * 10);
         }
         return tagId;
     }
+
     private String getErrorMessageTextInput(ValidationResult result) {
         return switch (result) {
             case EMPTY -> "Nincs megadva ";
@@ -177,7 +177,7 @@ public class AddMemberController implements Initializable {
         };
     }
 
-    public void megyeFeltoltes() {
+    public void loadCounties() {
         Statement stmt;
         Connection conn = DatabaseConnection.getConnection();
         try {
@@ -185,9 +185,9 @@ public class AddMemberController implements Initializable {
             ResultSet rs = stmt.executeQuery("SELECT * FROM megye");
             while (rs.next()) {
                 int id = rs.getInt("megye_id");
-                String megye = rs.getString("megye_megnevezese");
-                County m = new County(id, megye);
-                megyeSelect.addOption(m);
+                String megye_megnevezese = rs.getString("megye_megnevezese");
+                County m = new County(id, megye_megnevezese);
+                countySelect.addOption(m);
             }
             rs.close();
             stmt.close();

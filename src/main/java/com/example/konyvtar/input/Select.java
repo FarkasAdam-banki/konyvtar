@@ -6,7 +6,7 @@ import javafx.scene.control.ComboBox;
 
 import java.util.List;
 
-public class Select <T> extends Input{
+public class Select<T> extends Input {
     private ComboBox<T> comboBox;
     private boolean includesPrompt;
 
@@ -30,7 +30,7 @@ public class Select <T> extends Input{
 
     @Override
     protected ValidationResult validate() {
-        if (getSelectedIndex() == -1 ||(includesPrompt && getSelectedIndex() == 0))
+        if (getSelectedIndex() == -1 || (includesPrompt && getSelectedIndex() == 0))
             return ValidationResult.NO_SELECTION;
 
         return ValidationResult.VALID;

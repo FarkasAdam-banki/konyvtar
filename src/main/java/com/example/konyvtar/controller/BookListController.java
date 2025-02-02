@@ -14,7 +14,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
 
-public class FindBookController {
+public class BookListController {
     @FXML
     private TextField searchField;
 
@@ -68,7 +68,7 @@ public class FindBookController {
         genreColumn.setCellValueFactory(new PropertyValueFactory<>("genre"));
         availabilityColumn.setCellValueFactory(new PropertyValueFactory<>("available"));
 
-        availabilityColumn.setCellFactory(column -> new TableCell<>() {
+        availabilityColumn.setCellFactory(_ -> new TableCell<>() {
             @Override
             protected void updateItem(String item, boolean empty) {
                 super.updateItem(item, empty);
@@ -88,10 +88,9 @@ public class FindBookController {
         });
 
 
-
-        searchField.setOnAction(event -> fetchBooks());
-        searchButton.setOnMouseClicked(event -> fetchBooks());
-        available.setOnAction(event -> fetchBooks());
+        searchField.setOnAction(_ -> fetchBooks());
+        searchButton.setOnMouseClicked(_ -> fetchBooks());
+        available.setOnAction(_ -> fetchBooks());
         fetchBooks();
         fetchStats();
     }
@@ -127,20 +126,19 @@ public class FindBookController {
                 String author = rs.getString("konyv_szerzo");
                 int year = rs.getInt("konyv_kiadas");
                 String genre = rs.getString("konyv_mufaj");
-                String available = rs.getBoolean("available")?"Igen":"Nem";
-                books.add(new Book(title, author,serial, isbn, year, genre, available));
+                String available = rs.getBoolean("available") ? "Igen" : "Nem";
+                books.add(new Book(title, author, serial, isbn, year, genre, available));
             }
             boolean selected = available.getSelectionModel().getSelectedIndex() != 0;
             if (selected) {
                 String isAvailable = available.getValue();
                 for (int i = 0; i < books.size(); i++) {
-                    if(Objects.equals(books.get(i).isAvailable(), isAvailable)){
+                    if (Objects.equals(books.get(i).isAvailable(), isAvailable)) {
                         resultBooks.add(books.get(i));
                     }
                 }
-            }
-            else{
-                resultBooks=books;
+            } else {
+                resultBooks = books;
             }
             booksTableView.setItems(resultBooks);
             resultCountLabel.setText("Találatok száma: " + resultBooks.size());

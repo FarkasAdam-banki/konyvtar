@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+
 import java.io.IOException;
 
 public class MainApplication extends Application {
@@ -13,14 +14,14 @@ public class MainApplication extends Application {
         Scene scene = new Scene(fxmlLoader.load(), 1000, 835);
         try {
             scene.getStylesheets().add(getClass().getResource("style/application.css").toExternalForm());
-        }
-        catch (NullPointerException npe){
-            System.err.println("A fájl nem található: "+npe);
+        } catch (NullPointerException npe) {
+            System.err.println("A fájl nem található: " + npe);
         }
         stage.setScene(scene);
         stage.show();
         stage.setResizable(false);
     }
+
     public static void main(String[] args) {
         launch();
     }

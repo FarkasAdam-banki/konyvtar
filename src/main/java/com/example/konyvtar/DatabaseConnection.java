@@ -1,4 +1,5 @@
 package com.example.konyvtar;
+
 import java.sql.*;
 
 public class DatabaseConnection {
@@ -7,7 +8,8 @@ public class DatabaseConnection {
     private final static String USER = "root";
     private final static String PASSWORD = "";
 
-    private DatabaseConnection() {}
+    private DatabaseConnection() {
+    }
 
     public static Connection getConnection() {
         if (conn == null) {
@@ -28,7 +30,7 @@ public class DatabaseConnection {
         getConnection();
         try {
             return conn.prepareStatement(sql);
-        }catch (SQLException sqle) {
+        } catch (SQLException sqle) {
             throw new RuntimeException(sqle);
         }
     }

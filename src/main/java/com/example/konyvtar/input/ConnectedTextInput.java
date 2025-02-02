@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-public class ConnectedTextInput extends Input{
+public class ConnectedTextInput extends Input {
 
     private List<TextInput> inputs;
     private String separator;
@@ -17,7 +17,7 @@ public class ConnectedTextInput extends Input{
         setMaxLength(maxLength);
     }
 
-    public ConnectedTextInput(List<TextInput> inputs,String separator) {
+    public ConnectedTextInput(List<TextInput> inputs, String separator) {
         this(inputs, separator, -1);
     }
 
@@ -39,7 +39,7 @@ public class ConnectedTextInput extends Input{
         for (int i = 0; i < inputs.size(); i++) {
             TextInput input = inputs.get(i);
             value.append(input.getValue());
-            if (i+1 != inputs.size()){
+            if (i + 1 != inputs.size()) {
                 value.append(separator);
             }
         }
@@ -56,7 +56,7 @@ public class ConnectedTextInput extends Input{
         if (i != inputs.size()) {
             return inputs.get(i).validate();
         }
-        if (maxLength > 0 && getValue().length() > maxLength){
+        if (maxLength > 0 && getValue().length() > maxLength) {
             return ValidationResult.GROUP_TOO_LONG;
         }
         if (regex != null && !getValue().matches(regex)) {

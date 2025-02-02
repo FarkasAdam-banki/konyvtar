@@ -18,8 +18,8 @@ public abstract class Input {
     public final boolean isValidOrFail() {
         if (isValid())
             return true;
-        if(onValidationFail != null){
-            if (validate() != ValidationResult.VALID){
+        if (onValidationFail != null) {
+            if (validate() != ValidationResult.VALID) {
                 onValidationFail.accept(validate());
             } else {
                 onValidationFail.accept(ValidationResult.CUSTOM_VALIDATION_FAIL);
@@ -29,6 +29,7 @@ public abstract class Input {
     }
 
     protected abstract ValidationResult validate();
+
     public abstract void reset();
 
     public Consumer<ValidationResult> getOnValidationFail() {
