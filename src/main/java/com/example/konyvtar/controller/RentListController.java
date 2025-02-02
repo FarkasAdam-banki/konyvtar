@@ -14,7 +14,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Objects;
 
 public class RentListController {
     @FXML
@@ -82,9 +81,6 @@ public class RentListController {
             pstmt.setString(4, "%" + search.trim() + "%");
             pstmt.setString(5, month.getSelectionModel().getSelectedItem());
             pstmt.setString(6, month.getSelectionModel().getSelectedItem());
-            System.out.println(pstmt);
-
-
 
             ResultSet rs = pstmt.executeQuery();
             while (rs.next()) {
