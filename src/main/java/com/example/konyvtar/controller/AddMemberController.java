@@ -124,8 +124,13 @@ public class AddMemberController implements Initializable {
         memberName.addInput(lastNameInput);
         memberName.addInput(firstNameInput);
         memberName.addInput(optionalNameInput);
+        memberName.setRegex("^\\p{L}+(?:\\s\\p{L}+){0,2}$");
         memberName.setOnValidationFail(validationResult -> {
-            errorMessage.setText(getErrorMessageTextInput(validationResult) + "a név!");
+            if (validationResult == ValidationResult.GROUP_REGEX_FAIL) {
+                errorMessage.setText("Hibás formátum! A névben nem lehet szám!");
+            } else {
+                errorMessage.setText("Hibás név!");
+            }
         });
         memberAddress = new ConnectedTextInput();
         memberAddress.addInput(cityInput);
