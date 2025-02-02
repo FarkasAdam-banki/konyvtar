@@ -59,7 +59,7 @@
                   </HBox>
                   <HBox>
                      <children>
-                        <VBox>
+                        <VBox styleClass="center">
                            <children>
                               <Label fx:id="errorMessage" styleClass="error" />
                               <Button mnemonicParsing="false" onAction="#loan" text="Felvétel" />
