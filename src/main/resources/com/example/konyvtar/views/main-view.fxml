@@ -22,20 +22,20 @@
                 </Menu>
                 <Menu mnemonicParsing="false" text="Tagok">
                     <items>
-                        <MenuItem mnemonicParsing="false" onAction="#showTagRegisztralasa" text="Tag regisztálása" />
-                        <MenuItem mnemonicParsing="false" onAction="#showTagokListaja" text="Tagok listája" />
+                        <MenuItem mnemonicParsing="false" onAction="#showAddMember" text="Tag regisztálása" />
+                        <MenuItem mnemonicParsing="false" onAction="#showMemberList" text="Tagok listája" />
                     </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="Könyvek">
                     <items>
-                        <MenuItem mnemonicParsing="false" onAction="#showKonyvFelvetel" text="Könyv felvétele" />
-                        <MenuItem mnemonicParsing="false" onAction="#showKonyvekKeresese" text="Könyvek listája" />
+                        <MenuItem mnemonicParsing="false" onAction="#showAddBook" text="Könyv felvétele" />
+                        <MenuItem mnemonicParsing="false" onAction="#showBookList" text="Könyvek listája" />
                     </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="Kölcsönzések">
                     <items>
-                        <MenuItem mnemonicParsing="false" onAction="#showKolcsonzesFelvetele" text="Kölcsönzés felvétele" />
-                        <MenuItem mnemonicParsing="false" onAction="#showKolcsonzesekListaja" text="Kölcsönzések listája" />
+                        <MenuItem mnemonicParsing="false" onAction="#showAddRent" text="Kölcsönzés felvétele" />
+                        <MenuItem mnemonicParsing="false" onAction="#showRentList" text="Kölcsönzések listája" />
                     </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="Súgó">

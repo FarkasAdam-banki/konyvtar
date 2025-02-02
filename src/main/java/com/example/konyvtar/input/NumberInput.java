@@ -2,7 +2,7 @@ package com.example.konyvtar.input;
 
 import javafx.scene.control.TextField;
 
-public class NumberInput extends TextInput{
+public class NumberInput extends TextInput {
 
     private long minValue, maxValue;
 

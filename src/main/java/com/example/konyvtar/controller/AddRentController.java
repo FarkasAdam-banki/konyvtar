@@ -36,14 +36,11 @@ public class AddRentController implements Initializable, BasicData {
     NumberInput membershipIdInput;
     private List<Input> inputs;
 
-    public AddRentController() {
-    }
-
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        Calendar datum = Calendar.getInstance();
-        int ev = datum.get(Calendar.YEAR);
+        Calendar currentDate = Calendar.getInstance();
+        int currentYear = currentDate.get(Calendar.YEAR);
 
-        serialInput=new TextInput(serial);
+        serialInput = new TextInput(serial);
         serialInput.setOnValidationFail(validationResult -> {
             String err = switch (validationResult) {
                 case EMPTY -> "Nincs megadva a leltári szám!";
@@ -57,8 +54,8 @@ public class AddRentController implements Initializable, BasicData {
             TextInput textInput = (TextInput) input;
             return checkExistanceInDB("leltar", "leltar_leltariszam", textInput.getValue());
         });
-        membershipIdInput=new NumberInput(membershipId, MEMERSHIPIDLENGTH);
-        membershipIdInput.setMinValue(MEMERSHIPIDLENGTH);
+        membershipIdInput = new NumberInput(membershipId, MEMBERSHIPIDLENGTH);
+        membershipIdInput.setMinValue(MEMBERSHIPIDLENGTH);
         membershipIdInput.setOnValidationFail(validationResult -> {
             String err = switch (validationResult) {
                 case EMPTY -> "Nincs megadva a tagsági azonosító!";
@@ -77,23 +74,23 @@ public class AddRentController implements Initializable, BasicData {
         monthSelect = new Select<>(rentMonth, false);
         monthSelect.setOnValidationFail(errorDate);
         daySelect = new Select<>(rentDay, false);
-        daySelect.setOnValidationFail(result -> {
-            errorMessage.setText(result == ValidationResult.CUSTOM_VALIDATION_FAIL? "Érvénytelen dátum!":"Nincs megadva dátum!");
-        });
+        daySelect.setOnValidationFail(result ->
+                errorMessage.setText(result == ValidationResult.CUSTOM_VALIDATION_FAIL ? "Érvénytelen dátum!" : "Nincs megadva dátum!")
+        );
         daySelect.setCustomValidator(_ ->
-            datum.get(Calendar.DAY_OF_MONTH) < daySelect.getSelectedIndex() + 1 && datum.get(Calendar.MONTH) == monthSelect.getSelectedIndex() ||
-                    datum.get(Calendar.MONTH) < monthSelect.getSelectedIndex() && ev == yearSelect.getSelectedItem() ||
-                    yearSelect.getSelectedItem() > ev);
+                currentDate.get(Calendar.DAY_OF_MONTH) < daySelect.getSelectedIndex() + 1 && currentDate.get(Calendar.MONTH) == monthSelect.getSelectedIndex() ||
+                        currentDate.get(Calendar.MONTH) < monthSelect.getSelectedIndex() && currentYear == yearSelect.getSelectedItem() ||
+                        yearSelect.getSelectedItem() > currentYear);
 
-        for (int i = ev; i < ev + 2; ++i) {
+        for (int i = currentYear; i < currentYear + 2; ++i) {
             yearSelect.addOption(i);
         }
         for (int i = 1; i <= 31; ++i) {
             daySelect.addOption(i);
         }
         for (int i = 1; i < MONTHS.length; ++i) {
-            Month h = new Month(i, MONTHS[i]);
-            monthSelect.addOption(h);
+            Month month = new Month(i, MONTHS[i]);
+            monthSelect.addOption(month);
         }
         inputs = List.of(serialInput, membershipIdInput, yearSelect, monthSelect, daySelect);
 
@@ -117,13 +114,13 @@ public class AddRentController implements Initializable, BasicData {
 
     public void loan() {
         int i = 0;
-        while (i < inputs.size() && inputs.get(i).isValidOrFail()){
+        while (i < inputs.size() && inputs.get(i).isValidOrFail()) {
             i++;
         }
 
         if (i == inputs.size()) {
             errorMessage.setText("");
-            String date = yearSelect.getSelectedItem() + "-" + (monthSelect.getSelectedIndex()+1) + "-" + daySelect.getSelectedItem();
+            String date = yearSelect.getSelectedItem() + "-" + (monthSelect.getSelectedIndex() + 1) + "-" + daySelect.getSelectedItem();
             PreparedStatement pstmt;
             boolean canBorrow;
             try {
@@ -132,10 +129,10 @@ public class AddRentController implements Initializable, BasicData {
                 ResultSet rs = pstmt.executeQuery();
                 if (rs.next()) {
                     canBorrow = rs.getBoolean(1);
-                }else {
+                } else {
                     canBorrow = true;
                 }
-            }catch (SQLException sqle) {
+            } catch (SQLException sqle) {
                 throw new RuntimeException(sqle);
             }
             if (canBorrow) {
@@ -164,7 +161,7 @@ public class AddRentController implements Initializable, BasicData {
                 } catch (SQLException e) {
                     throw new RuntimeException(e);
                 }
-            }else {
+            } else {
                 errorMessage.setText("Ez a könyv nem kikölcsönözhető!");
             }
         }

@@ -30,47 +30,46 @@ public class AddBookController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        Calendar datum = Calendar.getInstance();
-        int ev = datum.get(Calendar.YEAR);
+        Calendar currentDate = Calendar.getInstance();
+        int currentYear = currentDate.get(Calendar.YEAR);
 
         titleInput = new TextInput(title, 50);
         titleInput.setOnValidationFail(validationResult -> {
-            errorMessage.setText(getErrorMessageTextInput(validationResult)+"a könyv címe!");
+            errorMessage.setText(getErrorMessageTextInput(validationResult) + "a könyv címe!");
         });
         authorInput = new TextInput(author, 50);
         authorInput.setOnValidationFail(validationResult -> {
-            errorMessage.setText(getErrorMessageTextInput(validationResult)+"a szerző!");
+            errorMessage.setText(getErrorMessageTextInput(validationResult) + "a szerző!");
         });
         releaseInput = new NumberInput(release, 4);
         releaseInput.setMinValue(0);
-        releaseInput.setMaxValue(ev);
+        releaseInput.setMaxValue(currentYear);
         releaseInput.setOnValidationFail(validationResult -> {
-            errorMessage.setText(getErrorMessageNumberInput(validationResult)+"a kiadás éve!");
+            errorMessage.setText(getErrorMessageNumberInput(validationResult) + "a kiadás éve!");
         });
         genreInput = new TextInput(genre, 20);
         genreInput.setOnValidationFail(validationResult -> {
-            errorMessage.setText(getErrorMessageTextInput(validationResult)+"a műfaj!");
+            errorMessage.setText(getErrorMessageTextInput(validationResult) + "a műfaj!");
         });
         isbnInput = new NumberInput(isbn, 13);
         isbnInput.setMinLength(10);
         isbnInput.setOnValidationFail(validationResult -> {
-            errorMessage.setText(getErrorMessageNumberInput(validationResult)+"az ISBN-kód!");
+            errorMessage.setText(getErrorMessageNumberInput(validationResult) + "az ISBN-kód!");
         });
         countInput = new NumberInput(count, 5);
         countInput.setMinValue(1);
         countInput.setOnValidationFail(validationResult -> {
-            errorMessage.setText(getErrorMessageNumberInput(validationResult)+"a darabszám!");
+            errorMessage.setText(getErrorMessageNumberInput(validationResult) + "a darabszám!");
         });
         prefixInput = new TextInput(prefix);
         prefixInput.setRegex("^[A-Z]{4}$");
         prefixInput.setOnValidationFail(validationResult -> {
-            if(validationResult == ValidationResult.REGEX_FAIL) {
+            if (validationResult == ValidationResult.REGEX_FAIL) {
                 errorMessage.setText("Az előtagnak négy ékezetnélküli nagybetűből kell állnia!");
-            }else if (validationResult == ValidationResult.CUSTOM_VALIDATION_FAIL) {
+            } else if (validationResult == ValidationResult.CUSTOM_VALIDATION_FAIL) {
                 errorMessage.setText("Ilyen előtag már létezik!");
-            }
-            else {
-                errorMessage.setText(getErrorMessageTextInput(validationResult)+"az előtag!");
+            } else {
+                errorMessage.setText(getErrorMessageTextInput(validationResult) + "az előtag!");
             }
         });
         prefixInput.setCustomValidator(input -> {
@@ -80,7 +79,7 @@ public class AddBookController implements Initializable {
             );
             boolean result;
             try {
-                statement.setString(1, textInput.getValue()+"%");
+                statement.setString(1, textInput.getValue() + "%");
                 ResultSet rs = statement.executeQuery();
                 rs.next();
                 result = rs.getInt(1) == 0;
@@ -97,7 +96,7 @@ public class AddBookController implements Initializable {
 
     public void onSubmit() {
         int i = 0;
-        while (i < inputs.size() && inputs.get(i).isValidOrFail()){
+        while (i < inputs.size() && inputs.get(i).isValidOrFail()) {
             i++;
         }
         if (i == inputs.size()) {
@@ -109,11 +108,11 @@ public class AddBookController implements Initializable {
                 pstmnt.setLong(1, isbnInput.getNumber());
                 pstmnt.setString(2, titleInput.getValue());
                 pstmnt.setString(3, authorInput.getValue());
-                pstmnt.setInt(4, (int)releaseInput.getNumber());
+                pstmnt.setInt(4, (int) releaseInput.getNumber());
                 pstmnt.setString(5, genreInput.getValue());
                 pstmnt.executeUpdate();
                 pstmnt.close();
-            }catch (SQLException sqle) {
+            } catch (SQLException sqle) {
                 System.err.println(sqle.getMessage());
             }
             pstmnt = DatabaseConnection.getPreparedStatement(
@@ -122,7 +121,7 @@ public class AddBookController implements Initializable {
             try {
                 for (int j = 0; j < countInput.getNumber(); j++) {
                     String padded = String.format("%05d", j);
-                    pstmnt.setString(1, prefixInput.getValue()+"-"+padded);
+                    pstmnt.setString(1, prefixInput.getValue() + "-" + padded);
                     pstmnt.setLong(2, isbnInput.getNumber());
                     pstmnt.addBatch();
                 }
@@ -131,7 +130,7 @@ public class AddBookController implements Initializable {
 
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setHeaderText("Sikeres felvétel");
-                alert.setContentText("A \""+ titleInput.getValue() +"\" című könyv sikeresen felvéve!");
+                alert.setContentText("A \"" + titleInput.getValue() + "\" című könyv sikeresen felvéve!");
                 alert.show();
 
                 for (Input j : inputs) {

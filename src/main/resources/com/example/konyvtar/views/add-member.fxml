@@ -128,7 +128,7 @@
                               <Label prefHeight="17.0" prefWidth="200.0" text="Tagsági azonositó" />
                               <HBox prefHeight="100.0" prefWidth="200.0">
                                  <children>
-                                    <TextField fx:id="memeberId" editable="false">
+                                    <TextField fx:id="memberId" editable="false">
                                        <HBox.margin>
                                           <Insets />
                                        </HBox.margin>
