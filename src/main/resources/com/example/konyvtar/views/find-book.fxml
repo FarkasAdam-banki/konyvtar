@@ -37,6 +37,7 @@
                             </HBox>
                         <TableView fx:id="booksTableView" prefHeight="200.0" prefWidth="200.0">
                           <columns>
+                              <TableColumn fx:id="serialColumn" text="Sorozat szám" />
                               <TableColumn fx:id="titleColumn" text="Cím" />
                               <TableColumn fx:id="authorColumn" text="Szerző" />
                               <TableColumn fx:id="isbnColumn" text="ISBN" />
@@ -80,7 +81,7 @@
             </children>
          <styleClass>
             <String fx:value="search" />
-            <String fx:value="w-90" />
+            <String fx:value="w-100" />
          </styleClass>
         </VBox>
     </children>

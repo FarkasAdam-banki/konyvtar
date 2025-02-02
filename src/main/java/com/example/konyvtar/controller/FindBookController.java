@@ -25,6 +25,9 @@ public class FindBookController {
     private TableView<Book> booksTableView;
 
     @FXML
+    private TableColumn<Book, String> serialColumn;
+
+    @FXML
     private TableColumn<Book, String> titleColumn;
 
     @FXML
@@ -57,13 +60,12 @@ public class FindBookController {
         available.setItems(FXCollections.observableArrayList("Kölcsönözhető", "Igen", "Nem"));
         available.setValue("Kölcsönözhető");
         this.conn = DatabaseConnection.getConnection();
-
+        serialColumn.setCellValueFactory(new PropertyValueFactory<>("serial"));
         titleColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
         authorColumn.setCellValueFactory(new PropertyValueFactory<>("author"));
         isbnColumn.setCellValueFactory(new PropertyValueFactory<>("isbn"));
         yearColumn.setCellValueFactory(new PropertyValueFactory<>("year"));
         genreColumn.setCellValueFactory(new PropertyValueFactory<>("genre"));
-        availabilityColumn.setCellValueFactory(new PropertyValueFactory<>("available"));
         availabilityColumn.setCellValueFactory(new PropertyValueFactory<>("available"));
 
         availabilityColumn.setCellFactory(column -> new TableCell<>() {
@@ -102,29 +104,32 @@ public class FindBookController {
         try {
             PreparedStatement pstmt;
             sql = """
-                        SELECT k.konyv_ISBN, k.konyv_cim, k.konyv_szerzo, k.konyv_kiadas, k.konyv_mufaj,
-                        IF(ko.kolcsonzes_visszaE = 0, FALSE, TRUE) AS available
-                       FROM konyv k
-                       JOIN leltar l ON k.konyv_ISBN = l.konyv_ISBN
-                       LEFT JOIN kolcsonzes ko ON l.leltar_leltariszam = ko.leltar_leltariszam AND ko.kolcsonzes_visszaE = 0
-                       WHERE k.konyv_ISBN LIKE ? OR k.konyv_cim LIKE ? OR k.konyv_szerzo LIKE ?;
+                    SELECT l.leltar_leltariszam, k.konyv_ISBN, k.konyv_cim, k.konyv_szerzo, k.konyv_kiadas, k.konyv_mufaj,
+                    IF(ko.kolcsonzes_visszaE IS NULL, TRUE, IF(ko.kolcsonzes_visszaE = 0, FALSE, TRUE)) AS available
+                    FROM konyv k
+                    JOIN leltar l ON k.konyv_ISBN = l.konyv_ISBN
+                    LEFT JOIN kolcsonzes ko ON l.leltar_leltariszam = ko.leltar_leltariszam AND ko.kolcsonzes_visszaE = 0
+                    WHERE k.konyv_ISBN LIKE ? OR k.konyv_cim LIKE ? OR k.konyv_szerzo LIKE ? OR l.leltar_leltariszam LIKE ?;
                     """;
             pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, "%" + search.strip() + "%");
             pstmt.setString(2, "%" + search.strip() + "%");
             pstmt.setString(3, "%" + search.strip() + "%");
+            pstmt.setString(4, "%" + search.strip() + "%");
+
 
             ResultSet rs = pstmt.executeQuery();
 
             while (rs.next()) {
+                String serial = rs.getString("leltar_leltariszam");
                 String isbn = rs.getString("konyv_ISBN");
                 String title = rs.getString("konyv_cim");
                 String author = rs.getString("konyv_szerzo");
                 int year = rs.getInt("konyv_kiadas");
                 String genre = rs.getString("konyv_mufaj");
                 String available = rs.getBoolean("available")?"Igen":"Nem";
-
-                books.add(new Book(title, author, isbn, year, genre, available));
+                System.out.println(serial);
+                books.add(new Book(title, author,serial, isbn, year, genre, available));
             }
             boolean selected = available.getSelectionModel().getSelectedIndex() != 0;
             if (selected) {
