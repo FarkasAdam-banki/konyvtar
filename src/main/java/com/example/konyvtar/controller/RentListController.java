@@ -109,10 +109,13 @@ public class RentListController {
             for (Rent rent : rents) {
                 pstmt.setBoolean(1,  rent.isReturned());
                 pstmt.setInt(2, rent.getRentId());
-                pstmt.addBatch();
+                pstmt.executeUpdate();
             }
 
-            pstmt.executeBatch();
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setHeaderText("Adatok mentése");
+            alert.setContentText("Sikeres mentés!");
+            alert.show();
         } catch (SQLException e) {
             e.printStackTrace();
         }
