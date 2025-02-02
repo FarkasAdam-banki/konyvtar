@@ -1,16 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.String?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="800.0" prefWidth="1000.0" styleClass="container" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.konyvtar.controller.MainController">
+<AnchorPane prefHeight="800.0" prefWidth="1000.0" styleClass="container" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.konyvtar.controller.RentListController">
     <children>
         <VBox layoutX="62.0" layoutY="56.0" prefHeight="200.0" style="-fx-background-color: #fff;" styleClass="search" AnchorPane.bottomAnchor="150.0" AnchorPane.leftAnchor="150.0" AnchorPane.rightAnchor="150.0" AnchorPane.topAnchor="150.0">
             <children>
@@ -21,24 +23,36 @@
                 </HBox>
                 <HBox alignment="CENTER" prefHeight="81.0" styleClass="search-bar">
                     <children>
-                        <TextField promptText="Keresés..." />
-                  <ComboBox prefWidth="150.0" promptText="Ebben a hónapban" />
-                  <Button mnemonicParsing="false" text="Keresés" />
+                        <TextField fx:id="searchField" promptText="Keresés..." />
+                  <ComboBox fx:id="month" prefWidth="150.0" promptText="Ebben a hónapban" />
+                  <Button fx:id="searchButton" mnemonicParsing="false" text="Keresés" />
                     </children>
                 </HBox>
                 <HBox alignment="CENTER" prefHeight="81.0" prefWidth="476.0">
                <children>
-                  <ListView prefHeight="200.0" styleClass="results" HBox.hgrow="ALWAYS" />
+                  <TableView fx:id="rentsTableView" prefHeight="81.0" prefWidth="452.0">
+                    <columns>
+                        <TableColumn fx:id="membershipIdColumn" text="Tagsági azonosító" />
+                        <TableColumn fx:id="serialNumberColumn" text="Sorozat szám" />
+                        <TableColumn fx:id="borrowDateColumn"  text="Kölcsönzés napja" />
+                        <TableColumn fx:id="dueDateColumn" text="Kölcsönzés határideje" />
+                        <TableColumn fx:id="returnedColumn" text="Visszahozta" />
+                    </columns>
+                     <styleClass>
+                        <String fx:value="results" />
+                        <String fx:value="rents" />
+                     </styleClass>
+                  </TableView>
                </children>
                 </HBox>
             <HBox alignment="CENTER" layoutX="10.0" layoutY="144.0" prefHeight="81.0" prefWidth="476.0" styleClass="result-borrow">
                <children>
-                  <Label text="Találatok száma: ">
+                  <Label fx:id="resultCountLabel" text="Találatok száma: ">
                      <HBox.margin>
                         <Insets />
                      </HBox.margin>
                   </Label>
-                  <Button mnemonicParsing="false" text="Mentés" textAlignment="CENTER" />
+                  <Button fx:id="saveButton" mnemonicParsing="false" text="Mentés" textAlignment="CENTER" />
                </children>
             </HBox>
             </children>

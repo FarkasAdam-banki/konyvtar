@@ -128,7 +128,6 @@ public class FindBookController {
                 int year = rs.getInt("konyv_kiadas");
                 String genre = rs.getString("konyv_mufaj");
                 String available = rs.getBoolean("available")?"Igen":"Nem";
-                System.out.println(serial);
                 books.add(new Book(title, author,serial, isbn, year, genre, available));
             }
             boolean selected = available.getSelectionModel().getSelectedIndex() != 0;

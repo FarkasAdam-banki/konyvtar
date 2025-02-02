@@ -120,7 +120,6 @@ public class AddRentController implements Initializable, BasicData {
                 this.errorMessage.setText("Nem megfelelő tagsági azonosító formátum!");
             } else {
                 okMembershipId = checkExistanceInDB("tag", "tag_id", membershipId);
-
                 if (!okMembershipId) {
                     this.errorMessage.setText("A megadott tagsági azonosítóhoz nem tartozik felhasználó!");
                 } else if (!okDate) {

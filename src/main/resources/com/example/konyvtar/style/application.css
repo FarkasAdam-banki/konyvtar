@@ -190,10 +190,23 @@
     -fx-min-height: 300px;
     -fx-min-width: 725px;
     -fx-padding: 5px;
-
     -fx-border-insets: 15px 15px;
     -fx-background-insets: 15px 15px;
+
+
 }
+
+.table-row-cell:filled:selected {
+    -fx-background: -fx-control-inner-background ;
+    -fx-background-color: -fx-table-cell-border-color, -fx-background ;
+    -fx-background-insets: 0, 0 0 1 0 ;
+    -fx-table-cell-border-color: derive(-fx-color, 5%);
+}
+.table-row-cell:odd:filled:selected {
+    -fx-background: -fx-control-inner-background-alt ;
+}
+.rents{
+    -fx-min-width: 580px}
 .result-num {
     -fx-alignment: center-right;
 }
