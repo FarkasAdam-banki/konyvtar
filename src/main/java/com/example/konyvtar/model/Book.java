@@ -8,16 +8,24 @@ public class Book {
     private int year;
     private String genre;
     private String available;
+    private String serial;
 
 
-
-    public Book(String title, String author, String isbn, int year, String genre, String available) {
+    public Book(String title, String author, String serial, String isbn, int year, String genre, String available) {
         setTitle(title);
         setAuthor(author);
+        setSerial(serial);
         setIsbn(isbn);
         setYear(year);
         setGenre(genre);
         setAvailable(available);
+    }
+    public String getSerial() {
+        return serial;
+    }
+
+    public void setSerial(String serial) {
+        this.serial = serial;
     }
 
     public String getTitle() {

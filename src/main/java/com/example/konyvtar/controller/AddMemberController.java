@@ -83,7 +83,7 @@ public class AddMemberController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        megyeSelect = new Select<>(memberCounty, true);
+        megyeSelect = new Select<>(memberCounty, false);
         conn = DatabaseConnection.getConnection();
         megyeFeltoltes();
         tagId = new TextInput(memeberId, 9);

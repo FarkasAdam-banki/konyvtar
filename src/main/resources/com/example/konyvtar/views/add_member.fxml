@@ -160,7 +160,7 @@
                         </VBox>
                         <VBox prefHeight="200.0" prefWidth="300.0">
                            <children>
-                              <ComboBox fx:id="memberCounty" prefWidth="150.0" />
+                              <ComboBox fx:id="memberCounty" prefWidth="150.0" promptText="Válasszon!"/>
                               <Label prefHeight="17.0" prefWidth="200.0" styleClass="label2" text="Megye" />
                            </children>
                         </VBox>
