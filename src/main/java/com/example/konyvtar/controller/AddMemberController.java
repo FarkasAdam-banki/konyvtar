@@ -1,10 +1,7 @@
 package com.example.konyvtar.controller;
 
 import com.example.konyvtar.DatabaseConnection;
-import com.example.konyvtar.input.ConnectedTextInput;
-import com.example.konyvtar.input.Select;
-import com.example.konyvtar.input.TextInput;
-import com.example.konyvtar.input.ValidationResult;
+import com.example.konyvtar.input.*;
 import com.example.konyvtar.model.County;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -15,6 +12,7 @@ import javafx.scene.control.TextField;
 
 import java.net.URL;
 import java.sql.*;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class AddMemberController implements Initializable {
@@ -30,26 +28,23 @@ public class AddMemberController implements Initializable {
     private TextInput tagKeresztnev, tagVezeteknev, tagOpcionalisNev, tagTelSzam, tagVaros, tagUtca, tagHazszam, tagId;
     private ConnectedTextInput tagNev, tagCim;
 
-    private Connection conn;
+    private List<Input> inputs;
 
 
     public void memberRegisztration() {
         int telepules_id = -1;
         boolean ok = true;
 
-        if (!tagNev.isValidOrFail()) {
-            ok = false;
-        } else if (!tagTelSzam.isValidOrFail()) {
-            ok = false;
-        } else if (!tagUtca.isValidOrFail()) {
-            ok = false;
-        } else if (!tagVaros.isValidOrFail()) {
-            ok = false;
-        } else if (!tagHazszam.isValidOrFail()) {
+        int i = 0;
+        while (i < inputs.size() && inputs.get(i).isValidOrFail()) {
+            i++;
+        }
+        if (i != inputs.size()) {
             ok = false;
         }
+
         telepules_id = getTelepulesId(memberCity.getText());
-        if (telepules_id == -1) {
+        if (ok && telepules_id == -1) {
             errorMessage.setText("Nem létező település!");
             ok = false;
         }
@@ -59,12 +54,13 @@ public class AddMemberController implements Initializable {
             String cimsql = "INSERT INTO cim (telepules_id, cim_utca, cim_hsz) VALUES (?, ?, ?)";
             String tagsql = "INSERT INTO tag (tag_id, tag_nev, cim_id, tag_tel) VALUES (?, ?, (SELECT cim_id FROM cim ORDER BY cim_id DESC LIMIT 1) , ?)";
             try{
-                pstmt = conn.prepareStatement(cimsql);
+                pstmt = DatabaseConnection.getPreparedStatement(cimsql);
                 pstmt.setString(1, String.valueOf(telepules_id));
                 pstmt.setString(2,tagUtca.getValue());
                 pstmt.setString(3,tagHazszam.getValue());
                 pstmt.executeUpdate();
-                pstmt = conn.prepareStatement(tagsql);
+                pstmt.close();
+                pstmt = DatabaseConnection.getPreparedStatement(tagsql);
                 pstmt.setString(1, tagId.getValue());
                 pstmt.setString(2, tagNev.getValue());
                 pstmt.setString(3, tagTelSzam.getValue());
@@ -73,8 +69,13 @@ public class AddMemberController implements Initializable {
                 alert.setContentText("Tag neve: " + tagNev.getValue() + "\nCíme: " + tagCim.getValue() + "\nTelefon száma: " + tagTelSzam.getValue());
                 alert.show();
                 errorMessage.setText("");
-                successMessage.setText("Tag sikersen regisztrálva!");
+                successMessage.setText("Tag sikeresen regisztrálva!");
+                for (Input j : inputs) {
+                    j.reset();
+                }
+                tagId.reset();
                 pstmt.executeUpdate();
+                pstmt.close();
             }catch (SQLException sqle){
                 System.err.println(sqle.getMessage());
             }
@@ -84,9 +85,10 @@ public class AddMemberController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         megyeSelect = new Select<>(memberCounty, false);
-        conn = DatabaseConnection.getConnection();
+        megyeSelect.setOnValidationFail(_ -> errorMessage.setText("Válassza ki a megyét!"));
         megyeFeltoltes();
         tagId = new TextInput(memeberId, 9);
+        tagId.setOnValidationFail(result -> errorMessage.setText("Generáljon egy tagsági azonosítót!"));
         tagKeresztnev = new TextInput(memberFirstName);
         tagVezeteknev = new TextInput(memberLastName);
         tagOpcionalisNev = new TextInput(memberOptionalName, true);
@@ -105,10 +107,12 @@ public class AddMemberController implements Initializable {
             errorMessage.setText(getErrorMessageTextInput(validationResult)+"a város név!");
         });
         tagUtca = new TextInput(memberStreet, 30);
+        tagUtca.setMinLength(1);
         tagUtca.setOnValidationFail(validationResult -> {
-            errorMessage.setText(getErrorMessageTextInput(validationResult)+"a utca név!");
+            errorMessage.setText(getErrorMessageTextInput(validationResult)+"az utca név!");
         });
         tagHazszam = new TextInput(memberHouseNumber, 20);
+        tagHazszam.setMinLength(1);
         tagHazszam.setRegex("^[0-9]+[a-zA-Z]?(/[a-zA-Z]|\\\\.[a-zA-Z])?$");
         tagHazszam.setOnValidationFail(validationResult -> {
             if(validationResult == ValidationResult.REGEX_FAIL) {
@@ -130,22 +134,26 @@ public class AddMemberController implements Initializable {
         tagCim.addInput(tagUtca);
         tagCim.addInput(tagHazszam);
 
+        inputs = List.of(tagNev, tagId, tagTelSzam, tagVaros, megyeSelect, tagUtca, tagHazszam);
     }
 
     public boolean isSameId(String randomId){
         Statement stmt = null;
+        Connection conn = DatabaseConnection.getConnection();
+        boolean same = false;
         try {
             stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT tag_id FROM tag");
-            while (rs.next()) {
+            while (!same && rs.next()) {
                 int id = rs.getInt("tag_id");
-                return randomId.equalsIgnoreCase(String.valueOf(id));
+                same = randomId.equalsIgnoreCase(String.valueOf(id));
             }
-
+            rs.close();
+            stmt.close();
         }catch (SQLException sqle){
             sqle.getMessage();
         }
-        return false;
+        return same;
     }
 
     public void generateRandomId(){
@@ -170,7 +178,8 @@ public class AddMemberController implements Initializable {
     }
 
     public void megyeFeltoltes() {
-        Statement stmt = null;
+        Statement stmt;
+        Connection conn = DatabaseConnection.getConnection();
         try {
             stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT * FROM megye");
@@ -180,6 +189,8 @@ public class AddMemberController implements Initializable {
                 County m = new County(id, megye);
                 megyeSelect.addOption(m);
             }
+            rs.close();
+            stmt.close();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -189,12 +200,13 @@ public class AddMemberController implements Initializable {
     public int getTelepulesId(String telepules) {
         PreparedStatement stmt = null;
         try {
-            stmt = conn.prepareStatement("SELECT telepules_id FROM telepules WHERE telepules_megnevezese=?");
+            stmt = DatabaseConnection.getPreparedStatement("SELECT telepules_id FROM telepules WHERE telepules_megnevezese=?");
             stmt.setString(1, telepules);
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
                 int id = rs.getInt("telepules_id");
                 rs.close();
+                stmt.close();
                 return id;
             }
         } catch (SQLException e) {

@@ -63,7 +63,7 @@
                               <String fx:value="underline" />
                            </styleClass>
                         </Label>
-                        <ListView fx:id="popularGendres" prefHeight="200.0" prefWidth="200.0" />
+                        <ListView fx:id="popularGenres" prefHeight="200.0" prefWidth="200.0" />
                      </children>
                   </VBox>
                     </children>

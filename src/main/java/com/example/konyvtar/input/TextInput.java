@@ -46,6 +46,11 @@ public class TextInput extends Input {
         return ValidationResult.VALID;
     }
 
+    @Override
+    public void reset() {
+        clearText();
+    }
+
     public boolean isString(String data) {
         if (!Character.isUpperCase(data.charAt(0))) {
             return false;

@@ -36,6 +36,11 @@ public class Select <T> extends Input{
         return ValidationResult.VALID;
     }
 
+    @Override
+    public void reset() {
+        select(0);
+    }
+
     public int getSelectedIndex() {
         return comboBox.getSelectionModel().getSelectedIndex();
     }

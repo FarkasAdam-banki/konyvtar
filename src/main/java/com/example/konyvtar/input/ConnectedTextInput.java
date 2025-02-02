@@ -65,6 +65,13 @@ public class ConnectedTextInput extends Input{
         return ValidationResult.VALID;
     }
 
+    @Override
+    public void reset() {
+        for (TextInput i : inputs) {
+            i.reset();
+        }
+    }
+
     public void setInputs(List<TextInput> inputs) {
         this.inputs = inputs;
     }

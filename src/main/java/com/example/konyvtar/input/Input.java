@@ -29,6 +29,7 @@ public abstract class Input {
     }
 
     protected abstract ValidationResult validate();
+    public abstract void reset();
 
     public Consumer<ValidationResult> getOnValidationFail() {
         return onValidationFail;

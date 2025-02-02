@@ -14,6 +14,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -29,6 +30,9 @@ public class AddBookController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        Calendar datum = Calendar.getInstance();
+        int ev = datum.get(Calendar.YEAR);
+
         titleInput = new TextInput(title, 50);
         titleInput.setOnValidationFail(validationResult -> {
             errorMessage.setText(getErrorMessageTextInput(validationResult)+"a könyv címe!");
@@ -39,7 +43,7 @@ public class AddBookController implements Initializable {
         });
         releaseInput = new NumberInput(release, 4);
         releaseInput.setMinValue(0);
-        releaseInput.setMaxValue(2025);
+        releaseInput.setMaxValue(ev);
         releaseInput.setOnValidationFail(validationResult -> {
             errorMessage.setText(getErrorMessageNumberInput(validationResult)+"a kiadás éve!");
         });
@@ -124,13 +128,18 @@ public class AddBookController implements Initializable {
                 }
                 pstmnt.executeBatch();
                 pstmnt.close();
+
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setHeaderText("Sikeres felvétel");
+                alert.setContentText("A \""+ titleInput.getValue() +"\" című könyv sikeresen felvéve!");
+                alert.show();
+
+                for (Input j : inputs) {
+                    j.reset();
+                }
             } catch (SQLException sqle) {
                 System.err.println(sqle.getMessage());
             }
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setHeaderText("Sikeres felvétel");
-            alert.setContentText("A \""+ titleInput.getValue() +"\" című könyv sikeresen felvéve!");
-            alert.show();
         }
     }
 

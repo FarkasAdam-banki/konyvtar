@@ -46,7 +46,7 @@ public class FindBookController {
     private TableColumn<Book, String> availabilityColumn;
 
     @FXML
-    private ListView<String> popularGendres;
+    private ListView<String> popularGenres;
 
     @FXML
     private Button searchButton;
@@ -152,26 +152,14 @@ public class FindBookController {
     }
 
     private void fetchStats() {
-        HashMap<String, Integer> genreCount = new HashMap<>();
-
-        String sql = "SELECT konyv_mufaj FROM konyv";
-        try {
-            PreparedStatement pstmt = conn.prepareStatement(sql);
-            ResultSet rs = pstmt.executeQuery();
-            while (rs.next()) {
-                String genre = rs.getString("konyv_mufaj");
-                genreCount.put(genre, 0);
-            }
-            rs.close();
-            pstmt.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        sql = "SELECT k.konyv_mufaj, COUNT(leltar.konyv_ISBN) AS book_count " +
-                "FROM leltar " +
-                "INNER JOIN konyv k ON leltar.konyv_ISBN = k.konyv_ISBN " +
-                "GROUP BY k.konyv_mufaj";
+        LinkedHashMap<String, Integer> genreCount = new LinkedHashMap<>();
+        String sql = """
+                SELECT k.konyv_mufaj, COUNT(leltar.konyv_ISBN) AS book_count
+                FROM leltar
+                INNER JOIN konyv k ON leltar.konyv_ISBN = k.konyv_ISBN
+                GROUP BY k.konyv_mufaj
+                ORDER BY book_count DESC;
+                """;
 
         try {
             PreparedStatement pstmt = conn.prepareStatement(sql);
@@ -191,7 +179,7 @@ public class FindBookController {
 
         while (it.hasNext()) {
             String genre = it.next();
-            popularGendres.getItems().addAll(genre + " - " + genreCount.get(genre) + " példány");
+            popularGenres.getItems().add(genre + " - " + genreCount.get(genre) + " példány");
         }
     }
 }

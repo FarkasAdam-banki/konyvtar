@@ -125,26 +125,47 @@ public class AddRentController implements Initializable, BasicData {
             errorMessage.setText("");
             String date = yearSelect.getSelectedItem() + "-" + (monthSelect.getSelectedIndex()+1) + "-" + daySelect.getSelectedItem();
             PreparedStatement pstmt;
+            boolean canBorrow;
             try {
-                pstmt = DatabaseConnection.getPreparedStatement("INSERT INTO kolcsonzes (leltar_leltariszam, tag_id, kolcsonzes_datum, kolcsonzes_hatar, kolcsonzes_visszaE) VALUES (?,?,?,?,0)");
+                pstmt = DatabaseConnection.getPreparedStatement("SELECT `kolcsonzes_visszaE` FROM `kolcsonzes` WHERE `leltar_leltariszam` = ? ORDER BY `kolcsonzes_id` DESC LIMIT 1;");
                 pstmt.setString(1, serialInput.getValue());
-                pstmt.setString(2, membershipIdInput.getValue());
-                Instant now = Instant.now();
-                Timestamp timestamp = Timestamp.from(now);
-                pstmt.setTimestamp(3, timestamp);
-                pstmt.setString(4, date);
-
-                int rowsAffected = pstmt.executeUpdate();
-                if (rowsAffected > 0) {
-                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                    alert.setTitle("Sikeres hozzáadás!");
-                    alert.setHeaderText(null);
-                    alert.setContentText("Az " + membershipIdInput.getValue() + " azonosítójú taghoz az " + serialInput.getValue() + " azonosítójú könyv sikeresen hozzáadva.");
-                    alert.showAndWait();
+                ResultSet rs = pstmt.executeQuery();
+                if (rs.next()) {
+                    canBorrow = rs.getBoolean(1);
+                }else {
+                    canBorrow = true;
                 }
+            }catch (SQLException sqle) {
+                throw new RuntimeException(sqle);
+            }
+            if (canBorrow) {
+                try {
+                    pstmt = DatabaseConnection.getPreparedStatement("INSERT INTO kolcsonzes (leltar_leltariszam, tag_id, kolcsonzes_datum, kolcsonzes_hatar, kolcsonzes_visszaE) VALUES (?,?,?,?,0)");
+                    pstmt.setString(1, serialInput.getValue());
+                    pstmt.setString(2, membershipIdInput.getValue());
+                    Instant now = Instant.now();
+                    Timestamp timestamp = Timestamp.from(now);
+                    pstmt.setTimestamp(3, timestamp);
+                    pstmt.setString(4, date);
 
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
+                    int rowsAffected = pstmt.executeUpdate();
+                    if (rowsAffected > 0) {
+                        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                        alert.setTitle("Sikeres hozzáadás!");
+                        alert.setHeaderText(null);
+                        alert.setContentText("Az " + membershipIdInput.getValue() + " azonosítójú taghoz az " + serialInput.getValue() + " azonosítójú könyv sikeresen hozzáadva.");
+                        alert.show();
+
+                        for (Input j : inputs) {
+                            j.reset();
+                        }
+                    }
+
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            }else {
+                errorMessage.setText("Ez a könyv nem kikölcsönözhető!");
             }
         }
 
