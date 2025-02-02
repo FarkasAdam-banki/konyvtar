@@ -31,12 +31,12 @@
                     <children>
                         <TableView fx:id="tableView" prefHeight="300.0" prefWidth="800.0" styleClass="results">
                             <columns>
-                                <TableColumn fx:id="idColumn" prefWidth="120.0" text="Tag azonosító" />
-                                <TableColumn fx:id="nameColumn" prefWidth="150.0" text="Név" />
-                                <TableColumn fx:id="addressColumn" prefWidth="200.0" text="Cím" />
-                                <TableColumn fx:id="phoneColumn" prefWidth="150.0" text="Telefonszám" />
-                                <TableColumn fx:id="borrowedBooksColumn" prefWidth="180.0" text="Kölcsönzött könyvek száma" />
-                                <TableColumn fx:id="delayColumn" prefWidth="100.0" text="Késedelem" />
+                                <TableColumn fx:id="idColumn" prefWidth="89.0" text="Tag azonosító" />
+                                <TableColumn fx:id="nameColumn" prefWidth="146.0" text="Név" />
+                                <TableColumn fx:id="addressColumn" prefWidth="166.0" text="Cím" />
+                                <TableColumn fx:id="phoneColumn" prefWidth="93.0" text="Telefonszám" />
+                                <TableColumn fx:id="borrowedBooksColumn" prefWidth="172.0" text="Kölcsönzött könyvek száma" />
+                                <TableColumn fx:id="delayColumn" prefWidth="106.0" text="Késedelem" />
                             </columns>
                         </TableView>
                     </children>
