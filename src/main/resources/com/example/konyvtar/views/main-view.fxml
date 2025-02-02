@@ -40,7 +40,7 @@
                 </Menu>
                 <Menu mnemonicParsing="false" text="Súgó">
                     <items>
-                        <MenuItem mnemonicParsing="false" text="Kezelési útmutató" />
+                        <MenuItem mnemonicParsing="false" onAction="#showHowToUse" text="Kezelési útmutató" />
                     </items>
                 </Menu>
             </menus>

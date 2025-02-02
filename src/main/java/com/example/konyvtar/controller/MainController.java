@@ -46,6 +46,9 @@ public class MainController implements Initializable {
     public void showMemberList() {
         setFXMLContents("member-list.fxml");
     }
+    public void showHowToUse() {
+        setFXMLContents("how-to-use.fxml");
+    }
 
     public void setFXMLContents(String fileName) {
         Parent root;

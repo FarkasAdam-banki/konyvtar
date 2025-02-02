@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="800.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.konyvtar.controller.HowToUseController">
+    <children>
+        <ScrollPane prefHeight="800.0" prefWidth="1000.0">
+            <content>
+                <VBox prefHeight="800.0" prefWidth="1000.0" style="-fx-background-color: white;">
+                    <children>
+                        <Label text="Kezelési Útmutató a Könyvtári Szoftverhez">
+                            <font>
+                                <Font size="20.0" />
+                            </font>
+                        </Label>
+
+
+                        <Label text="Üdvözöljük a könyvtári szoftver használatában! Az alábbiakban bemutatjuk, hogyan használhatja a rendszert könyvek kikölcsönzésére, a tagok keresésére és a kölcsönzések nyilvántartására.">
+                            <font>
+                                <Font size="13.0" />
+                            </font>
+                        </Label>
+
+                        <Label text="1. Könyv Kikölcsönzése:">
+                            <font>
+                                <Font name="System Bold" size="14.0" />
+                            </font>
+                        </Label>
+                        <VBox>
+                            <children>
+                                <Label text="   - Nyissa meg a Könyv Kikölcsönzése felületet." />
+                                <Label text="   - Adja meg a könyv leltári számát (pl. ABCD-12345 formátumban)." />
+                                <Label text="   - Adja meg a tag tagsági azonosítóját." />
+                                <Label text="   - Válassza ki a kölcsönzés dátumát a legördülő menük segítségével." />
+                                <Label text="   - Ha minden adatot helyesen megadott, kattintson a Kikölcsönzés gombra." />
+                                <Label text="   - Ha a könyv már ki van kölcsönözve, értesítést kap róla." />
+                            </children>
+                            <padding>
+                                <Insets left="20.0" top="10.0" />
+                            </padding>
+                        </VBox>
+
+                        <Label text="2. Tagok Keresése:">
+                            <font>
+                                <Font size="14.0" />
+                            </font>
+                        </Label>
+                        <VBox>
+                            <children>
+                                <Label text="   - A Tagok Keresése felületen adja meg a tag nevét, tagsági azonosítóját vagy címét." />
+                                <Label text="   - A Késlekedők szűrő segítségével megtekintheti azokat a tagokat, akik késlekednek a könyvek visszaadásával." />
+                                <Label text="   - A találatokat egy táblázatban fogja látni, ahol a tagok neve, címe és a kölcsönzött könyvek száma is szerepel." />
+                            </children>
+                            <padding>
+                                <Insets left="20.0" top="10.0" />
+                            </padding>
+                        </VBox>
+
+                        <Label text="3. Kölcsönzések Nyilvántartása:">
+                            <font>
+                                <Font size="14.0" />
+                            </font>
+                        </Label>
+                        <VBox>
+                            <children>
+                                <Label text="   - A Kölcsönzések felületen láthatja az összes aktív kölcsönzést." />
+                                <Label text="   - A táblázatban megtekintheti a tag nevét, a könyv leltári számát, a kölcsönzés dátumát, és a visszaadás határidejét." />
+                                <Label text="   - Ha a könyvet visszaadták, jelölje be a Visszaadva oszlopot, és kattintson a Mentés gombra." />
+                            </children>
+                            <padding>
+                                <Insets left="20.0" top="10.0" />
+                            </padding>
+                        </VBox>
+
+                        <Label text="4. Tag Regisztrálása:">
+                            <font>
+                                <Font size="14.0" />
+                            </font>
+                        </Label>
+                        <VBox>
+                            <children>
+                                <Label text="   - Nyissa meg a Tag Regisztráció felületet." />
+                                <Label text="   - Töltse ki a tag adatait, például név, cím, telefonszám." />
+                                <Label text="   - Ha minden adatot helyesen megadott, kattintson a Regisztráció gombra." />
+                                <Label text="   - Ha a tagsági azonosító már létezik, a rendszer értesíti erről." />
+                            </children>
+                            <padding>
+                                <Insets left="20.0" top="10.0" />
+                            </padding>
+                        </VBox>
+                        <Label text="5. Könyv Hozzáadása:">
+                            <font>
+                                <Font size="14.0" />
+                            </font>
+                        </Label>
+                        <VBox>
+                            <children>
+                                <Label text="   - Nyissa meg a Könyv Hozzáadása felületet." />
+                                <Label text="   - Adja meg a könyv címét, szerzőjét, kiadás évét, műfaját és ISBN számát." />
+                                <Label text="   - Töltse ki az előtagot és adja meg a darabszámot." />
+                                <Label text="   - Ha minden adatot helyesen megadott, kattintson a Hozzáadás gombra." />
+                                <Label text="   - A rendszer ellenőrzi, hogy az előtag még nem létezik." />
+                                <Label text="   - Ha sikeresen hozzáadta a könyvet, egy értesítést kap róla." />
+                            </children>
+                            <padding>
+                                <Insets left="20.0" top="10.0" />
+                            </padding>
+                        </VBox>
+
+                        <Label text="Fontos Megjegyzések:" />
+                        <VBox>
+                            <children>
+                                <Label text="   - Mindig győződjön meg róla, hogy a könyv és a tag adatai helyesek, mielőtt kikölcsönöznék a könyvet." />
+                                <Label text="   - A rendszer figyelmeztet, ha a kölcsönzés dátuma hibás, vagy ha a tag már visszavitte a könyvet." />
+                                <Label text="   - Ha bármilyen problémába ütközik, vegye fel a kapcsolatot a rendszergazdával." />
+                            </children>
+                            <padding>
+                                <Insets left="20.0" top="10.0" />
+                            </padding>
+                        </VBox>
+                    </children>
+                    <padding>
+                        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                    </padding>
+                </VBox>
+            </content>
+        </ScrollPane>
+    </children>
+</AnchorPane>
