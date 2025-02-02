@@ -83,11 +83,14 @@ public class MemberListController {
                     CONCAT(c.cim_utca, ' ', c.cim_hsz, ', ', tp.telepules_megnevezese) AS cim,
                     t.tag_tel AS telefonszam,
                     (SELECT COUNT(*) FROM kolcsonzes k WHERE k.tag_id = t.tag_id) AS kolcsonzott_konyvek_szama,
-                    (SELECT COUNT(*) FROM kolcsonzes k WHERE k.tag_id = t.tag_id AND k.kolcsonzes_hatar < CURDATE()) AS aktiv_keses
+                    (SELECT COUNT(*) FROM kolcsonzes k
+                     WHERE k.tag_id = t.tag_id
+                     AND k.kolcsonzes_hatar < CURDATE()
+                     AND (k.kolcsonzes_visszaE IS NULL OR k.kolcsonzes_visszaE = 0)) AS aktiv_keses
                 FROM tag t
                 LEFT JOIN cim c ON t.cim_id = c.cim_id
-                LEFT JOIN telepules tp ON c.telepules_id = tp.telepules_id
-                WHERE 1=1""";
+                LEFT JOIN telepules tp ON c.telepules_id = tp.telepules_id;
+                """;
 
         if (searchQuery != null && !searchQuery.trim().isEmpty()) {
             sql += " AND (t.tag_id LIKE ? OR t.tag_nev LIKE ?)";
