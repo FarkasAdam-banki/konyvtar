@@ -218,6 +218,9 @@
     -fx-max-height: 150px;
     -fx-min-width: 160px;
 }
-.error{
+.error, .unavailable{
         -fx-text-fill: #F00;
+}
+.available{
+    -fx-text-fill: #0F0;
 }

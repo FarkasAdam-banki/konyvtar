@@ -7,11 +7,11 @@ public class Book {
     private String isbn;
     private int year;
     private String genre;
-    private boolean available;
+    private String available;
 
 
 
-    public Book(String title, String author, String isbn, int year, String genre, boolean available) {
+    public Book(String title, String author, String isbn, int year, String genre, String available) {
         setTitle(title);
         setAuthor(author);
         setIsbn(isbn);
@@ -60,11 +60,11 @@ public class Book {
         this.genre = genre;
     }
 
-    public boolean isAvailable() {
+    public String isAvailable() {
         return available;
     }
 
-    public void setAvailable(boolean available) {
+    public void setAvailable(String available) {
         this.available = available;
     }
 }

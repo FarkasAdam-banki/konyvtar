@@ -40,7 +40,7 @@ public class FindBookController {
     private TableColumn<Book, String> genreColumn;
 
     @FXML
-    private TableColumn<Book, Boolean> availabilityColumn;
+    private TableColumn<Book, String> availabilityColumn;
 
     @FXML
     private ListView<String> popularGendres;
@@ -64,6 +64,28 @@ public class FindBookController {
         yearColumn.setCellValueFactory(new PropertyValueFactory<>("year"));
         genreColumn.setCellValueFactory(new PropertyValueFactory<>("genre"));
         availabilityColumn.setCellValueFactory(new PropertyValueFactory<>("available"));
+        availabilityColumn.setCellValueFactory(new PropertyValueFactory<>("available"));
+
+        availabilityColumn.setCellFactory(column -> new TableCell<>() {
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                getStyleClass().removeAll("available", "unavailable");
+
+                if (empty || item == null) {
+                    setText(null);
+                } else {
+                    setText(item);
+                    if (item.equals("Igen")) {
+                        getStyleClass().add("available");
+                    } else {
+                        getStyleClass().add("unavailable");
+                    }
+                }
+            }
+        });
+
+
 
         searchField.setOnAction(event -> fetchBooks());
         searchButton.setOnMouseClicked(event -> fetchBooks());
@@ -98,15 +120,15 @@ public class FindBookController {
                 String author = rs.getString("konyv_szerzo");
                 int year = rs.getInt("konyv_kiadas");
                 String genre = rs.getString("konyv_mufaj");
-                boolean available = rs.getBoolean("available");
+                String available = rs.getBoolean("available")?"Igen":"Nem";
 
                 books.add(new Book(title, author, isbn, year, genre, available));
             }
             boolean selected = available.getSelectionModel().getSelectedIndex() != 0;
             if (selected) {
-                boolean isAvailable = available.getValue()=="Igen";
+                String isAvailable = available.getValue();
                 for (int i = 0; i < books.size(); i++) {
-                    if(books.get(i).isAvailable()==isAvailable){
+                    if(Objects.equals(books.get(i).isAvailable(), isAvailable)){
                         resultBooks.add(books.get(i));
                     }
                 }
@@ -163,7 +185,7 @@ public class FindBookController {
 
         while (it.hasNext()) {
             String genre = it.next();
-            popularGendres.getItems().addAll(genre + ": " + genreCount.get(genre) + " példány");
+            popularGendres.getItems().addAll(genre + " - " + genreCount.get(genre) + " példány");
         }
     }
 }
