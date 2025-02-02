@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.1
+-- version 5.2.0
 -- https://www.phpmyadmin.net/
 --
 -- Gép: 127.0.0.1
--- Létrehozás ideje: 2025. Feb 01. 15:57
--- Kiszolgáló verziója: 10.4.32-MariaDB
--- PHP verzió: 8.2.12
+-- Létrehozás ideje: 2025. Feb 02. 20:45
+-- Kiszolgáló verziója: 10.4.27-MariaDB
+-- PHP verzió: 8.2.0
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -39,9 +39,11 @@ CREATE TABLE `cim` (
 --
 
 INSERT INTO `cim` (`cim_id`, `telepules_id`, `cim_utca`, `cim_hsz`) VALUES
-(1, 13, 'Fő utca', '12/A'),
-(2, 23, 'Két utca', '5/B'),
-(3, 53, 'Fő utca', '12/A');
+(7, 3127, 'Réti utca', '41'),
+(8, 1679, 'Erdélyi utca', '78/A'),
+(9, 2122, 'Dózsa Görgy utca', '25'),
+(10, 3127, 'Vadvirág utca', '55'),
+(11, 3127, 'Réti utca', '88');
 
 -- --------------------------------------------------------
 
@@ -58,6 +60,23 @@ CREATE TABLE `kolcsonzes` (
   `kolcsonzes_visszaE` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_hungarian_ci;
 
+--
+-- A tábla adatainak kiíratása `kolcsonzes`
+--
+
+INSERT INTO `kolcsonzes` (`kolcsonzes_id`, `leltar_leltariszam`, `tag_id`, `kolcsonzes_datum`, `kolcsonzes_hatar`, `kolcsonzes_visszaE`) VALUES
+(15, 'VFRT-00000', 349684452, '2025-02-01', '2025-02-14', 1),
+(16, 'VFRT-00001', 601997577, '2025-02-02', '2025-02-17', 0),
+(17, 'TKVR-00000', 601997577, '2025-02-02', '2025-02-17', 0),
+(18, 'SSTL-00000', 601997577, '2025-02-02', '2025-02-17', 0),
+(19, 'IPPG-00000', 619874292, '2025-01-01', '2025-01-16', 0),
+(20, 'PQRS-00000', 619874292, '2025-01-01', '2025-01-16', 0),
+(21, 'TKVR-00001', 924150923, '2025-01-26', '2025-02-03', 1),
+(22, 'VVTH-00000', 924150923, '2025-01-29', '2025-02-06', 1),
+(23, 'PQRS-00002', 830933625, '2025-02-02', '2025-03-01', 0),
+(24, 'TTZB-00000', 830933625, '2025-02-02', '2025-03-01', 0),
+(25, 'VVTH-00003', 619874292, '2025-02-02', '2025-02-20', 0);
+
 -- --------------------------------------------------------
 
 --
@@ -69,18 +88,23 @@ CREATE TABLE `konyv` (
   `konyv_cim` varchar(50) NOT NULL,
   `konyv_szerzo` varchar(50) NOT NULL,
   `konyv_kiadas` year(4) NOT NULL,
-  `konyv_mufaj` varchar(20) NOT NULL,
-  `konyv_statusz` tinyint(1) NOT NULL
+  `konyv_mufaj` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_hungarian_ci;
 
 --
 -- A tábla adatainak kiíratása `konyv`
 --
 
-INSERT INTO `konyv` (`konyv_ISBN`, `konyv_cim`, `konyv_szerzo`, `konyv_kiadas`, `konyv_mufaj`, `konyv_statusz`) VALUES
-(9789639522681, 'JavaScript Alapok', 'Kiss Anna', '2018', 'Programozás', 1),
-(9789639785102, 'Programozás Java-ban', 'Kovács János', '2021', 'Programozás', 0),
-(9789639908495, 'Adatbázis kezelők', 'Tóth Béla', '2019', 'Számítástechnika', 1);
+INSERT INTO `konyv` (`konyv_ISBN`, `konyv_cim`, `konyv_szerzo`, `konyv_kiadas`, `konyv_mufaj`) VALUES
+(9631179176, 'Vuk', 'Fekete István', 1956, 'regény'),
+(9631411540, 'Az ajtó', 'Szabó Magda', 1987, 'regény'),
+(9631423883, 'Sorstalanság', 'Kertész Imre', 1975, 'regény'),
+(987963987654, 'Java Programozás I.', 'Nagy Dániel', 2020, 'informatika'),
+(9789631186117, 'A Pál utcai fiúk', 'Molnár Ferenc', 1906, 'regény'),
+(9789631234567, 'A titkos örökség', 'Kovács Péter', 1995, 'kalandregény'),
+(9789631422345, 'Tüskevár', 'Fekete István', 1957, 'regény'),
+(9789632345678, 'Árnyak Városa', 'Horváth László', 2005, 'fantasy'),
+(9789635678901, 'A gyilkosság receptje', 'Kiss Mária', 2012, 'krimi');
 
 -- --------------------------------------------------------
 
@@ -92,6 +116,48 @@ CREATE TABLE `leltar` (
   `leltar_leltariszam` varchar(10) NOT NULL,
   `konyv_ISBN` bigint(13) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_hungarian_ci;
+
+--
+-- A tábla adatainak kiíratása `leltar`
+--
+
+INSERT INTO `leltar` (`leltar_leltariszam`, `konyv_ISBN`) VALUES
+('VFRT-00000', 9631179176),
+('VFRT-00001', 9631179176),
+('VFRT-00002', 9631179176),
+('VFRT-00003', 9631179176),
+('VFRT-00004', 9631179176),
+('TOEE-00000', 9631411540),
+('TOEE-00001', 9631411540),
+('TOEE-00002', 9631411540),
+('SSTL-00000', 9631423883),
+('SSTL-00001', 9631423883),
+('SSTL-00002', 9631423883),
+('SSTL-00003', 9631423883),
+('IPPG-00000', 987963987654),
+('IPPG-00001', 987963987654),
+('IPPG-00002', 987963987654),
+('IPPG-00003', 987963987654),
+('IPPG-00004', 987963987654),
+('PQRS-00000', 9789631186117),
+('PQRS-00001', 9789631186117),
+('PQRS-00002', 9789631186117),
+('PQRS-00003', 9789631186117),
+('PQRS-00004', 9789631186117),
+('PQRS-00005', 9789631186117),
+('TKOR-00000', 9789631234567),
+('TKOR-00001', 9789631234567),
+('TKOR-00002', 9789631234567),
+('TKVR-00000', 9789631422345),
+('TKVR-00001', 9789631422345),
+('TKVR-00002', 9789631422345),
+('TKVR-00003', 9789631422345),
+('VVTH-00000', 9789632345678),
+('VVTH-00001', 9789632345678),
+('VVTH-00002', 9789632345678),
+('VVTH-00003', 9789632345678),
+('TTZB-00000', 9789635678901),
+('TTZB-00001', 9789635678901);
 
 -- --------------------------------------------------------
 
@@ -147,11 +213,11 @@ CREATE TABLE `tag` (
 --
 
 INSERT INTO `tag` (`tag_id`, `tag_nev`, `cim_id`, `tag_tel`) VALUES
-(123456789, 'Kiss Péter', 1, '+361234567'),
-(215636312, 'Szabó Anna', 2, '0620123456'),
-(363543265, 'Kiss Péter', 1, '0612345678'),
-(412345234, 'Kovács Laura', 2, '0643123456'),
-(575455623, 'Tóth Gábor', 1, '0630765432');
+(349684452, 'Pál Mihály', 10, '+36307584694'),
+(601997577, 'Katona Botond', 9, '+36202330877'),
+(619874292, 'Illés Bendegúz', 7, '+36301936350'),
+(830933625, 'Tóth Péter', 8, '+36205627687'),
+(924150923, 'Mészáros Anna', 11, '+36204459312');
 
 -- --------------------------------------------------------
 
@@ -3807,13 +3873,13 @@ ALTER TABLE `telepules`
 -- AUTO_INCREMENT a táblához `cim`
 --
 ALTER TABLE `cim`
-  MODIFY `cim_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `cim_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT a táblához `kolcsonzes`
 --
 ALTER TABLE `kolcsonzes`
-  MODIFY `kolcsonzes_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `kolcsonzes_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- AUTO_INCREMENT a táblához `megye`
