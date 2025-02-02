@@ -4,11 +4,13 @@ import com.example.konyvtar.DatabaseConnection;
 import com.example.konyvtar.input.ConnectedTextInput;
 import com.example.konyvtar.input.Select;
 import com.example.konyvtar.input.TextInput;
+import com.example.konyvtar.input.ValidationResult;
 import com.example.konyvtar.model.County;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
 import java.net.URL;
@@ -21,6 +23,8 @@ public class AddMemberController implements Initializable {
     private TextField memeberId, memberLastName, memberFirstName, memberOptionalName, memberPhoneNumber, memberCity, memberStreet, memberHouseNumber;
     @FXML
     private ComboBox<County> memberCounty;
+    @FXML
+    private Label errorMessage, successMessage;
 
     private Select<County> megyeSelect;
     private TextInput tagKeresztnev, tagVezeteknev, tagOpcionalisNev, tagTelSzam, tagVaros, tagUtca, tagHazszam, tagId;
@@ -33,22 +37,20 @@ public class AddMemberController implements Initializable {
         int telepules_id = -1;
         boolean ok = true;
 
-        if (!tagNev.isValid()) {
+        if (!tagNev.isValidOrFail()) {
             ok = false;
-            System.out.println("Hibás név!");
-        } else if (!tagTelSzam.isValid()) {
+        } else if (!tagTelSzam.isValidOrFail()) {
             ok = false;
-            System.out.println("Hibás Telefon szám");
-        } else if (!tagUtca.isValid()) {
+        } else if (!tagUtca.isValidOrFail()) {
             ok = false;
-            System.out.println("Hibás utca!");
         } else if (!tagVaros.isValidOrFail()) {
             ok = false;
-            System.out.println("Hibás település!");
+        } else if (!tagHazszam.isValidOrFail()) {
+            ok = false;
         }
         telepules_id = getTelepulesId(memberCity.getText());
         if (telepules_id == -1) {
-            System.out.println("Nem létező település!");
+            errorMessage.setText("Nem létező település!");
             ok = false;
         }
         if(ok){
@@ -70,6 +72,8 @@ public class AddMemberController implements Initializable {
                 alert.setHeaderText("Tag Regisztrálása");
                 alert.setContentText("Tag neve: " + tagNev.getValue() + "\nCíme: " + tagCim.getValue() + "\nTelefon száma: " + tagTelSzam.getValue());
                 alert.show();
+                errorMessage.setText("");
+                successMessage.setText("Tag sikersen regisztrálva!");
                 pstmt.executeUpdate();
             }catch (SQLException sqle){
                 System.err.println(sqle.getMessage());
@@ -87,15 +91,40 @@ public class AddMemberController implements Initializable {
         tagVezeteknev = new TextInput(memberLastName);
         tagOpcionalisNev = new TextInput(memberOptionalName, true);
         tagTelSzam = new TextInput(memberPhoneNumber,12);
-        tagVaros = new TextInput(memberCity,25);
-        tagUtca = new TextInput(memberStreet, 30);
-        tagHazszam = new TextInput(memberHouseNumber, 20);
         tagTelSzam.setRegex("^(\\+36|06)?\\s?(20|30|70)\\s?[0-9]{3}\\s?[0-9]{4}$");
+        tagTelSzam.setOnValidationFail(validationResult -> {
+            if(validationResult == ValidationResult.REGEX_FAIL) {
+                errorMessage.setText("Rossz formátum! A telefon szám formátuma: +3620234567 vagy 06201234567.");
+            }
+            else{
+                errorMessage.setText("Hibás telefon szám!");
+            }
+        });
+        tagVaros = new TextInput(memberCity,25);
+        tagVaros.setOnValidationFail(validationResult -> {
+            errorMessage.setText(getErrorMessageTextInput(validationResult)+"a város név!");
+        });
+        tagUtca = new TextInput(memberStreet, 30);
+        tagUtca.setOnValidationFail(validationResult -> {
+            errorMessage.setText(getErrorMessageTextInput(validationResult)+"a utca név!");
+        });
+        tagHazszam = new TextInput(memberHouseNumber, 20);
         tagHazszam.setRegex("^[0-9]+[a-zA-Z]?(/[a-zA-Z]|\\\\.[a-zA-Z])?$");
+        tagHazszam.setOnValidationFail(validationResult -> {
+            if(validationResult == ValidationResult.REGEX_FAIL) {
+                errorMessage.setText("Hibás formátum!");
+            }
+            else{
+                errorMessage.setText("Hibás ház szám!");
+            }
+        });
         tagNev = new ConnectedTextInput();
         tagNev.addInput(tagVezeteknev);
         tagNev.addInput(tagKeresztnev);
         tagNev.addInput(tagOpcionalisNev);
+        tagNev.setOnValidationFail(validationResult -> {
+            errorMessage.setText(getErrorMessageTextInput(validationResult)+"a név!");
+        });
         tagCim = new ConnectedTextInput();
         tagCim.addInput(tagVaros);
         tagCim.addInput(tagUtca);
@@ -129,6 +158,15 @@ public class AddMemberController implements Initializable {
             tagId += (int)(Math.random() * 10);
         }
         return tagId;
+    }
+    private String getErrorMessageTextInput(ValidationResult result) {
+        return switch (result) {
+            case EMPTY -> "Nincs megadva ";
+            case TOO_SHORT -> "Túl rövid ";
+            case TOO_LONG -> "Túl hosszú ";
+            case REGEX_FAIL -> "Helytelen formátumú ";
+            default -> throw new IllegalStateException("Unexpected value: " + result);
+        };
     }
 
     public void megyeFeltoltes() {

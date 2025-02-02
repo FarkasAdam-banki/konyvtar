@@ -230,6 +230,6 @@
 .error, .unavailable{
         -fx-text-fill: #F00;
 }
-.available{
-    -fx-text-fill: #0F0;
+.success, .available{
+	-fx-text-fill: #008000;
 }
