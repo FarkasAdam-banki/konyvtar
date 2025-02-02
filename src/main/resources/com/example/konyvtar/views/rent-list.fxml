@@ -24,7 +24,7 @@
                 <HBox alignment="CENTER" prefHeight="81.0" styleClass="search-bar">
                     <children>
                         <TextField fx:id="searchField" promptText="Keresés..." />
-                  <ComboBox fx:id="month" prefWidth="150.0" promptText="Ebben a hónapban" />
+                  <ComboBox fx:id="month"  promptText="Az elmúlt harminc napban?" />
                   <Button fx:id="searchButton" mnemonicParsing="false" text="Keresés" />
                     </children>
                 </HBox>

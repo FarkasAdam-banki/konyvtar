@@ -14,6 +14,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Objects;
 
 public class RentListController {
     @FXML
@@ -43,8 +44,8 @@ public class RentListController {
     private Connection conn;
 
     public void initialize() {
-        month.setItems(FXCollections.observableArrayList("ebben a hónapban?", "Igen", "Nem"));
-        month.setValue("ebben a hónapban?");
+        month.setItems(FXCollections.observableArrayList("Az elmúlt harminc napban?", "Igen"));
+        month.setValue("Az elmúlt harminc napban?");
         this.conn = DatabaseConnection.getConnection();
 
         membershipIdColumn.setCellValueFactory(new PropertyValueFactory<>("membershipId"));
@@ -68,15 +69,24 @@ public class RentListController {
         String sql;
         try {
             PreparedStatement pstmt;
-            sql = "SELECT * FROM kolcsonzes WHERE tag_id LIKE ? OR leltar_leltariszam LIKE ? OR kolcsonzes_datum LIKE ? OR kolcsonzes_hatar LIKE ?";
+             sql = "SELECT * FROM kolcsonzes " +
+                    "WHERE (tag_id LIKE ? " +
+                    "OR leltar_leltariszam LIKE ? " +
+                    "OR kolcsonzes_datum LIKE ? " +
+                    "OR kolcsonzes_hatar LIKE ?) " +
+                    "AND (? = 'Igen' AND DATEDIFF(CURRENT_DATE, kolcsonzes_datum) < 30 OR ? != 'Igen')";
             pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, "%" + search.trim() + "%");
             pstmt.setString(2, "%" + search.trim() + "%");
             pstmt.setString(3, "%" + search.trim() + "%");
             pstmt.setString(4, "%" + search.trim() + "%");
+            pstmt.setString(5, month.getSelectionModel().getSelectedItem());
+            pstmt.setString(6, month.getSelectionModel().getSelectedItem());
+            System.out.println(pstmt);
+
+
 
             ResultSet rs = pstmt.executeQuery();
-            System.out.println(rs.getFetchSize());
             while (rs.next()) {
                 int rentId = rs.getInt("kolcsonzes_id");
                 String serialNumber = rs.getString("leltar_leltariszam");
