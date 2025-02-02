@@ -68,7 +68,6 @@
 }
 .noSpacing {
     -fx-spacing: 0;
-    -fx-alignment: left;
 }
 .label{
     -fx-font-weight: 700;
