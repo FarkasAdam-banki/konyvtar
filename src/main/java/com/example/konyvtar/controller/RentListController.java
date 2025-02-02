@@ -68,12 +68,13 @@ public class RentListController {
         String sql;
         try {
             PreparedStatement pstmt;
-             sql = "SELECT * FROM kolcsonzes " +
-                    "WHERE (tag_id LIKE ? " +
-                    "OR leltar_leltariszam LIKE ? " +
-                    "OR kolcsonzes_datum LIKE ? " +
-                    "OR kolcsonzes_hatar LIKE ?) " +
-                    "AND (? = 'Igen' AND DATEDIFF(CURRENT_DATE, kolcsonzes_datum) < 30 OR ? != 'Igen')";
+             sql = """ 
+                     SELECT * FROM kolcsonzes
+                     WHERE (tag_id LIKE ?
+                     OR leltar_leltariszam LIKE ?
+                     OR kolcsonzes_datum LIKE ?
+                     OR kolcsonzes_hatar LIKE ?)
+                     AND (? = 'Igen' AND DATEDIFF(CURRENT_DATE, kolcsonzes_datum) < 30 OR ? != 'Igen')""";
             pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, "%" + search.trim() + "%");
             pstmt.setString(2, "%" + search.trim() + "%");
