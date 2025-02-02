@@ -42,7 +42,7 @@ public class AddBookController implements Initializable {
             errorMessage.setText(getErrorMessageTextInput(validationResult) + "a szerző!");
         });
         releaseInput = new NumberInput(release, 4);
-        releaseInput.setMinValue(0);
+        releaseInput.setMinValue(1970);
         releaseInput.setMaxValue(currentYear);
         releaseInput.setOnValidationFail(validationResult -> {
             errorMessage.setText(getErrorMessageNumberInput(validationResult) + "a kiadás éve!");
