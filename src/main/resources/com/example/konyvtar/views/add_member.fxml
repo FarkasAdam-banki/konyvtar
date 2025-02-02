@@ -160,7 +160,7 @@
                         </VBox>
                         <VBox prefHeight="200.0" prefWidth="300.0">
                            <children>
-                              <ComboBox fx:id="memberCounty" prefWidth="150.0" />
+                              <ComboBox fx:id="memberCounty" prefWidth="150.0" promptText="Válasszon!"/>
                               <Label prefHeight="17.0" prefWidth="200.0" styleClass="label2" text="Megye" />
                            </children>
                         </VBox>
@@ -187,6 +187,12 @@
                      <VBox.margin>
                         <Insets left="100.0" right="100.0" />
                      </VBox.margin>
+                  </HBox>
+                  <HBox prefHeight="25.0" prefWidth="200.0" styleClass="accept-input">
+                     <children>
+                        <Label fx:id="errorMessage" styleClass="error" />
+                        <Label fx:id="successMessage" layoutX="10.0" layoutY="10.0" styleClass="success" />
+                     </children>
                   </HBox>
                   <HBox prefHeight="100.0" prefWidth="200.0" styleClass="accept-input">
                      <children>

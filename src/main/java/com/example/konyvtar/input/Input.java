@@ -10,7 +10,7 @@ public abstract class Input {
 
     public final boolean isValid() {
         if (customValidator != null) {
-            return customValidator.test(this) && validate() == ValidationResult.VALID;
+            return validate() == ValidationResult.VALID && customValidator.test(this);
         }
         return validate() == ValidationResult.VALID;
     }
@@ -19,11 +19,10 @@ public abstract class Input {
         if (isValid())
             return true;
         if(onValidationFail != null){
-            if (customValidator != null && !customValidator.test(this)) {
-                onValidationFail.accept(ValidationResult.CUSTOM_VALIDATION_FAIL);
-            }
-            else {
+            if (validate() != ValidationResult.VALID){
                 onValidationFail.accept(validate());
+            } else {
+                onValidationFail.accept(ValidationResult.CUSTOM_VALIDATION_FAIL);
             }
         }
         return false;

@@ -30,7 +30,7 @@ public class Select <T> extends Input{
 
     @Override
     protected ValidationResult validate() {
-        if (includesPrompt && getSelectedIndex() == 0)
+        if (getSelectedIndex() == -1 ||(includesPrompt && getSelectedIndex() == 0))
             return ValidationResult.NO_SELECTION;
 
         return ValidationResult.VALID;
@@ -51,13 +51,15 @@ public class Select <T> extends Input{
     public void setOptions(List<T> options) {
         ObservableList<T> observableList = FXCollections.observableArrayList(options);
         comboBox.setItems(observableList);
-        select(0);
+        if (includesPrompt) {
+            select(0);
+        }
     }
 
     public void addOption(T option) {
         ObservableList<T> items = comboBox.getItems();
         items.add(option);
-        if (items.size() == 1) {
+        if (items.size() == 1 && includesPrompt) {
             select(0);
         }
     }
