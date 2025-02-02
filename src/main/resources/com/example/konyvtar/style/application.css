@@ -71,7 +71,15 @@
     -fx-font-weight: 700;
     -fx-padding: 0 0 10 0;
 }
-
+.subtitle{
+    -fx-text-fill: #000;
+    -fx-font-weight: 700;
+    -fx-font-size: 18px;
+}
+.underline{
+    -fx-border-width: 0 0 1 0;
+    -fx-border-color: black;
+}
 .label2{
     -fx-text-fill: #555;
     -fx-font-weight: normal;
@@ -106,12 +114,13 @@
 .w-100{
     -fx-min-width: 1000;
 }
-.h-100{
-    -fx-min-width: 800;
+.w-90{
+    -fx-min-width: 900;
 }
 .w-combobox{
     -fx-min-width: 150;
 }
+
 .py{
     -fx-padding: 20 0 20 0;
 }
@@ -173,18 +182,18 @@
     -fx-spacing: 20px;
 }
 
-.book-results, .search {
+.search {
     -fx-spacing: 10px;
 }
 
 .results {
     -fx-min-height: 300px;
-    -fx-min-width: 500px;
-    -fx-padding: 15px;
+    -fx-min-width: 620px;
+    -fx-padding: 5px;
+
     -fx-border-insets: 15px 15px;
     -fx-background-insets: 15px 15px;
 }
-
 .result-num {
     -fx-alignment: center-right;
 }

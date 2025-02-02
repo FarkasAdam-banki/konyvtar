@@ -107,11 +107,13 @@ public class FindBookController {
                        FROM konyv k
                        JOIN leltar l ON k.konyv_ISBN = l.konyv_ISBN
                        LEFT JOIN kolcsonzes ko ON l.leltar_leltariszam = ko.leltar_leltariszam AND ko.kolcsonzes_visszaE = 0
-                       WHERE k.konyv_ISBN LIKE ? OR k.konyv_cim LIKE ?;
+                       WHERE k.konyv_ISBN LIKE ? OR k.konyv_cim LIKE ? OR k.konyv_szerzo LIKE ?;
                     """;
             pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, "%" + search.strip() + "%");
             pstmt.setString(2, "%" + search.strip() + "%");
+            pstmt.setString(3, "%" + search.strip() + "%");
+
             ResultSet rs = pstmt.executeQuery();
 
             while (rs.next()) {
